@@ -160,10 +160,10 @@
         },
         computed: {
           totalCases() {
-            return this.COVID_19_Datas.reduce((pre, now) =>  pre + parseInt(now.cases), 0);
+            return this.COVID_19_Datas.reduce((acc, cur) =>  pre + parseInt(cur.cases), 0);
           },
           totalDeaths() {
-            return this.COVID_19_Datas.reduce((pre, now) =>  pre + parseInt(now.deaths), 0);
+            return this.COVID_19_Datas.reduce((acc, cur) =>  pre + parseInt(cur.deaths), 0);
           },
           COVID_19_DatasFilter() {
             if (!this.filtersWord) return this.COVID_19_Datas;
