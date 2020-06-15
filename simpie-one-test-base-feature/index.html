@@ -16,7 +16,7 @@
     />
     <style>
       .slide-fade-enter-active {
-        transition: all 0.3s ease;
+        transition: all 0.8s ease;
       }
       .slide-fade-leave-active {
         transition: all 0.8s cubic-bezier(1, 0.5, 0.8, 1);
@@ -176,6 +176,9 @@
           COVID_19_DatasFilterTotalCases() {
             return this.COVID_19_DatasFilter.length;
           },
+          COVID_19_DatasTotalCases() {
+            return this.COVID_19_Datas.length;
+          },
           COVID_19_DatasFilterRank() {
             switch (true) {
               case this.currentBranch === "word":
@@ -206,7 +209,7 @@
             const currentTime = new Date(),
                   dataTime = new Date(time),
                   passTime = currentTime.getTime() - dataTime.getTime(),
-                  countMinuteTime = 1000 * 24 * 60;
+                  countMinuteTime = 1000 * 60;
             return `${Math.ceil(passTime / countMinuteTime)} 分鐘前 📃`;
           },
         },
