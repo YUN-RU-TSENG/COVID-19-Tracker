@@ -179,14 +179,14 @@
           COVID_19_DatasFilterRank() {
             switch (true) {
               case this.currentBranch === "word":
-                    return this.COVID_19_DatasFilter.sort((bef, aft) => {
-                      const befWord = bef.country.slice(0,1).toLowerCase().charCodeAt(),
-                            aftWord = aft.country.slice(0,1).toLowerCase().charCodeAt();
-                      return befWord - aftWord;
+                    return this.COVID_19_DatasFilter.sort((aft, bef) => {
+                      const aftWord = aft.country.slice(0,1).toLowerCase().charCodeAt(),
+                            befWord = bef.country.slice(0,1).toLowerCase().charCodeAt();
+                      return aftWord - befWord;
                     })
               case this.currentBranch === "deaths":
               case this.currentBranch === "cases":
-                    return this.COVID_19_DatasFilter.sort((bef, aft) => aft[this.currentBranch]-bef[this.currentBranch])
+                    return this.COVID_19_DatasFilter.sort((aft, bef) => bef[this.currentBranch]-aft[this.currentBranch])
             }
           }
         },
