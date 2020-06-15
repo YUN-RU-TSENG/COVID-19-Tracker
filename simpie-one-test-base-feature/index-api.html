@@ -128,26 +128,26 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
     <script>
       const apiURL = "https://corona.lmao.ninja/v2/countries?yesterday&sort",
-        data = {
-          COVID_19_Datas: [],
-          filtersWord: "",
-          branches: [
-            {
-              name: "deaths",
-              text: "死亡人數排序",
-            },
-            {
-              name: "cases",
-              text: "生病人數排序",
-            },
-            {
-              name: "word",
-              text: "國家字母排序",
-            },
-          ],
-          currentBranch: "deaths",
-          isLoadFinish: false,
-        };
+            data = {
+              COVID_19_Datas: [],
+              filtersWord: "",
+              branches: [
+                {
+                  name: "deaths",
+                  text: "死亡人數排序",
+                },
+                {
+                  name: "cases",
+                  text: "生病人數排序",
+                },
+                {
+                  name: "word",
+                  text: "國家字母排序",
+                },
+              ],
+              currentBranch: "deaths",
+              isLoadFinish: false,
+            };
 
       const vm = new Vue({
         el: "#app",
@@ -187,7 +187,7 @@
                     })
               case this.currentBranch === "deaths":
               case this.currentBranch === "cases":
-                    return this.COVID_19_DatasFilter.sort((bef, aft) => bef[this.currentBranch] - aft[this.currentBranch])
+                    return this.COVID_19_DatasFilter.sort((bef, aft) => aft[this.currentBranch]-bef[this.currentBranch])
             }
           }
         },
@@ -224,6 +224,9 @@
           setFiltersWordInput(e) {
             this.filtersWord = e.target.value.trim();
           },
+          gotoSearch(){
+            
+          }
         },
       });
     </script>
