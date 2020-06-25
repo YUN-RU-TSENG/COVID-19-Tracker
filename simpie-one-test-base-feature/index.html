@@ -5,7 +5,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport"
         content="width=device-width, initial-scale=1.0" />
-  <title>單純用 vue.js cdn 做的簡單測試草稿，很隨意</title>
+  <title>單純用 vue.js cdn 做的簡單測試草稿</title>
   <link rel="stylesheet"
         href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
         integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
@@ -46,19 +46,9 @@
             Search
           </button>
         </form>
-        <div class="form-check form-check-inline ml-3"
-             v-for="branch of branches">
-          <input class="form-check-input"
-                 type="radio"
-                 name="inlineRadioOptions"
-                 :id="branch.name"
-                 value="option1"
-                 :value="branch.name"
-                 :checked="branch.name === currentBranch"
-                 v-model="currentBranch" />
-          <label class="form-check-label"
-                 :for="branch.name">{{ branch.text }}</label>
-        </div>
+        <list-item :datas="branches"
+                   :initial-data="currentBranch"
+                   @checkbox-event="sortCovid_19"/>
       </div>
     </nav>
     <div class="container">
@@ -83,21 +73,14 @@
         </p>
       </transition>
       <div class="row">
-        <card v-for="(COVID_19_Data, index) of COVID_19_DatasFilterRank"
-              :index="index"
-              :todayCases="COVID_19_Data.todayCases"
-              :todayDeaths="COVID_19_Data.todayDeaths"
-              :cases="COVID_19_Data.cases"
-              :deaths="COVID_19_Data.deaths"
-              :population="COVID_19_Data.population"
-              :updated="COVID_19_Data.updated"
-              :index="COVID_19_Data.index"
-              :country="COVID_19_Data.country"></card>
+        <card-item v-for="(COVID_19_Data, index) of COVID_19_DatasFilterRank"
+                   :index="index"
+                   v-bind="COVID_19_Data" />
       </div>
     </div>
   </div>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.11/vue.js'></script>
   <script>
     const apiURL = "https://corona.lmao.ninja/v2/countries?yesterday&sort",
       data = {
@@ -121,88 +104,47 @@
         isLoadFinish: false,
       };
 
-    const vm = new Vue({
-      el: "#app",
-      data,
-      created() {
-        NProgress.start();
-        this.fetchAPIData().then(() => {
-          NProgress.done();
-          this.isLoadFinish = true;
-        });
+    // 在找可不可以只傳入原始型別，但 v-for 不寫在根元素上呢？
+    Vue.component('listItem', {
+      props: {
+        initialData: {
+          type: String,
+          required: true,
+        },
+        datas: {
+          type: Array,
+          required: true
+        }
       },
-      computed: {
-        totalCases() {
-          return this.COVID_19_Datas.reduce((acc, cur) => acc + parseInt(cur.cases), 0);
-        },
-        totalDeaths() {
-          return this.COVID_19_Datas.reduce((acc, cur) => acc + parseInt(cur.deaths), 0);
-        },
-        COVID_19_DatasFilter() {
-          if (!this.filtersWord) return this.COVID_19_Datas;
-          else
-            return this.COVID_19_Datas.filter((data) => {
-              const regExp = new RegExp(this.filtersWord, "i");
-              if (regExp.test(data.country)) return data;
-            });
-        },
-        COVID_19_DatasFilterTotalCases() {
-          return this.COVID_19_DatasFilter.length;
-        },
-        COVID_19_DatasTotalCases() {
-          return this.COVID_19_Datas.length;
-        },
-        COVID_19_DatasFilterRank() {
-          switch (true) {
-            case this.currentBranch === "word":
-              return this.COVID_19_DatasFilter.sort((aft, bef) => {
-                const aftWord = aft.country.slice(0, 1).toLowerCase().charCodeAt(),
-                  befWord = bef.country.slice(0, 1).toLowerCase().charCodeAt();
-                return aftWord - befWord;
-              })
-            case this.currentBranch === "deaths":
-            case this.currentBranch === "cases":
-              return this.COVID_19_DatasFilter.sort((aft, bef) => bef[this.currentBranch] - aft[this.currentBranch])
+      data: function () {
+        return {
+          currentData: this.initialData
+        }
+      },
+      watch: {
+        currentData: {
+          handler: function (value) {
+            this.$emit('checkbox-event', value)
           }
         }
       },
-      filters: {
-        pertThousandDisplay(number) {
-          if (!parseInt(number)) return `無 🏨`;
-          else
-            return parseInt(number).toLocaleString("zh-TW", {
-              style: "decimal",
-              useGrouping: true,
-            });
-        },
-        DisplayArrayIndexNumber(number) {
-          return `${parseInt(number) + 1}. `;
-        },
-        timeFormateDisplay(time) {
-          const currentTime = new Date(),
-            dataTime = new Date(time),
-            passTime = currentTime.getTime() - dataTime.getTime(),
-            countMinuteTime = 1000 * 60;
-          return `${Math.ceil(passTime / countMinuteTime)} 分鐘前 📃`;
-        },
-      },
-      methods: {
-        fetchAPIData() {
-          return fetch(apiURL)
-            .then((response) => response.json())
-            .then((data) => this.COVID_19_Datas = data)
-            .catch((error) => console.error(error));
-        },
-        setFiltersWord(e) {
-          this.filtersWord = e.target.firstElementChild.value;
-        },
-        setFiltersWordInput(e) {
-          this.filtersWord = e.target.value.trim();
-        }
-      },
-    });
+      template: `
+      <div>
+        <div class="form-check form-check-inline ml-3">
+          <label v-for="data in datas" class="form-check-label"
+                 :for="data.name">
+            <input class="form-check-input"
+                   type="radio"
+                   name="inlineRadioOptions"
+                   :id="data.name"
+                   :value="data.name"
+                   v-model="currentData" />
+            {{ data.text }}</label>
+        </div>
+      </div>`
+    })
 
-    Vue.component('card', {
+    Vue.component('cardItem', {
       props: {
         todayCases: {
           type: Number,
@@ -293,6 +235,91 @@
         },
       },
     })
+
+    const vm = new Vue({
+      el: "#app",
+      data,
+      created() {
+        NProgress.start();
+        this.fetchAPIData().then(() => {
+          NProgress.done();
+          this.isLoadFinish = true;
+        });
+      },
+      computed: {
+        totalCases() {
+          return this.COVID_19_Datas.reduce((acc, cur) => acc + parseInt(cur.cases), 0);
+        },
+        totalDeaths() {
+          return this.COVID_19_Datas.reduce((acc, cur) => acc + parseInt(cur.deaths), 0);
+        },
+        COVID_19_DatasFilter() {
+          if (!this.filtersWord) return this.COVID_19_Datas;
+          else
+            return this.COVID_19_Datas.filter((data) => {
+              const regExp = new RegExp(this.filtersWord, "i");
+              if (regExp.test(data.country)) return data;
+            });
+        },
+        COVID_19_DatasFilterTotalCases() {
+          return this.COVID_19_DatasFilter.length;
+        },
+        COVID_19_DatasTotalCases() {
+          return this.COVID_19_Datas.length;
+        },
+        COVID_19_DatasFilterRank() {
+          switch (true) {
+            case this.currentBranch === "word":
+              return this.COVID_19_DatasFilter.sort((aft, bef) => {
+                const aftWord = aft.country.slice(0, 1).toLowerCase().charCodeAt(),
+                  befWord = bef.country.slice(0, 1).toLowerCase().charCodeAt();
+                return aftWord - befWord;
+              })
+            case this.currentBranch === "deaths":
+            case this.currentBranch === "cases":
+              return this.COVID_19_DatasFilter.sort((aft, bef) => bef[this.currentBranch] - aft[this.currentBranch])
+          }
+        }
+      },
+      filters: {
+        pertThousandDisplay(number) {
+          if (!parseInt(number)) return `無 🏨`;
+          else
+            return parseInt(number).toLocaleString("zh-TW", {
+              style: "decimal",
+              useGrouping: true,
+            });
+        },
+        DisplayArrayIndexNumber(number) {
+          return `${parseInt(number) + 1}. `;
+        },
+        timeFormateDisplay(time) {
+          const currentTime = new Date(),
+            dataTime = new Date(time),
+            passTime = currentTime.getTime() - dataTime.getTime(),
+            countMinuteTime = 1000 * 60;
+          return `${Math.ceil(passTime / countMinuteTime)} 分鐘前 📃`;
+        },
+      },
+      methods: {
+        fetchAPIData() {
+          return fetch(apiURL)
+            .then((response) => response.json())
+            .then((data) => this.COVID_19_Datas = data)
+            .catch((error) => console.error(error));
+        },
+        setFiltersWord(e) {
+          this.filtersWord = e.target.firstElementChild.value;
+        },
+        setFiltersWordInput(e) {
+          this.filtersWord = e.target.value.trim();
+        },
+        sortCovid_19(value) {
+          this.currentBranch = value;
+        }
+      },
+    });
+
   </script>
 </body>
 
