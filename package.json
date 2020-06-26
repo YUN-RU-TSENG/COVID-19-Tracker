@@ -1,0 +1,14 @@
+{
+  "name": "cv-19",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:YUN-RU-TSENG/COVID-19-track.git",
+  "author": "YUN-RU-TSENG <coco002197@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "eslint": "^5.16.0",
+    "eslint-config-airbnb-base": "^14.2.0",
+    "eslint-plugin-import": "^2.21.2",
+    "eslint-plugin-vue": "^6.2.2"
+  }
+}
