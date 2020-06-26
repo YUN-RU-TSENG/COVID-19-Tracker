@@ -1,5 +1,5 @@
 (function IIFE() {
-  const apiURL = 'https://corona.lmao.ninja/v2/countries?yesterday&sort';
+  const COVID_19_API = 'https://corona.lmao.ninja/v2/countries?yesterday&sort';
   const data = {
     COVID_19_Datas: [],
     filtersWord: '',
@@ -46,19 +46,19 @@
       },
     },
     template: `
-<div>
-  <div class="form-check form-check-inline ml-3">
-    <label v-for="data in datas" class="form-check-label"
-           :for="data.name">
-      <input class="form-check-input"
-             type="radio"
-             name="inlineRadioOptions"
-             :id="data.name"
-             :value="data.name"
-             v-model="currentData" />
-      {{ data.text }}</label>
-  </div>
-</div>`,
+                <div>
+                  <div class="form-check form-check-inline ml-3">
+                    <label v-for="data in datas" class="form-check-label"
+                          :for="data.name">
+                      <input class="form-check-input"
+                            type="radio"
+                            name="inlineRadioOptions"
+                            :id="data.name"
+                            :value="data.name"
+                            v-model="currentData" />
+                      {{ data.text }}</label>
+                  </div>
+                </div>`,
   });
 
   Vue.component('cardItem', {
@@ -96,41 +96,40 @@
         required: true,
       },
     },
-    template: `<div
-      class="col-lg-4 col-md-6"
-    >
-      <transition name="slide-fade" appear>
-        <div class="card mb-4 border-success">
-          <h5 class="card-header">
-            <strong>{{ index | DisplayArrayIndexNumber }}</strong>{{
-            country }}
-          </h5>
-          <div class="card-body">
-            <p class="card-text m-0">
-              今日確診人數: {{ todayCases | perThousandDisplay }}
-            </p>
-            <p class="card-text m-0">
-              今日逝世人數: {{ todayDeaths | perThousandDisplay
-              }}
-              <span class="badge badge-pill badge-danger">New</span>
-            </p>
-            <p class="card-text m-0">
-              逝世人數: {{ deaths | perThousandDisplay }}
-              <span class="badge badge-pill badge-warning">Total</span>
-            </p>
-            <p class="card-text m-0">
-              確診人數: {{ cases | perThousandDisplay }}
-            </p>
-            <p class="card-text m-0">
-              國家總人口: {{ population | perThousandDisplay }}
-            </p>
-            <p class="card-text m-0">
-              最後更新時間: {{ updated | timeFormateDisplay }}
-            </p>
-          </div>
-        </div>
-      </transition>
-    </div>`,
+    template: `
+        <div class="col-lg-4 col-md-6">
+          <transition name="slide-fade" appear>
+            <div class="card mb-4 border-success">
+              <h5 class="card-header">
+                <strong>{{ index | DisplayArrayIndexNumber }}</strong>{{
+                country }}
+              </h5>
+              <div class="card-body">
+                <p class="card-text m-0">
+                  今日確診人數: {{ todayCases | perThousandDisplay }}
+                </p>
+                <p class="card-text m-0">
+                  今日逝世人數: {{ todayDeaths | perThousandDisplay
+                  }}
+                  <span class="badge badge-pill badge-danger">New</span>
+                </p>
+                <p class="card-text m-0">
+                  逝世人數: {{ deaths | perThousandDisplay }}
+                  <span class="badge badge-pill badge-warning">Total</span>
+                </p>
+                <p class="card-text m-0">
+                  確診人數: {{ cases | perThousandDisplay }}
+                </p>
+                <p class="card-text m-0">
+                  國家總人口: {{ population | perThousandDisplay }}
+                </p>
+                <p class="card-text m-0">
+                  最後更新時間: {{ updated | timeFormateDisplay }}
+                </p>
+              </div>
+            </div>
+          </transition>
+        </div>`,
     filters: {
       perThousandDisplay(number) {
         if (!parseInt(number, 10)) return '無 🏨';
@@ -157,7 +156,7 @@
     data,
     created() {
       NProgress.start();
-      this.fetchAPIData().then(() => {
+      this.fetchAPIData(COVID_19_API).then(() => {
         NProgress.done();
         this.isLoadFinish = true;
       });
@@ -166,13 +165,13 @@
       totalCases() {
         return this.COVID_19_Datas.reduce(
           (acc, cur) => acc + parseInt(cur.cases, 10),
-          0,
+          0
         );
       },
       totalDeaths() {
         return this.COVID_19_Datas.reduce(
           (acc, cur) => acc + parseInt(cur.deaths, 10),
-          0,
+          0
         );
       },
       COVID_19_DatasFilter() {
@@ -185,35 +184,21 @@
       COVID_19_DatasFilterTotalCases() {
         return this.COVID_19_DatasFilter.length;
       },
-      COVID_19_DatasTotalCases() {
-        return this.COVID_19_Datas.length;
-      },
       COVID_19_DatasFilterRank() {
-        let result = null;
         switch (this.currentBranch) {
           case 'word':
-            result = this.COVID_19_DatasFilter.slice().sort((aft, bef) => {
-              const aftWord = aft.country
-                .slice(0, 1)
-                .toLowerCase()
-                .charCodeAt();
-              const befWord = bef.country
-                .slice(0, 1)
-                .toLowerCase()
-                .charCodeAt();
+            return this.COVID_19_DatasFilter.slice().sort((aft, bef) => {
+              const aftWord = aft.country.slice(0, 1).toLowerCase().charCodeAt();
+              const befWord = bef.country.slice(0, 1).toLowerCase().charCodeAt();
+
               return aftWord - befWord;
             });
-            break;
           case 'deaths':
           case 'cases':
-            result = this.COVID_19_DatasFilter.slice()
-                                              .sort((aft, bef) => bef[this.currentBranch] - aft[this.currentBranch]);
-            break;
-          default:
-            result = this.COVID_19_DatasFilter;
-            break;
+            return this.COVID_19_DatasFilter.slice().sort(
+              (aft, bef) => bef[this.currentBranch] - aft[this.currentBranch]
+            );
         }
-        return result;
       },
     },
     filters: {
@@ -236,10 +221,12 @@
       },
     },
     methods: {
-      fetchAPIData() {
-        return fetch(apiURL)
+      fetchAPIData(API) {
+        return fetch(API)
           .then((response) => response.json())
-          .then((responseData) => { this.COVID_19_Datas = responseData; })
+          .then((responseData) => {
+            this.COVID_19_Datas = responseData;
+          })
           .catch((error) => console.error(error));
       },
       setFiltersWord(e) {

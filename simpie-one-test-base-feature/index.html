@@ -76,7 +76,8 @@
       <div class="row">
         <card-item v-for="(COVID_19_Data, index) of COVID_19_DatasFilterRank"
                    :index="index"
-                   v-bind="COVID_19_Data" />
+                   v-bind="COVID_19_Data"
+                   :key="COVID_19_Data.country" />
       </div>
     </div>
   </div>
