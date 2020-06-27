@@ -1,0 +1,12 @@
+// Rubik
+@import url('https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300;0,400;0,500;0,700;0,900;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+// font style
+$font-primary: 'Rubik', sans-serif;
+
+// 依序設置文字樣式、字重、大小、字體
+// font 簡寫規則：[ [ <'font-style'> || <font-variant-css21> || <'font-weight'> ||
+// <'font-stretch'> ]? <'font-size'> [ / <'line-height'> ]? <'font-family'> ]
+@mixin font($style, $size, $family) {
+  font: $style $size $family;
+}

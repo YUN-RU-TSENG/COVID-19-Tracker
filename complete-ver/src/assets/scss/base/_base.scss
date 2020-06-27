@@ -1,0 +1,40 @@
+/*
+*本檔案是對於網頁基礎的樣式進行設定，包含 margin、字型、盒模型大小等
+*/
+
+/*
+*box-sizing 大小
+*/
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/*
+*連結樣式設定
+*/
+a {
+  text-decoration: none;
+}
+
+/*
+*margin改變
+*/
+body {
+  margin: 0;
+}
+
+figure {
+  margin: 0;
+}
+
+/*
+* 連接樣式統一
+*/
+a {
+  text-decoration-line: none;
+  color: inherit;
+}

@@ -1,0 +1,101 @@
+<template>
+  <section class="item">
+    <div class="people_icon">
+      <personIcon />
+    </div>
+    <h3>{{ name }}</h3>
+    <p class="item_patient">{{ totalData }}</p>
+    <p class="item_information">
+      Today totally add
+      <span class="information_trend">
+        {{ addData }}
+        <arrowUpIcon />
+      </span>
+      update {{ time.getMinutes() }} minute ago.
+    </p>
+  </section>
+</template>
+
+<script>
+  import personIcon from '@/assets/img/person-24px.svg';
+  import arrowUpIcon from '@/assets/img/arrow_circle_up-24px.svg';
+  // import arrowDownIcon from '@/assets/img/arrow_circle_down-24px.svg';
+
+  export default {
+    name: 'BaseItem',
+    props: {
+      totalData: {
+        type: Number,
+        // required: true,
+        default: 12
+      },
+      addData: {
+        type: Number,
+        // required: true,
+        default: 12
+      },
+      name: {
+        type: String,
+        // required: true,
+        default: 'Defdault'
+      },
+      time: {
+        type: Date,
+        // required: true,
+        default: new Date()
+      }
+    },
+    data() {
+      return {};
+    },
+    components: {
+      personIcon,
+      arrowUpIcon
+      // arrowDownIcon
+    }
+  };
+</script>
+
+<style lang="scss" scoped>
+  .item {
+    background-color: $theme-primary;
+    border-radius: 4px;
+    padding: 16px;
+    font-size: 0;
+    h3 {
+      @include font(normal, 12px, $font-primary);
+      color: $font-gray;
+      margin-bottom: 10px;
+      transform-origin: top left;
+      transform: scale(0.8);
+    }
+    .people_icon {
+      float: right;
+      padding: 4px;
+      border-radius: 4px;
+      background-color: $brand-secondary;
+      svg {
+        fill: $brand-primary;
+      }
+    }
+    &_patient {
+      @include font(bold, 16px, $font-primary);
+      color: $font-dark;
+      margin-bottom: 14px;
+    }
+    &_information {
+      @include font(normal, 12px, $font-primary);
+      transform-origin: top left;
+      transform: scale(0.8);
+      color: $font-gray;
+      span {
+        @include font(bold, 12px, $font-primary);
+        color: $infomation;
+        svg {
+          vertical-align: text-top;
+          fill: $infomation;
+        }
+      }
+    }
+  }
+</style>
