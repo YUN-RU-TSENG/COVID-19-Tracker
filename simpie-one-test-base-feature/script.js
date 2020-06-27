@@ -97,39 +97,39 @@
       },
     },
     template: `
-        <div class="col-lg-4 col-md-6">
-          <transition name="slide-fade" appear>
-            <div class="card mb-4 border-success">
-              <h5 class="card-header">
-                <strong>{{ index | DisplayArrayIndexNumber }}</strong>{{
-                country }}
-              </h5>
-              <div class="card-body">
-                <p class="card-text m-0">
-                  今日確診人數: {{ todayCases | perThousandDisplay }}
-                </p>
-                <p class="card-text m-0">
-                  今日逝世人數: {{ todayDeaths | perThousandDisplay
-                  }}
-                  <span class="badge badge-pill badge-danger">New</span>
-                </p>
-                <p class="card-text m-0">
-                  逝世人數: {{ deaths | perThousandDisplay }}
-                  <span class="badge badge-pill badge-warning">Total</span>
-                </p>
-                <p class="card-text m-0">
-                  確診人數: {{ cases | perThousandDisplay }}
-                </p>
-                <p class="card-text m-0">
-                  國家總人口: {{ population | perThousandDisplay }}
-                </p>
-                <p class="card-text m-0">
-                  最後更新時間: {{ updated | timeFormateDisplay }}
-                </p>
-              </div>
-            </div>
-          </transition>
-        </div>`,
+                <div class="col-lg-4 col-md-6">
+                  <transition name="slide-fade" appear>
+                    <div class="card mb-4 border-success">
+                      <h5 class="card-header">
+                        <strong>{{ index | DisplayArrayIndexNumber }}</strong>{{
+                        country }}
+                      </h5>
+                      <div class="card-body">
+                        <p class="card-text m-0">
+                          今日確診人數: {{ todayCases | perThousandDisplay }}
+                        </p>
+                        <p class="card-text m-0">
+                          今日逝世人數: {{ todayDeaths | perThousandDisplay
+                          }}
+                          <span class="badge badge-pill badge-danger">New</span>
+                        </p>
+                        <p class="card-text m-0">
+                          逝世人數: {{ deaths | perThousandDisplay }}
+                          <span class="badge badge-pill badge-warning">Total</span>
+                        </p>
+                        <p class="card-text m-0">
+                          確診人數: {{ cases | perThousandDisplay }}
+                        </p>
+                        <p class="card-text m-0">
+                          國家總人口: {{ population | perThousandDisplay }}
+                        </p>
+                        <p class="card-text m-0">
+                          最後更新時間: {{ updated | timeFormateDisplay }}
+                        </p>
+                      </div>
+                    </div>
+                  </transition>
+                </div>`,
     filters: {
       perThousandDisplay(number) {
         if (!parseInt(number, 10)) return '無 🏨';
@@ -165,13 +165,13 @@
       totalCases() {
         return this.COVID_19_Datas.reduce(
           (acc, cur) => acc + parseInt(cur.cases, 10),
-          0
+          0,
         );
       },
       totalDeaths() {
         return this.COVID_19_Datas.reduce(
           (acc, cur) => acc + parseInt(cur.deaths, 10),
-          0
+          0,
         );
       },
       COVID_19_DatasFilter() {
@@ -196,7 +196,7 @@
           case 'deaths':
           case 'cases':
             return this.COVID_19_DatasFilter.slice().sort(
-              (aft, bef) => bef[this.currentBranch] - aft[this.currentBranch]
+              (aft, bef) => bef[this.currentBranch] - aft[this.currentBranch],
             );
         }
       },
@@ -233,11 +233,14 @@
         this.filtersWord = e.target.firstElementChild.value;
       },
       setFiltersWordInput(e) {
-        this.filtersWord = e.target.value.trim();
+        this.filtersWord = e.target.value;
       },
       sortCovid_19(value) {
         this.currentBranch = value;
       },
     },
   });
+
+  // Vue.config.errorHandler = function (err, vm, info) {
+  // }
 }());
