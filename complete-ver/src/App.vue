@@ -28,7 +28,7 @@
     > section:first-of-type {
       margin-bottom: 24px;
     }
-    a {
+    > section > a {
       font-family: $font-primary;
       font-size: 12px;
       font-weight: 100;

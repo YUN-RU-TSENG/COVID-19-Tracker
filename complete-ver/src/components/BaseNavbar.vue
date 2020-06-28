@@ -3,6 +3,7 @@
     <div class="navbar_item">
       <input class="navbar_search"
              type="search"
+             placeholder="輸入搜尋國家關鍵字"
              :style="{ 'background': search, fontSize: '13px' }">
       <a class="navbar_link"
          href>
@@ -41,20 +42,21 @@
       width: 48px;
       padding: 12px;
       display: block;
+      transform-origin: center;
+      transition: all 0.6s ease-in-out;
       svg {
         fill: $dark;
       }
       &:active,
       &:focus,
       &:hover {
-        transition: all 0.6s ease-in-out;
         transform: rotate(360deg);
-        transform-origin: center;
-        opacity: 0.5;
+        svg {
+          fill: $brand-secondary;
+        }
       }
     }
     &_item {
-      margin-right: 0;
       float: right;
     }
     &_link {
@@ -69,8 +71,10 @@
       &:active,
       &:focus,
       &:hover {
-        opacity: 0.5;
         transform: rotate(360deg);
+        svg {
+          fill: $brand-secondary;
+        }
       }
     }
     &_search {
@@ -87,6 +91,7 @@
       &:hover {
         outline: none;
         opacity: 0.8;
+        border-color: $brand-primary;
       }
     }
   }

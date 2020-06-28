@@ -55,10 +55,9 @@
       display: block;
       color: $dark;
       transition: all 0.3s ease-in-out;
-      opacity: 1;
       &:active,
       &:hover {
-        opacity: 0.3;
+        background-color: $brand-secondary;
       }
       svg {
         vertical-align: middle;

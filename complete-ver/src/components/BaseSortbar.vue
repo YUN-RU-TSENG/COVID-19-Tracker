@@ -1,26 +1,30 @@
 <template>
   <section class="sort">
     <ul class="sort_header">
-      <a href
-         title="sort by this type">
-        <li>
-          <sortIcon /><span>Today Cases</span></li>
-      </a>
-      <a href
-         title="sort by this type">
-        <li>
-          <sortIcon /><span>Today Cases</span></li>
-      </a>
-      <a href
-         title="sort by this type">
-        <li>
-          <sortIcon /><span>Today Cases</span></li>
-      </a>
-      <a href
-         title="sort by this type">
-        <li>
-          <sortIcon /><span>Today Cases</span></li>
-      </a>
+      <li>
+        <a href
+           title="sort by this type">
+          <sortIcon /><span>Today Cases</span>
+        </a></li>
+      <li>
+        <a href
+           title="sort by this type">
+
+          <sortIcon /><span>Today Cases</span>
+        </a>
+      </li>
+      <li>
+        <a href
+           title="sort by this type">
+          <sortIcon /><span>Today Cases</span>
+        </a></li>
+      <li>
+        <a href
+           title="sort by this type">
+
+          <sortIcon /><span>Today Cases</span>
+        </a>
+      </li>
     </ul>
   </section>
 </template>
@@ -29,28 +33,7 @@
   import sortIcon from '@/assets/img/arrow_circle_down-24px.svg';
   export default {
     name: 'BaseSort',
-    props: {
-      todayCases: {
-        type: Number,
-        required: true,
-        default: 12
-      },
-      todayDeathes: {
-        type: Number,
-        required: true,
-        default: 12
-      },
-      allCases: {
-        type: Number,
-        required: true,
-        default: 12
-      },
-      allDeathes: {
-        type: Number,
-        required: true,
-        default: 12
-      }
-    },
+    props: {},
     data() {
       return {};
     },
@@ -70,32 +53,33 @@
       border-radius: 4px;
       border-radius: 4px;
       a {
-        background-color: $theme-secondary;
-        text-align: center;
-        display: inline-block;
-        width: 25%;
+        transition: all 0.6s ease-in-out;
+        color: $font-dark;
+        display: block;
         padding: 6px;
-        transition: all 0.3s ease-in-out;
         &:hover,
         &:active {
-          opacity: 0.6;
+          background-color: $brand-secondary;
         }
         &:not(:last-of-type) {
           border-right: 1px solid $theme-primary;
         }
-      }
-      li {
-        @include font(lighter, 12px, $font-primary);
-        color: $font-dark;
-        display: inline;
         span {
           vertical-align: middle;
         }
         svg {
+          transition: inherit;
           vertical-align: middle;
           margin-right: 6px;
           fill: $font-primary;
         }
+      }
+      li {
+        @include font(lighter, 12px, $font-primary);
+        display: inline-block;
+        text-align: center;
+        width: 25%;
+        background-color: $theme-secondary;
       }
     }
   }

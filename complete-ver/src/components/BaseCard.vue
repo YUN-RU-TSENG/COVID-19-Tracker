@@ -2,7 +2,9 @@
   <a href
      class="card_link">
     <section class="card">
-
+      <a href
+         class="card_pin">
+        <pinIcon /></a>
       <h2 class="card_title">Country name</h2>
       <section class="card_header">
         <div>
@@ -34,6 +36,7 @@
 
 <script>
   import unhappyIcon from '@/assets/img/alarm.svg';
+  import pinIcon from '@/assets/img/push_pin-24px.svg';
   export default {
     name: 'BaseCard',
     props: {
@@ -62,29 +65,47 @@
       return {};
     },
     components: {
-      unhappyIcon
+      unhappyIcon,
+      pinIcon
     }
   };
 </script>
 
 <style lang="scss" scoped>
   .card {
-    padding: 20px;
+    padding: 10px 20px 20px 20px;
     font-size: 0;
     background-color: $theme-primary;
     border-radius: 4px;
-
+    &_pin {
+      float: right;
+      opacity: 0.5;
+      transition: all 0.3s cubic-bezier(0.1, 0.5, 1.0, 0.1);
+      svg {
+        transform: rotate(45deg);
+        fill: $dark;
+      }
+      &:hover,
+      &:active {
+        opacity: 1;
+        svg {
+          fill: $brand-primary;
+          transform: rotate(0deg);
+        }
+      }
+    }
     &_link {
       display: block;
       transition: all 0.3s ease-in-out;
       &:hover {
-        opacity: 0.8;
+        opacity: 0.9;
       }
     }
     &_title {
       @include font(bold, 12px, $font-primary);
       color: $font-gray;
       margin-bottom: 16px;
+      margin-top: 10px;
     }
     &_header {
       border-radius: 4px;
@@ -95,7 +116,7 @@
       @include Mediaquery-phone {
         padding: 24px;
       }
-      > div {
+      div {
         text-align: center;
         display: inline-block;
         width: 50%;
@@ -111,22 +132,20 @@
         margin-bottom: 6px;
       }
       p {
-        opacity: 0.8;
         transition: all 0.3s ease-in-out;
         &:hover {
-          opacity: 1;
           transform: scale(0.9);
         }
-        span {
-          @include font(bold, 24px, $font-secondary);
-          color: $warning;
-          vertical-align: middle;
-        }
-        svg {
-          vertical-align: middle;
-          margin-right: 6px;
-          fill: $warning;
-        }
+      }
+      span {
+        @include font(bold, 24px, $font-secondary);
+        color: $warning;
+        vertical-align: middle;
+      }
+      svg {
+        vertical-align: middle;
+        margin-right: 6px;
+        fill: $warning;
       }
     }
     &_text {
