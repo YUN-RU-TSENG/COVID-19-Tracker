@@ -1,23 +1,26 @@
 <template>
-  <section class="item">
-    <div class="people_icon">
-      <personIcon />
-    </div>
-    <h3>{{ name }}</h3>
-    <p class="item_patient">{{ totalData }}</p>
-    <p class="item_information">
-      Today totally add
-      <span class="information_trend">
-        {{ addData }}
-        <arrowUpIcon />
-      </span>
-      update {{ time.getMinutes() }} minute ago.
-    </p>
-  </section>
+  <a href
+     class="item_link">
+    <section class="item">
+      <div class="people_icon">
+        <facemaskIcon />
+      </div>
+      <h3 class="item_title">{{ name }}</h3>
+      <p class="item_patient">{{ totalData }}</p>
+      <p class="item_information">
+        Today totally add
+        <span class="information_trend">
+          {{ addData }}
+          <arrowUpIcon />
+        </span>
+        update {{ time.getMinutes() }} minute ago.
+      </p>
+    </section>
+  </a>
 </template>
 
 <script>
-  import personIcon from '@/assets/img/person-24px.svg';
+  import facemaskIcon from '@/assets/img/facemask.svg';
   import arrowUpIcon from '@/assets/img/arrow_circle_up-24px.svg';
   // import arrowDownIcon from '@/assets/img/arrow_circle_down-24px.svg';
 
@@ -49,7 +52,7 @@
       return {};
     },
     components: {
-      personIcon,
+      facemaskIcon,
       arrowUpIcon
       // arrowDownIcon
     }
@@ -62,21 +65,17 @@
     border-radius: 4px;
     padding: 16px;
     font-size: 0;
-    h3 {
+
+    &_link {
+      display: block;
+    }
+
+    &_title {
       @include font(normal, 12px, $font-primary);
       color: $font-gray;
       margin-bottom: 10px;
       transform-origin: top left;
       transform: scale(0.8);
-    }
-    .people_icon {
-      float: right;
-      padding: 4px;
-      border-radius: 4px;
-      background-color: $brand-secondary;
-      svg {
-        fill: $brand-primary;
-      }
     }
     &_patient {
       @include font(bold, 16px, $font-primary);
@@ -95,6 +94,16 @@
           vertical-align: text-top;
           fill: $infomation;
         }
+      }
+    }
+
+    .people_icon {
+      float: right;
+      padding: 4px;
+      border-radius: 4px;
+      background-color: $brand-secondary;
+      > svg {
+        fill: $brand-primary;
       }
     }
   }

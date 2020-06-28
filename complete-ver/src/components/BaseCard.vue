@@ -1,24 +1,39 @@
 <template>
-  <section class="card">
-    <h2 class="card_title">Country name</h2>
-    <section class="card_header">
-      <div>
-        <h2>Today Cases</h2>
-        <p>
-          <unhappyIcon /><span>+22</span></p>
-      </div>
-      <div>
-        <h2>Today Cases</h2>
-        <p>
-          <unhappyIcon /><span>+22</span></p>
-      </div>
+  <a href
+     class="card_link">
+    <section class="card">
+
+      <h2 class="card_title">Country name</h2>
+      <section class="card_header">
+        <div>
+          <h2>Today Cases</h2>
+          <p>
+            <unhappyIcon /><span>+ 223</span></p>
+        </div>
+        <div>
+          <h2>Today Cases</h2>
+          <p>
+            <unhappyIcon /><span>+ 22</span></p>
+        </div>
+        <div>
+          <h2>Today Cases</h2>
+          <p>
+            <unhappyIcon /><span>+ 22</span></p>
+        </div>
+        <div>
+          <h2>Today Cases</h2>
+          <p>
+            <unhappyIcon /><span>+ 22</span></p>
+        </div>
+      </section>
+      <p class="card_text">Update at 00:00:00</p>
+
     </section>
-    <p class="card_text">Update at 00:00:00</p>
-  </section>
+  </a>
 </template>
 
 <script>
-  import unhappyIcon from '@/assets/img/sentiment_dissatisfied-24px.svg';
+  import unhappyIcon from '@/assets/img/alarm.svg';
   export default {
     name: 'BaseCard',
     props: {
@@ -56,8 +71,16 @@
   .card {
     padding: 20px;
     font-size: 0;
-    background-color: #fff;
+    background-color: $theme-primary;
     border-radius: 4px;
+
+    &_link {
+      display: block;
+      transition: all 0.3s ease-in-out;
+      &:hover {
+        opacity: 0.8;
+      }
+    }
     &_title {
       @include font(bold, 12px, $font-primary);
       color: $font-gray;
@@ -65,14 +88,22 @@
     }
     &_header {
       border-radius: 4px;
-      padding: 24px;
+
       border-radius: 4px;
       background-color: $theme-secondary;
       margin-bottom: 16px;
-      div {
+      @include Mediaquery-phone {
+        padding: 24px;
+      }
+      > div {
         text-align: center;
         display: inline-block;
         width: 50%;
+        padding: 12px 0px;
+        @include Mediaquery-phone {
+          width: 25%;
+          padding: 0px;
+        }
       }
       h2 {
         @include font(lighter, 12px, $font-primary);
@@ -84,11 +115,10 @@
         transition: all 0.3s ease-in-out;
         &:hover {
           opacity: 1;
-          transform: rotate(5deg);
-          cursor: context-menu;
+          transform: scale(0.9);
         }
         span {
-          @include font(bold, 24px, $font-primary);
+          @include font(bold, 24px, $font-secondary);
           color: $warning;
           vertical-align: middle;
         }

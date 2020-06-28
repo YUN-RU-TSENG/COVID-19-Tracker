@@ -9,15 +9,15 @@ export default new Vuex.Store({
     covid_19_datas: [],
   },
   mutations: {
-    setCovid_19_data(state, datas) {
+    SET_COVID_19_DATA(state, datas) {
       state.covid_19_datas = datas;
     },
   },
   actions: {
     getCovid_19_data({ commits }) {
       return Api().then((response) => {
-        commits("setCovid_19_data", response);
+        commits("SET_COVID_19_DATA", response);
       });
     },
-  }
+  },
 });

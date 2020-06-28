@@ -1,10 +1,10 @@
 <template>
   <nav class="navbar">
     <div class="navbar_item">
-      <input class="item_search"
+      <input class="navbar_search"
              type="search"
              :style="{ 'background': search, fontSize: '13px' }">
-      <a class="item_link"
+      <a class="navbar_link"
          href>
         <settings /></a>
     </div>
@@ -35,7 +35,7 @@
 <style lang="scss" scoped>
   .navbar {
     padding: 6px 4px;
-    background-color: #fff;
+    background-color: $theme-primary;
     font-size: 0;
     &_menu {
       width: 48px;
@@ -56,37 +56,37 @@
     &_item {
       margin-right: 0;
       float: right;
-      .item_link {
-        display: inline-block;
-        padding: 12px;
-        vertical-align: middle;
-        transition: all 0.6s ease-in-out;
-        transform-origin: center;
-        svg {
-          fill: $dark;
-        }
-        &:active,
-        &:focus,
-        &:hover {
-          opacity: 0.5;
-          transform: rotate(360deg);
-        }
+    }
+    &_link {
+      display: inline-block;
+      padding: 12px;
+      vertical-align: middle;
+      transition: all 0.6s ease-in-out;
+      transform-origin: center;
+      svg {
+        fill: $dark;
       }
-      .item_search {
-        height: 36px;
-        padding: 6px 24px;
-        border-radius: 18px;
-        border-color: #fff;
-        border: 1px solid $gray;
-        vertical-align: middle;
-        transition: all 0.3s ease-in-out;
-        @include font(normal, 14px, $font-primary);
-        &:active,
-        &:focus,
-        &:hover {
-          outline: none;
-          opacity: 0.8;
-        }
+      &:active,
+      &:focus,
+      &:hover {
+        opacity: 0.5;
+        transform: rotate(360deg);
+      }
+    }
+    &_search {
+      height: 36px;
+      padding: 6px 16px;
+      border-radius: 18px;
+      border-color: $theme-primary;
+      border: 1px solid $gray;
+      vertical-align: middle;
+      transition: all 0.3s ease-in-out;
+      @include font(normal, 14px, $font-primary);
+      &:active,
+      &:focus,
+      &:hover {
+        outline: none;
+        opacity: 0.8;
       }
     }
   }

@@ -1,17 +1,17 @@
 <template>
-  <section class="sidebar_container">
-    <aside class="sidebar">
-      <ul>
-        <li>
-          <a href
-             class="sidebar_link">
-            <appIcon />主頁</a></li>
-        <li><a href
-             class="sidebar_link">
-            <infoIcon />相關連結</a></li>
-      </ul>
-    </aside>
-  </section>
+  <aside class="sidebar">
+    <ul class="sidebar_wrapper">
+      <li>
+        <a href
+           class="sidebar_link"
+           title="home">
+          <appIcon /><span>主頁</span></a></li>
+      <li><a href
+           class="sidebar_link"
+           title="reference">
+          <infoIcon /><span>相關連結</span></a></li>
+    </ul>
+  </aside>
 </template>
 
 <script>
@@ -31,35 +31,43 @@
 
 <style lang="scss" scoped>
   .sidebar {
-    background-color: $theme-primary;
-    width: 240px;
-    box-shadow: 0px 0px 10px $gray;
-    height: 100vh;
-    font-size: 0;
-    padding: 60px 0px;
-    &_container {
-      background-color: $dark-transparent;
-      position: fixed;
-      top: 0px;
-      bottom: 0px;
-      left: 0px;
-      right: 0px;
-      z-index: 999;
+    background-color: $dark-transparent;
+    position: fixed;
+    top: 0px;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    z-index: 999;
+    &_wrapper {
+      background-color: $theme-primary;
+      width: 80px;
+      box-shadow: 0px 0px 10px $gray;
+      height: 100vh;
+      font-size: 0;
+      padding: 60px 0px;
+      @include Mediaquery-phone {
+        width: 240px;
+      }
     }
     &_link {
       padding: 16px 24px;
       @include font(normal, 14px, $font-primary);
       display: block;
       color: $dark;
+      transition: all 0.3s ease-in-out;
+      opacity: 1;
+      &:active,
+      &:hover {
+        opacity: 0.3;
+      }
       svg {
         vertical-align: middle;
         margin-right: 12px;
       }
-      &:active,
-      &:hover {
-        color: $gray;
-        svg {
-          fill: $gray;
+      span {
+        display: none;
+        @include Mediaquery-phone {
+          display: inline;
         }
       }
     }
