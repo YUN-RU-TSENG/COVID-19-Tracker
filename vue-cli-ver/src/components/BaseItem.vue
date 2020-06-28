@@ -13,7 +13,7 @@
           {{ addData }}
           <arrowUpIcon />
         </span>
-        update {{ time.getMinutes() }} minute ago.
+        update {{ time }} minute ago.
       </p>
     </section>
   </a>
@@ -45,7 +45,7 @@
       time: {
         type: Date,
         // required: true,
-        default: new Date()
+        // default: new Date()
       }
     },
     data() {

@@ -15,7 +15,13 @@
 <script>
   export default {
     created() {
-      this.dispatch('getCovid_19_data');
+      this.$store.dispatch('API_COVID_19_Summary');
+      this.$store.dispatch('API_COVID_19_Countries');
+    },
+    data: function() {
+      return {
+        
+      };
     }
   };
 </script>

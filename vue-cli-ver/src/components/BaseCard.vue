@@ -42,22 +42,22 @@
     props: {
       todayCases: {
         type: Number,
-        required: true,
+        // required: true,
         default: 12
       },
       todayDeathes: {
         type: Number,
-        required: true,
+        // required: true,
         default: 12
       },
       allCases: {
         type: Number,
-        required: true,
+        // required: true,
         default: 12
       },
       allDeathes: {
         type: Number,
-        required: true,
+        // required: true,
         default: 12
       }
     },
