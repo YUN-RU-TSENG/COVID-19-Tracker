@@ -1,19 +1,19 @@
 <template>
-    <section class="item">
-      <div class="people_icon">
-        <facemaskIcon />
-      </div>
-      <h3 class="item_title">{{ name }}</h3>
-      <p class="item_patient">{{ totalData }}</p>
-      <p class="item_information">
-        Today totally add
-        <span class="information_trend">
-          {{ addData }}
-          <arrowUpIcon />
-        </span>
-        update {{ time }} minute ago.
-      </p>
-    </section>
+  <section class="item">
+    <div class="people_icon">
+      <facemaskIcon />
+    </div>
+    <h3 class="item_title">{{ name }} :</h3>
+    <p class="item_patient">{{chineseName}}<span>{{ ' ' + number+ ' ' }}</span>人</p>
+    <p class="item_information">
+      今日截至目前共有
+      <span class="information_trend">
+        {{ number }}
+        <arrowUpIcon />
+      </span>
+      位 {{ chineseName }}。最後更新時間為 {{ date }}
+    </p>
+  </section>
 </template>
 
 <script>
@@ -24,25 +24,21 @@
   export default {
     name: 'BaseItem',
     props: {
-      totalData: {
-        type: Number,
-        // required: true,
-        default: 12
-      },
-      addData: {
-        type: Number,
-        // required: true,
-        default: 12
-      },
       name: {
         type: String,
-        // required: true,
-        default: 'Defdault'
+        required: true
       },
-      time: {
+      chineseName: {
+        type: String,
+        required: true
+      },
+      number: {
+        type: Number,
+        required: true
+      },
+      date: {
         type: Date,
-        // required: true,
-        // default: new Date()
+        required: true
       }
     },
     data() {
@@ -74,6 +70,10 @@
       @include font(bold, 16px, $font-primary);
       color: $font-dark;
       margin-bottom: 14px;
+      span {
+        @include font(bold, 16px, $font-secondary);
+        color: $warning;
+      }
     }
     &_information {
       @include font(normal, 12px, $font-primary);

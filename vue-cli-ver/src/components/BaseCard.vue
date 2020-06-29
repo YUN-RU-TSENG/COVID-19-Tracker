@@ -5,68 +5,59 @@
       <a href
          class="card_pin">
         <pinIcon /></a>
-      <h2 class="card_title">Country name</h2>
+      <h2 class="card_title">{{ country }}</h2>
       <section class="card_header">
         <div>
-          <h2>Today Cases</h2>
+          <h2>新增確診</h2>
           <p>
-            <unhappyIcon /><span>+ 223</span></p>
+            <alarmIcon /><span>{{ newConfirmed}} </span></p>
         </div>
         <div>
-          <h2>Today Cases</h2>
+          <h2>新增死亡</h2>
           <p>
-            <unhappyIcon /><span>+ 22</span></p>
+            <infoIcon /><span>{{ newDeaths }}</span></p>
         </div>
         <div>
-          <h2>Today Cases</h2>
+          <h2>累計確診</h2>
           <p>
-            <unhappyIcon /><span>+ 22</span></p>
+            <alarmIcon /><span>{{ totalDeaths }}</span></p>
         </div>
         <div>
-          <h2>Today Cases</h2>
+          <h2>累計死亡</h2>
           <p>
-            <unhappyIcon /><span>+ 22</span></p>
+            <infoIcon /><span>{{ totalConfirmed }}</span></p>
         </div>
       </section>
-      <p class="card_text">Update at 00:00:00 . Put some distance between yourself and other people.</p>
+      <p class="card_text">Update at {{date}} . 累計至該時間共 {{ totalRecovered }} 人康復.</p>
 
     </section>
   </a>
 </template>
 
 <script>
-  import unhappyIcon from '@/assets/img/alarm.svg';
+  import alarmIcon from '@/assets/img/alarm.svg';
+  import infoIcon from '@/assets/img/info-24px.svg';
   import pinIcon from '@/assets/img/push_pin-24px.svg';
   export default {
     name: 'BaseCard',
     props: {
-      todayCases: {
-        type: Number,
-        // required: true,
-        default: 12
-      },
-      todayDeathes: {
-        type: Number,
-        // required: true,
-        default: 12
-      },
-      allCases: {
-        type: Number,
-        // required: true,
-        default: 12
-      },
-      allDeathes: {
-        type: Number,
-        // required: true,
-        default: 12
-      }
+      country: { type: String, required: true },
+      countryCode: { type: String, required: true },
+      date: { type: Date, required: true },
+      newConfirmed: { type: Number, required: true },
+      newDeaths: { type: Number, required: true },
+      newRecovered: { type: Number, required: true },
+      totalConfirmed: { type: Number, required: true },
+      totalDeaths: { type: Number, required: true },
+      totalRecovered: { type: Number, required: true }
     },
     data() {
       return {};
     },
     components: {
-      unhappyIcon,
-      pinIcon
+      alarmIcon,
+      pinIcon,
+      infoIcon
     }
   };
 </script>
@@ -109,7 +100,6 @@
     }
     &_header {
       border-radius: 4px;
-
       border-radius: 4px;
       background-color: $theme-secondary;
       margin-bottom: 16px;
@@ -150,7 +140,7 @@
     }
     &_text {
       @include font(lighter, 12px, $font-primary);
-      color: $font-gray;
+      color: $font-dark;
     }
   }
 </style>

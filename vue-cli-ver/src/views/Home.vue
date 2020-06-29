@@ -7,22 +7,33 @@
     <main class="home_wrapper"
           id="top">
       <h2 class="home_title">新冠肺炎世界今日資訊</h2>
+      <p class="home_text">由約翰霍普金斯所提供的訊息</p>
       <BaseRow class="home_baseItem_container">
-        <BaseCol v-for="n in 4"
-                 :pc="3"
+        <BaseCol v-for="data in $store.getters.COVID_19_SummaryGlobal"
                  :pad="6"
                  :phone="12"
-                 :key="n">
-          <BaseItem />
+                 :key="data[0]">
+          <BaseItem :name="data.name"
+                    :date="data.date"
+                    :chinese-name="data.chineseName"
+                    :number="data.number" />
         </BaseCol>
       </BaseRow>
       <h2 class="home_title">新冠肺炎各國地區資訊</h2>
       <p class="home_text">由約翰霍普金斯所提供的訊息</p>
       <BaseRow class="home_baseCard_container">
-        <BaseCol v-for="n in 22"
-                 :key="n"
+        <BaseCol v-for="date in $store.getters.COVID_19_SummaryCountries"
+                 :key="date.country"
                  :default="12">
-          <BaseCard />
+          <BaseCard :country="date.country"
+                    :countryCode="date.countryCode"
+                    :date="date.date"
+                    :newConfirmed="date.newConfirmed"
+                    :newDeaths="date.newDeaths"
+                    :newRecovered="date.newRecovered"
+                    :totalConfirmed="date.totalConfirmed"
+                    :totalDeaths="date.totalDeaths"
+                    :totalRecovered="date.totalRecovered" />
         </BaseCol>
 
       </BaseRow>
@@ -115,13 +126,9 @@
         div:not(:last-of-type) * {
           margin-bottom: 0px;
         }
-        div:not(:nth-last-of-type(2)):not(:last-of-type) * {
+        div:not(:nth-last-of-type(3)):not(:nth-last-of-type(2)):not(:last-of-type)
+          * {
           margin-bottom: 24px;
-        }
-      }
-      @include Mediaquery-pc {
-        div:not(:nth-last-of-type(2)):not(:last-of-type) * {
-          margin-bottom: 0px;
         }
       }
     }
