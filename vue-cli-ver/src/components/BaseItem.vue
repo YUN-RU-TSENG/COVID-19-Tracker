@@ -1,6 +1,4 @@
 <template>
-  <a href
-     class="item_link">
     <section class="item">
       <div class="people_icon">
         <facemaskIcon />
@@ -16,7 +14,6 @@
         update {{ time }} minute ago.
       </p>
     </section>
-  </a>
 </template>
 
 <script>
@@ -65,10 +62,6 @@
     border-radius: 4px;
     padding: 16px;
     font-size: 0;
-
-    &_link {
-      display: block;
-    }
 
     &_title {
       @include font(normal, 12px, $font-primary);

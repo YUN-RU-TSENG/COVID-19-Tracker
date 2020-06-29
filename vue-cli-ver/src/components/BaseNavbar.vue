@@ -10,7 +10,7 @@
         <settings /></a>
     </div>
     <a class="navbar_menu"
-       href>
+       href @click.prevent="$emit('handler', true)">
       <menuIcon /></a>
   </nav>
 </template>
@@ -50,7 +50,6 @@
       &:active,
       &:focus,
       &:hover {
-        transform: rotate(360deg);
         svg {
           fill: $brand-secondary;
         }

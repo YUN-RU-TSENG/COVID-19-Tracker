@@ -1,6 +1,6 @@
 <template>
-  <aside class="sidebar">
-    <ul class="sidebar_wrapper">
+  <aside class="sidebar" @click="$emit('handler', false)">
+    <ul class="sidebar_wrapper" >
       <li>
         <a href
            class="sidebar_link"
@@ -38,6 +38,7 @@
     left: 0px;
     right: 0px;
     z-index: 999;
+    cursor: pointer;
     &_wrapper {
       background-color: $theme-primary;
       width: 80px;
@@ -45,6 +46,7 @@
       height: 100vh;
       font-size: 0;
       padding: 60px 0px;
+      cursor: default;
       @include Mediaquery-phone {
         width: 240px;
       }

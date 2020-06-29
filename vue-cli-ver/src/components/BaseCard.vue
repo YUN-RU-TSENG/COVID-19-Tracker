@@ -28,7 +28,7 @@
             <unhappyIcon /><span>+ 22</span></p>
         </div>
       </section>
-      <p class="card_text">Update at 00:00:00</p>
+      <p class="card_text">Update at 00:00:00 . Put some distance between yourself and other people.</p>
 
     </section>
   </a>
@@ -80,7 +80,7 @@
     &_pin {
       float: right;
       opacity: 0.5;
-      transition: all 0.3s cubic-bezier(0.1, 0.5, 1.0, 0.1);
+      transition: all 0.3s cubic-bezier(0.1, 0.5, 1, 0.1);
       svg {
         transform: rotate(45deg);
         fill: $dark;
@@ -98,7 +98,7 @@
       display: block;
       transition: all 0.3s ease-in-out;
       &:hover {
-        opacity: 0.9;
+        opacity: 0.8;
       }
     }
     &_title {
