@@ -12,7 +12,7 @@
         <BaseCol v-for="data in $store.getters.COVID_19_SummaryGlobal"
                  :pad="6"
                  :phone="12"
-                 :key="data[0]">
+                 :key="data.name">
           <BaseItem :name="data.name"
                     :date="data.date"
                     :chinese-name="data.chineseName"
