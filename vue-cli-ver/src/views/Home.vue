@@ -27,20 +27,24 @@
       <p class="home_text">由約翰霍普金斯所提供的訊息</p>
       <BaseSortbar class="home_sort" />
       <BaseRow class="home_baseCard_container">
-        <BaseCol v-for="date in $store.getters.COVID_19_SummaryCountries"
-                 :key="date.country"
+        <BaseCol v-for="data in $store.getters.COVID_19_SummaryCountries"
+                 :key="data.country"
                  :default="12">
           <transition name="slide-fade"
                       appear>
-            <BaseCard :country="date.country"
-                      :countryCode="date.countryCode"
-                      :date="date.date"
-                      :newConfirmed="date.newConfirmed"
-                      :newDeaths="date.newDeaths"
-                      :newRecovered="date.newRecovered"
-                      :totalConfirmed="date.totalConfirmed"
-                      :totalDeaths="date.totalDeaths"
-                      :totalRecovered="date.totalRecovered" />
+            <!-- 方案一 -->
+            <BaseCard :country="data.country"
+                      :countryCode="data.countryCode"
+                      :data="data.date"
+                      :newConfirmed="data.newConfirmed"
+                      :newDeaths="data.newDeaths"
+                      :newRecovered="data.newRecovered"
+                      :totalConfirmed="data.totalConfirmed"
+                      :totalDeaths="data.totalDeaths"
+                      :totalRecovered="data.totalRecovered" />
+            <!-- 方案二 -->
+            <!-- 哪種方式更容易識別？ -->
+            <!-- <BaseCard v-bind="data" /> -->
           </transition>
         </BaseCol>
 
@@ -114,7 +118,7 @@
       margin: 0 auto;
       padding-top: 80px;
     }
-    &_sort{
+    &_sort {
       margin-bottom: 12px;
     }
     &_title {
