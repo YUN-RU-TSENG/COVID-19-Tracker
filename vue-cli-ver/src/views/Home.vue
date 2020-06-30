@@ -17,7 +17,7 @@
                       appear>
             <BaseItem :name="data.name"
                       :date="data.date"
-                      :chinese-name="data.chineseName"
+                      :chineseName="data.chineseName"
                       :number="data.number" />
           </transition>
         </BaseCol>
