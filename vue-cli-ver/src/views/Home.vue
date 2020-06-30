@@ -13,27 +13,35 @@
                  :pad="6"
                  :phone="12"
                  :key="data.name">
-          <BaseItem :name="data.name"
-                    :date="data.date"
-                    :chinese-name="data.chineseName"
-                    :number="data.number" />
+          <transition name="slide-fade"
+                      appear>
+            <BaseItem :name="data.name"
+                      :date="data.date"
+                      :chinese-name="data.chineseName"
+                      :number="data.number" />
+          </transition>
         </BaseCol>
+
       </BaseRow>
       <h2 class="home_title">新冠肺炎各國地區資訊</h2>
       <p class="home_text">由約翰霍普金斯所提供的訊息</p>
+      <BaseSortbar class="home_sort" />
       <BaseRow class="home_baseCard_container">
         <BaseCol v-for="date in $store.getters.COVID_19_SummaryCountries"
                  :key="date.country"
                  :default="12">
-          <BaseCard :country="date.country"
-                    :countryCode="date.countryCode"
-                    :date="date.date"
-                    :newConfirmed="date.newConfirmed"
-                    :newDeaths="date.newDeaths"
-                    :newRecovered="date.newRecovered"
-                    :totalConfirmed="date.totalConfirmed"
-                    :totalDeaths="date.totalDeaths"
-                    :totalRecovered="date.totalRecovered" />
+          <transition name="slide-fade"
+                      appear>
+            <BaseCard :country="date.country"
+                      :countryCode="date.countryCode"
+                      :date="date.date"
+                      :newConfirmed="date.newConfirmed"
+                      :newDeaths="date.newDeaths"
+                      :newRecovered="date.newRecovered"
+                      :totalConfirmed="date.totalConfirmed"
+                      :totalDeaths="date.totalDeaths"
+                      :totalRecovered="date.totalRecovered" />
+          </transition>
         </BaseCol>
 
       </BaseRow>
@@ -47,13 +55,17 @@
 </template>
 
 <script>
-  import BaseNavbar from '../components/BaseNavbar.vue';
-  import BaseItem from '../components/BaseItem.vue';
-  import BaseCard from '../components/BaseCard.vue';
-  import BaseSideBar from '../components/BaseSideBar.vue';
+  // component
+  import BaseNavbar from '@/components/BaseNavbar.vue';
+  import BaseItem from '@/components/BaseItem.vue';
+  import BaseCard from '@/components/BaseCard.vue';
+  import BaseSideBar from '@/components/BaseSideBar.vue';
+  import BaseCol from '@/components/BaseCol.vue';
+  import BaseRow from '@/components/BaseRow.vue';
+  import BaseSortbar from '@/components/BaseSortbar.vue';
+
+  // svg
   import arrowCircle from '@/assets/img/arrow_circle_up-24px.svg';
-  import BaseCol from '../components/BaseCol.vue';
-  import BaseRow from '../components/BaseRow.vue';
 
   export default {
     name: 'Home',
@@ -72,6 +84,7 @@
       }
     },
     components: {
+      BaseSortbar,
       BaseRow,
       BaseCol,
       BaseSideBar,
@@ -100,6 +113,9 @@
       padding: 0px 12px;
       margin: 0 auto;
       padding-top: 80px;
+    }
+    &_sort{
+      margin-bottom: 12px;
     }
     &_title {
       @include font(bold, 16px, $font-secondary);

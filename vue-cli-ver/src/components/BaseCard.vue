@@ -38,6 +38,7 @@
   import alarmIcon from '@/assets/img/alarm.svg';
   import infoIcon from '@/assets/img/info-24px.svg';
   import pinIcon from '@/assets/img/push_pin-24px.svg';
+  
   export default {
     name: 'BaseCard',
     props: {

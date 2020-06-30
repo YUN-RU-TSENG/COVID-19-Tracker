@@ -1,10 +1,9 @@
 <template>
-  <nav class="navbar">
+  <nav class="navbar clearfix">
     <div class="navbar_item">
       <input class="navbar_search"
              type="search"
-             placeholder="輸入搜尋國家關鍵字"
-             :style="{ 'background': search, fontSize: '13px' }">
+             placeholder="輸入搜尋國家關鍵字">
       <a class="navbar_link"
          href>
         <settings /></a>

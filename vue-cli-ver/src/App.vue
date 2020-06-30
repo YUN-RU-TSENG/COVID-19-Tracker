@@ -23,17 +23,7 @@
 </script>
 
 <style lang="scss">
-  // .app {
-  //   min-height: 100vh;
-  //   background-color: $theme-secondary;
-  //   padding: 20px;
-  //   > section:first-of-type {
-  //     margin-bottom: 24px;
-  //   }
-  //   > section > a {
-  //     font-family: $font-primary;
-  //     font-size: 12px;
-  //     font-weight: 100;
-  //   }
-  // }
+  #app #nprogress .bar {
+      background: red !important;
+    }
 </style>

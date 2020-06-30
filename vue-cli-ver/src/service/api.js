@@ -3,21 +3,20 @@
  */
 import axios from "axios";
 import NProgress from "nprogress";
+import '@/assets/nprogress.css'
 
 const COVID_19_Instance = axios.create({
   baseURL: `https://api.covid19api.com/`,
-  timeout: 3000,
+  timeout: 1000,
 });
 
 COVID_19_Instance.interceptors.request.use((config) => {
   // Called on request
-  console.log("interceptors");
   NProgress.start();
   return config;
 });
 COVID_19_Instance.interceptors.response.use((response) => {
   // Called on response
-  console.log("end");
   NProgress.done();
   return response;
 });

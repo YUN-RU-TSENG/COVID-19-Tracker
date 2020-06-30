@@ -1,6 +1,6 @@
 <template>
-  <section class="item">
-    <div class="people_icon">
+  <section class="item clearfix">
+    <div class="item_people_icon">
       <facemaskIcon />
     </div>
     <h3 class="item_title">{{ name }} :</h3>
@@ -90,13 +90,13 @@
       }
     }
 
-    .people_icon {
+    &_people_icon {
       float: right;
       padding: 4px;
       border-radius: 4px;
-      background-color: $brand-secondary;
+      background-color: $brand-primary;
       > svg {
-        fill: $brand-primary;
+        fill: $theme-primary;
       }
     }
   }
