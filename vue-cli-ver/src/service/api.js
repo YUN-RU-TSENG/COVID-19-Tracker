@@ -3,11 +3,10 @@
  */
 import axios from "axios";
 import NProgress from "nprogress";
-import '@/assets/nprogress.css'
+import '@/assets/plugin/nprogress.css'
 
 const COVID_19_Instance = axios.create({
   baseURL: `https://api.covid19api.com/`,
-  timeout: 1000,
 });
 
 COVID_19_Instance.interceptors.request.use((config) => {

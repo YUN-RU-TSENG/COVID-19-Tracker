@@ -38,7 +38,7 @@
   import alarmIcon from '@/assets/img/alarm.svg';
   import infoIcon from '@/assets/img/info-24px.svg';
   import pinIcon from '@/assets/img/push_pin-24px.svg';
-  
+
   export default {
     name: 'BaseCard',
     props: {
@@ -107,12 +107,26 @@
       @include Mediaquery-phone {
         padding: 24px;
       }
+      @include Mediaquery-pad {
+        padding: 24px;
+      }
+      @include Mediaquery-pc {
+        padding: 24px;
+      }
       div {
         text-align: center;
         display: inline-block;
         width: 50%;
         padding: 12px 0px;
         @include Mediaquery-phone {
+          width: 25%;
+          padding: 0px;
+        }
+        @include Mediaquery-pad {
+          width: 25%;
+          padding: 0px;
+        }
+        @include Mediaquery-pc {
           width: 25%;
           padding: 0px;
         }

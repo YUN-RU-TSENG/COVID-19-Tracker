@@ -35,7 +35,7 @@
             <!-- 方案一 -->
             <BaseCard :country="data.country"
                       :countryCode="data.countryCode"
-                      :data="data.date"
+                      :date="data.date"
                       :newConfirmed="data.newConfirmed"
                       :newDeaths="data.newDeaths"
                       :newRecovered="data.newRecovered"

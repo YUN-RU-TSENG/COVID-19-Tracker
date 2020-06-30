@@ -9,7 +9,8 @@
     props: {
       default: {
         type: Number,
-        required: false
+        required: false,
+        default: 12
       },
       pc: {
         type: Number,
@@ -170,7 +171,7 @@
     padding: 0px;
   }
 
-  @include Mediaquery-phone {
+  @media (min-width: 576px) {
     .col-phone-1 {
       flex: 0 0 auto;
       width: 8.333333%;
@@ -232,7 +233,7 @@
     }
   }
 
-  @include Mediaquery-pad {
+  @media (min-width: 768px) {
     .col-pad-1 {
       flex: 0 0 auto;
       width: 8.333333%;
@@ -294,7 +295,7 @@
     }
   }
 
-  @include Mediaquery-pc {
+  @media (min-width: 1024px) {
     .col-pc-1 {
       flex: 0 0 auto;
       width: 8.333333%;
