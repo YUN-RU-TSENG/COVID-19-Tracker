@@ -17,9 +17,9 @@
 <script>
   import appIcon from '@/assets/img/apps-24px.svg';
   import infoIcon from '@/assets/img/info-24px.svg';
-  
+
   export default {
-    name: 'BaseSideBar',
+    name: 'HomeSideBar',
     data() {
       return {};
     },

@@ -40,7 +40,7 @@
   import pinIcon from '@/assets/img/push_pin-24px.svg';
 
   export default {
-    name: 'BaseCard',
+    name: 'HomeCard',
     props: {
       country: { type: String, required: true },
       countryCode: { type: String, required: true },

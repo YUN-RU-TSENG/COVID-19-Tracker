@@ -22,7 +22,7 @@
   // import arrowDownIcon from '@/assets/img/arrow_circle_down-24px.svg';
 
   export default {
-    name: 'BaseItem',
+    name: 'HomeItem',
     props: {
       name: {
         type: String,

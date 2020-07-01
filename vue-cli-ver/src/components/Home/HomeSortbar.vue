@@ -32,7 +32,7 @@
 <script>
   import sortIcon from '@/assets/img/arrow_circle_down-24px.svg';
   export default {
-    name: 'BaseSort',
+    name: 'HomeSort',
     props: {},
     data() {
       return {};
