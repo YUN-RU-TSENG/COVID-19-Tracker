@@ -20,12 +20,12 @@
         <div>
           <h2>累計確診</h2>
           <p>
-            <alarmIcon /><span>{{ totalDeaths }}</span></p>
+            <alarmIcon /><span>{{ totalConfirmed }}</span></p>
         </div>
         <div>
           <h2>累計死亡</h2>
           <p>
-            <infoIcon /><span>{{ totalConfirmed }}</span></p>
+            <infoIcon /><span>{{ totalDeaths }}</span></p>
         </div>
       </section>
       <p class="card_text">Update at {{date}} . 累計至該時間共 {{ totalRecovered }} 人康復.</p>

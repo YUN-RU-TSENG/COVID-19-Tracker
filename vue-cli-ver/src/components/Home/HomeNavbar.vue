@@ -61,7 +61,7 @@
           const fontStartIndex = data
             .toLowerCase()
             .indexOf(this.searchText.toLowerCase());
-          if (fontStartIndex === 0) {
+          if (!fontStartIndex) {
             return {
               font: data.slice(this.searchText.length),
               isSearchTextFirst: true,
@@ -69,8 +69,8 @@
             };
           } else {
             const fontStartIndex = data
-              .toLowerCase()
-              .indexOf(this.searchText.toLowerCase());
+                                      .toLowerCase()
+                                      .indexOf(this.searchText.toLowerCase());
             const fontEndIndex = fontStartIndex + this.searchText.length;
             const fontArray = data.split('');
             const fontStart = fontArray.slice(0, fontStartIndex).join('');
