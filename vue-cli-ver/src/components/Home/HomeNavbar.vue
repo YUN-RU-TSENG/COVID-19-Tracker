@@ -69,7 +69,7 @@ export default {
   },
   methods: {
   /**
-     * TODO: 將符合的字串分割成符合以及非符合，當渲染的時候便可以依照符合以及未符合的文字配合模板渲染畫面，並且會依照國家符合字串的 index 先後排列。
+      * TODO: 將符合的字串分割成符合以及非符合，當渲染的時候便可以依照符合以及未符合的文字配合模板渲染畫面，並且會依照國家符合字串的 index 先後排列。
       * 例如 asssw 匹配 a，則會被返回成 a, sssw 配合模板渲染。
       * 例如 asssw 匹配 ss，則會被返回成 a,ss,sw 配合模板渲染。
       *
@@ -77,7 +77,7 @@ export default {
       *
       * @param { Array } 字串的陣列集合
       * return 返回包含符合字串(fontMatch)、符合前後字串(fontStart, fontEnd)、國家名稱(country)、符合字串 index(fontStartIndex)
-    * */
+      **/
     hightlightMatchText(tests) {
       if (!Array.isArray(tests)) return;
       return tests
