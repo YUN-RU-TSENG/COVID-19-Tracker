@@ -17,39 +17,39 @@
 </template>
 
 <script>
-  import facemaskIcon from '@/assets/img/facemask.svg';
-  import arrowUpIcon from '@/assets/img/arrow_circle_up-24px.svg';
-  // import arrowDownIcon from '@/assets/img/arrow_circle_down-24px.svg';
+import facemaskIcon from '@/assets/img/facemask.svg';
+import arrowUpIcon from '@/assets/img/arrow_circle_up-24px.svg';
+// import arrowDownIcon from '@/assets/img/arrow_circle_down-24px.svg';
 
-  export default {
-    name: 'HomeItem',
-    props: {
-      name: {
-        type: String,
-        required: true
-      },
-      chineseName: {
-        type: String,
-        required: true
-      },
-      number: {
-        type: Number,
-        required: true
-      },
-      date: {
-        type: Date,
-        required: true
-      }
+export default {
+  name: 'HomeItem',
+  props: {
+    name: {
+      type: String,
+      required: true,
     },
-    data() {
-      return {};
+    chineseName: {
+      type: String,
+      required: true,
     },
-    components: {
-      facemaskIcon,
-      arrowUpIcon
-      // arrowDownIcon
-    }
-  };
+    number: {
+      type: Number,
+      required: true,
+    },
+    date: {
+      type: Date,
+      required: true,
+    },
+  },
+  data() {
+    return {};
+  },
+  components: {
+    facemaskIcon,
+    arrowUpIcon,
+    // arrowDownIcon
+  },
+};
 </script>
 
 <style lang="scss" scoped>

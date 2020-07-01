@@ -30,17 +30,18 @@
 </template>
 
 <script>
-  import sortIcon from '@/assets/img/arrow_circle_down-24px.svg';
-  export default {
-    name: 'HomeSort',
-    props: {},
-    data() {
-      return {};
-    },
-    components: {
-      sortIcon
-    }
-  };
+import sortIcon from '@/assets/img/arrow_circle_down-24px.svg';
+
+export default {
+  name: 'HomeSort',
+  props: {},
+  data() {
+    return {};
+  },
+  components: {
+    sortIcon,
+  },
+};
 </script>
 
 <style lang="scss" scoped>

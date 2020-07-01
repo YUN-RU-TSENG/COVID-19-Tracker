@@ -16,19 +16,19 @@
 </template>
 
 <script>
-  import appIcon from '@/assets/img/apps-24px.svg';
-  import infoIcon from '@/assets/img/info-24px.svg';
+import appIcon from '@/assets/img/apps-24px.svg';
+import infoIcon from '@/assets/img/info-24px.svg';
 
-  export default {
-    name: 'HomeSideBar',
-    data() {
-      return {};
-    },
-    components: {
-      appIcon,
-      infoIcon
-    }
-  };
+export default {
+  name: 'HomeSideBar',
+  data() {
+    return {};
+  },
+  components: {
+    appIcon,
+    infoIcon,
+  },
+};
 </script>
 
 <style lang="scss" scoped>

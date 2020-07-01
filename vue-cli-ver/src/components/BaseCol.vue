@@ -5,47 +5,48 @@
 </template>
 
 <script>
-  export default {
-    props: {
-      default: {
-        type: Number,
-        required: false,
-        default: 12
-      },
-      pc: {
-        type: Number,
-        required: false
-      },
-      pad: {
-        type: Number,
-        required: false
-      },
-      phone: {
-        type: Number,
-        required: false
-      },
-      guttur: {
-        type: Boolean,
-        required: false,
-        default: true
-      }
+export default {
+  props: {
+    default: {
+      type: Number,
+      required: false,
+      default: 12,
     },
-    computed: {
-      styleObject() {
-        let result = [];
-        if (this.default) result.push(`col-${this.default}`);
-        if (this.phone) result.push(`col-phone-${this.phone}`);
-        if (this.pad) result.push(`col-pad-${this.pad}`);
-        if (this.pc) result.push(`col-pc-${this.pc}`);
-        if (!this.guttur) result.push('no-gutter');
-        return result;
-      }
-    }
-  };
+    pc: {
+      type: Number,
+      required: false,
+    },
+    pad: {
+      type: Number,
+      required: false,
+    },
+    phone: {
+      type: Number,
+      required: false,
+    },
+    guttur: {
+      type: Boolean,
+      required: false,
+      default: true,
+    },
+  },
+  computed: {
+    styleObject() {
+      const result = [];
+      if (this.default) result.push(`col-${this.default}`);
+      if (this.phone) result.push(`col-phone-${this.phone}`);
+      if (this.pad) result.push(`col-pad-${this.pad}`);
+      if (this.pc) result.push(`col-pc-${this.pc}`);
+      if (!this.guttur) result.push('no-gutter');
+      return result;
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>
-  .col-pad-1 .col-pad-2,
+  .col-pad-1,
+  .col-pad-2,
   .col-pad-3,
   .col-pad-4,
   .col-pad-5,

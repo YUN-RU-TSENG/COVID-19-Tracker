@@ -31,70 +31,68 @@
 </template>
 
 <script>
-  import menuIcon from '@/assets/img/menu-24px.svg';
-  import settings from '@/assets/img/settings-24px.svg';
+import menuIcon from '@/assets/img/menu-24px.svg';
+import settings from '@/assets/img/settings-24px.svg';
 
-  export default {
-    name: 'HomeNavbar',
-    props: {
-      countries: {
-        type: Array,
-        require: true
-      }
+export default {
+  name: 'HomeNavbar',
+  props: {
+    countries: {
+      type: Array,
+      require: true,
     },
-    data() {
-      return {
-        searchText: '',
-        componentCountries: []
-      };
+  },
+  data() {
+    return {
+      searchText: '',
+      componentCountries: [],
+    };
+  },
+  watch: {
+    searchText: {
+      handler(value) {
+        this.$emit('handlerSearch', value);
+      },
     },
-    watch: {
-      searchText: {
-        handler: function(value) {
-          this.$emit('handlerSearch', value);
-        }
-      }
+  },
+  computed: {
+    countriesDisplay() {
+      return this.countries
+        .slice()
+        .map((data) => {
+          const fontStartIndex = data
+            .toLowerCase()
+            .indexOf(this.searchText.toLowerCase());
+          if (!fontStartIndex) {
+            return {
+              font: data.slice(this.searchText.length),
+              isSearchTextFirst: true,
+              country: data,
+              index: 0,
+            };
+          } else {
+            const fontEndIndex = fontStartIndex + this.searchText.length;
+            const fontArray = data.split('');
+            const fontStart = fontArray.slice(0, fontStartIndex).join('');
+            const fontEnd = fontArray.slice(fontEndIndex).join('');
+            return {
+              fontStart,
+              fontEnd,
+              isSearchTextFirst: false,
+              country: data,
+              index: fontStartIndex,
+            };
+          }
+        })
+        .sort((aft, bef) => aft.index - bef.index)
+        .slice(0, 10);
     },
-    computed: {
-      countriesDisplay() {
-        return this.countries
-          .slice()
-          .map(data => {
-            const fontStartIndex = data
-              .toLowerCase()
-              .indexOf(this.searchText.toLowerCase());
-            if (!fontStartIndex) {
-              return {
-                font: data.slice(this.searchText.length),
-                isSearchTextFirst: true,
-                country: data,
-                index: 0
-              };
-            } else {
-              const fontStartIndex = data
-                .toLowerCase()
-                .indexOf(this.searchText.toLowerCase());
-                console.log(fontStartIndex, this.searchText,  data)
-              const fontEndIndex = fontStartIndex + this.searchText.length;
-              const fontArray = data.split('');
-              const fontStart = fontArray.slice(0, fontStartIndex).join('');
-              const fontEnd = fontArray.slice(fontEndIndex).join('');
-              return {
-                fontStart,
-                fontEnd,
-                isSearchTextFirst: false,
-                country: data,
-                index: fontStartIndex
-              };
-            }
-          }).sort((aft, bef) => aft.index - bef.index).slice(0, 10);
-      }
-    },
-    components: {
-      menuIcon,
-      settings
-    }
-  };
+  },
+  components: {
+    menuIcon,
+    settings,
+  },
+};
 </script>
 
 <style lang="scss" scoped>

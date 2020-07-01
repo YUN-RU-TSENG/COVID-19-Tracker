@@ -60,65 +60,64 @@
 </template>
 
 <script>
-  // component
-  import HomeNavbar from '@/components/Home/HomeNavbar.vue';
-  import HomeItem from '@/components/Home/HomeItem.vue';
-  import HomeCard from '@/components/Home/HomeCard.vue';
-  import HomeSideBar from '@/components/Home/HomeSideBar.vue';
-  import BaseCol from '@/components/BaseCol.vue';
-  import BaseRow from '@/components/BaseRow.vue';
-  import HomeSortbar from '@/components/Home/HomeSortbar.vue';
+// component
+import HomeNavbar from '@/components/Home/HomeNavbar.vue';
+import HomeItem from '@/components/Home/HomeItem.vue';
+import HomeCard from '@/components/Home/HomeCard.vue';
+import HomeSideBar from '@/components/Home/HomeSideBar.vue';
+import BaseCol from '@/components/BaseCol.vue';
+import BaseRow from '@/components/BaseRow.vue';
+import HomeSortbar from '@/components/Home/HomeSortbar.vue';
 
-  // svg
-  import arrowCircle from '@/assets/img/arrow_circle_up-24px.svg';
+// svg
+import arrowCircle from '@/assets/img/arrow_circle_up-24px.svg';
 
-  export default {
-    name: 'Home',
-    created() {
-      this.$store.dispatch('API_COVID_19_Summary');
-      this.$store.dispatch('API_COVID_19_Countries');
+export default {
+  name: 'Home',
+  created() {
+    this.$store.dispatch('API_COVID_19_Summary');
+    this.$store.dispatch('API_COVID_19_Countries');
+  },
+  data() {
+    return {
+      isSideBarShow: false,
+      searchText: '',
+      COVID_19_CountriesSearch: [],
+    };
+  },
+  computed: {},
+  methods: {
+    changeSideBarShow(data) {
+      this.isSideBarShow = data;
     },
-    data() {
-      return {
-        isSideBarShow: false,
-        searchText: '',
-        COVID_19_CountriesSearch: []
-      };
+    setSearchText(data) {
+      this.searchText = data;
+      this.COVID_19_CountriesSearch = !this.searchText
+        ? []
+        : this.$store.getters.COVID_19_Countries.sort(
+          (aft, bef) => aft.Country.charCodeAt() - bef.Country.charCodeAt(),
+        )
+          .filter((item) => {
+            const regexp = new RegExp(this.searchText, 'gi');
+            if (regexp.test(item.Country) || regexp.test(item.ISO2)) return item;
+          })
+          .map((item) => `${item.Country}, ${item.ISO2}`);
     },
-    computed: {},
-    methods: {
-      changeSideBarShow(data) {
-        this.isSideBarShow = data;
-      },
-      setSearchText(data) {
-        this.searchText = data;
-        this.COVID_19_CountriesSearch = !this.searchText
-          ? []
-          : this.$store.getters.COVID_19_Countries.sort(
-              (aft, bef) => aft.Country.charCodeAt() - bef.Country.charCodeAt()
-            )
-              .filter(item => {
-                const regexp = new RegExp(this.searchText, 'gi');
-                if (regexp.test(item.Country) || regexp.test(item.ISO2))
-                  return item;
-              })
-              .map(item => `${item.Country}, ${item.ISO2}`);
-      },
-      nextPage(data) {
-        this.$router.push({ name: 'country', params: { country: data } });
-      }
+    nextPage(data) {
+      this.$router.push({ name: 'country', params: { country: data } });
     },
-    components: {
-      HomeSortbar,
-      BaseRow,
-      BaseCol,
-      HomeSideBar,
-      HomeCard,
-      HomeItem,
-      HomeNavbar,
-      arrowCircle
-    }
-  };
+  },
+  components: {
+    HomeSortbar,
+    BaseRow,
+    BaseCol,
+    HomeSideBar,
+    HomeCard,
+    HomeItem,
+    HomeNavbar,
+    arrowCircle,
+  },
+};
 </script>
 
 <style lang="scss" scoped>
