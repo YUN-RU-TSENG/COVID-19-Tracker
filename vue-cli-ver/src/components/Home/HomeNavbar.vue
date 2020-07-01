@@ -51,19 +51,19 @@ export default {
   },
   computed: {
     filterMatchCountry() {
-      if(!this.searchText) return [];
+      if (!this.searchText) return [];
       const tests = this.countries
-          .filter((item) => {
-            const regexp = new RegExp(this.searchText, 'gi');
-            if (regexp.test(item.Country) || regexp.test(item.ISO2)) return item;
-          })
-          .map((item) => `${item.Country}, ${item.ISO2}`);
-      return this.hightlightMatchText(tests)
+        .filter((item) => {
+          const regexp = new RegExp(this.searchText, 'gi');
+          return regexp.test(item.Country) || regexp.test(item.ISO2);
+        })
+        .map((item) => `${item.Country}, ${item.ISO2}`);
+      return this.hightlightMatchText(tests);
     },
   },
   methods: {
     hightlightMatchText(tests) {
-      if(typeof tests !== 'object') return;
+      if (typeof tests !== 'object') return;
       return tests
         .slice()
         .map((data) => {
@@ -77,19 +77,18 @@ export default {
               country: data,
               index: 0,
             };
-          } else {
-            const fontEndIndex = fontStartIndex + this.searchText.length;
-            const fontArray = data.split('');
-            const fontStart = fontArray.slice(0, fontStartIndex).join('');
-            const fontEnd = fontArray.slice(fontEndIndex).join('');
-            return {
-              fontStart,
-              fontEnd,
-              isSearchTextFirst: false,
-              country: data,
-              index: fontStartIndex,
-            };
           }
+          const fontEndIndex = fontStartIndex + this.searchText.length;
+          const fontArray = data.split('');
+          const fontStart = fontArray.slice(0, fontStartIndex).join('');
+          const fontEnd = fontArray.slice(fontEndIndex).join('');
+          return {
+            fontStart,
+            fontEnd,
+            isSearchTextFirst: false,
+            country: data,
+            index: fontStartIndex,
+          };
         })
         .sort((aft, bef) => aft.index - bef.index)
         .slice(0, 10);
