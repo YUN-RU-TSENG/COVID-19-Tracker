@@ -15,7 +15,7 @@
            @click.prevent="$emit('handlerNextPage', country.country)"
            :key="country.country">
           <template v-if="country.isSearchTextFirst">
-            <span>{{ searchText }}</span>{{ country.font }}22
+            <span>{{ searchText }}</span>{{ country.font }}
           </template>
           <template v-else>
             {{ country.fontStart}}<span>{{ searchText }}</span>{{country.fontEnd }}
@@ -57,32 +57,37 @@
     },
     computed: {
       countriesDisplay() {
-        return this.countries.slice().map(data => {
-          const fontStartIndex = data
-            .toLowerCase()
-            .indexOf(this.searchText.toLowerCase());
-          if (!fontStartIndex) {
-            return {
-              font: data.slice(this.searchText.length),
-              isSearchTextFirst: true,
-              country: data
-            };
-          } else {
+        return this.countries
+          .slice()
+          .map(data => {
             const fontStartIndex = data
-                                      .toLowerCase()
-                                      .indexOf(this.searchText.toLowerCase());
-            const fontEndIndex = fontStartIndex + this.searchText.length;
-            const fontArray = data.split('');
-            const fontStart = fontArray.slice(0, fontStartIndex).join('');
-            const fontEnd = fontArray.slice(fontEndIndex).join('');
-            return {
-              fontStart,
-              fontEnd,
-              isSearchTextFirst: false,
-              country: data
-            };
-          }
-        });
+              .toLowerCase()
+              .indexOf(this.searchText.toLowerCase());
+            if (!fontStartIndex) {
+              return {
+                font: data.slice(this.searchText.length),
+                isSearchTextFirst: true,
+                country: data,
+                index: 0
+              };
+            } else {
+              const fontStartIndex = data
+                .toLowerCase()
+                .indexOf(this.searchText.toLowerCase());
+                console.log(fontStartIndex, this.searchText,  data)
+              const fontEndIndex = fontStartIndex + this.searchText.length;
+              const fontArray = data.split('');
+              const fontStart = fontArray.slice(0, fontStartIndex).join('');
+              const fontEnd = fontArray.slice(fontEndIndex).join('');
+              return {
+                fontStart,
+                fontEnd,
+                isSearchTextFirst: false,
+                country: data,
+                index: fontStartIndex
+              };
+            }
+          }).sort((aft, bef) => aft.index - bef.index).slice(0, 10);
       }
     },
     components: {
