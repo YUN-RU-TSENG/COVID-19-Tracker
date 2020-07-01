@@ -12,8 +12,8 @@
            :class="{'active': countries.length }">
         <a href
            v-for="country in countriesDisplay"
-           @click.prevent="$router.push({name: 'country', params:{ country: country.Country }})"
-           :key="country.Country">
+           @click.prevent="$emit('handlerNextPage', country.country)"
+           :key="country.country">
           <template v-if="country.isSearchTextFirst">
             <span>{{ searchText }}</span>{{ country.font }}22
           </template>
@@ -65,7 +65,7 @@
             return {
               font: data.slice(this.searchText.length),
               isSearchTextFirst: true,
-              country: data.Country
+              country: data
             };
           } else {
             const fontStartIndex = data
@@ -79,7 +79,7 @@
               fontStart,
               fontEnd,
               isSearchTextFirst: false,
-              country: data.Country
+              country: data
             };
           }
         });

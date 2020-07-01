@@ -1,6 +1,7 @@
 <template>
-  <aside class="sidebar" @click="$emit('handler', false)">
-    <ul class="sidebar_wrapper" >
+  <aside class="sidebar"
+         @click="$emit('handler', false)">
+    <ul class="sidebar_wrapper">
       <li>
         <a href
            class="sidebar_link"
@@ -48,7 +49,10 @@
       font-size: 0;
       padding: 60px 0px;
       cursor: default;
-      @include Mediaquery-phone {
+      @include Mediaquery-pad {
+        width: 240px;
+      }
+      @include Mediaquery-pc {
         width: 240px;
       }
     }
@@ -68,7 +72,10 @@
       }
       span {
         display: none;
-        @include Mediaquery-phone {
+        @include Mediaquery-pad {
+          display: inline;
+        }
+        @include Mediaquery-pc {
           display: inline;
         }
       }

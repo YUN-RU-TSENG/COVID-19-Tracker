@@ -3,6 +3,7 @@
     <HomeNavbar class="home_navbar"
                 @handler="changeSideBarShow"
                 @handlerSearch="setSearchText"
+                @handlerNextPage="nextPage"
                 :countries="COVID_19_CountriesSearch" />
     <HomeSideBar v-if="isSideBarShow"
                  @handler="changeSideBarShow" />
@@ -100,6 +101,9 @@
             })
               .map(item => `${item.Country}, ${item.ISO2}`)
               .slice(0, 10);
+      },
+      nextPage(data) {
+        this.$router.push({ name: 'country', params: { country: data } });
       }
     },
     components: {
