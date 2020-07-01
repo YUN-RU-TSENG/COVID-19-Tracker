@@ -32,6 +32,7 @@
 </template>
 
 <script>
+// svg
 import menuIcon from '@/assets/img/menu-24px.svg';
 import settings from '@/assets/img/settings-24px.svg';
 
@@ -46,7 +47,6 @@ export default {
   data() {
     return {
       searchText: '',
-      componentCountries: [],
     };
   },
   computed: {
@@ -57,20 +57,26 @@ export default {
           const regexp = new RegExp(this.searchText, 'gi');
           return regexp.test(item.Country) || regexp.test(item.ISO2);
         })
-        .map((item) => `${item.Country}, ${item.ISO2}`);
+        .map((item) => {
+          const test = `${item.Country}, ${item.ISO2}`;
+          return {
+            country: item.Country,
+            test,
+          };
+        });
       return this.hightlightMatchText(tests);
     },
   },
   methods: {
     /**
-       * TODO: 將符合的字串分割成符合以及非符合，當渲染的時候便可以依照符合以及未符合的文字配合模板渲染畫面。
+       * TODO: 將符合的字串分割成符合以及非符合，當渲染的時候便可以依照符合以及未符合的文字配合模板渲染畫面，並且會依照國家符合字串的 index 先後排列。
        * 例如 asssw 匹配 a，則會被返回成 a, sssw 配合模板渲染。
        * 例如 asssw 匹配 ss，則會被返回成 a,ss,sw 配合模板渲染。
        *
        * ! 由於有符合開頭（一）、符合中斷、結尾（二）情況，故返回兩種不同的物件，透過是否有 fontStart 判定。
        *
        * @param { Array } 字串的陣列集合
-       * return 返回包含符合字串(country)、符合前後字串、是否符合字串位於開頭的物件
+       * return 返回包含符合字串(fontMatch)、符合前後字串(fontStart, fontEnd)、國家名稱(country)、符合字串 index(fontStartIndex)
        *  */
     hightlightMatchText(tests) {
       if (!Array.isArray(tests)) return;
