@@ -3,13 +3,20 @@
     <div class="navbar_item">
       <input class="navbar_search"
              type="search"
-             placeholder="輸入搜尋國家關鍵字">
+             placeholder="輸入搜尋國家關鍵字"
+             v-model="searchText">
       <a class="navbar_link"
          href>
         <settings /></a>
+      <div class="navbar_search_item" :class="{'active': countries.length }">
+        <a href
+           v-for="country in countries"
+           :key="country.Country">{{ country.Country + ', ' + country.ISO2 }}</a>
+      </div>
     </div>
     <a class="navbar_menu"
-       href @click.prevent="$emit('handler', true)">
+       href
+       @click.prevent="$emit('handler', true)">
       <menuIcon /></a>
   </nav>
 </template>
@@ -20,10 +27,23 @@
 
   export default {
     name: 'BaseNavbar',
+    props: {
+      countries: {
+        type: Array,
+        require: true
+      }
+    },
     data() {
       return {
-        search: 'url(' + require('@/assets/img/search-24px.svg') + ')'
+        searchText: ''
       };
+    },
+    watch: {
+      searchText: {
+        handler: function(value){
+          this.$emit('handlerSearch', value)
+        }
+      }
     },
     components: {
       menuIcon,
@@ -56,6 +76,7 @@
     }
     &_item {
       float: right;
+      position: relative;
     }
     &_link {
       display: inline-block;
@@ -90,6 +111,43 @@
         outline: none;
         opacity: 0.8;
         border-color: $brand-primary;
+      }
+    }
+    &_search_item {
+      position: absolute;
+      width: 200px;
+      left: 0;
+      top: calc(100% + 24px);
+      background-color: $theme-primary;
+      border-radius: 4px;
+      transform: scale(1, 0);
+      transform-origin: left top;
+      transition: all 0.6s ease-in-out;
+      box-shadow: 0px 0px 10px $gray;
+      &.active {
+        transform: scale(1, 1);
+      }
+      &.active::before {
+        content: '';
+        position: absolute;
+        top: -16px;
+        left: 12px;
+        border-color: transparent transparent $theme-primary transparent;
+        border-style: solid solid solid solid;
+        border-width: 8px;
+      }
+      a {
+        display: block;
+        @include font(lighter, 14px, $font-primary);
+        padding: 12px;
+        &:hover{
+          background-color: $brand-secondary;
+        }
+        &:not(:last-of-type) {
+          border-bottom-color: $gray;
+          border-bottom-width: 1px;
+          border-bottom-style: solid;
+        }
       }
     }
   }

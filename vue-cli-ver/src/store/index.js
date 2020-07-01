@@ -66,6 +66,9 @@ export default new Vuex.Store({
         };
       });
     },
+    COVID_19_Countries(state){
+      return state.COVID_19_Countries
+    }
   },
   mutations: {
     COVID_19_Summary(state, datas) {

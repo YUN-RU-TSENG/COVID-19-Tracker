@@ -10,11 +10,11 @@ Vue.use(VueRouter)
     name: 'home',
     component: Home
   },
-  {
-    path: '/baseCard',
-    name: 'baseCard',
-    component: () => import('@/components/BaseCard.vue')
-  }
+  // {
+  //   path: '/baseCard',
+  //   name: 'baseCard',
+  //   component: () => import('@/components/BaseCard.vue')
+  // }
 ]
 
 const router = new VueRouter({

@@ -3,19 +3,17 @@
  */
 import axios from "axios";
 import NProgress from "nprogress";
-import '@/assets/plugin/nprogress.css'
+import "@/assets/nprogress.css";
 
 const COVID_19_Instance = axios.create({
   baseURL: `https://api.covid19api.com/`,
 });
 
 COVID_19_Instance.interceptors.request.use((config) => {
-  // Called on request
   NProgress.start();
   return config;
 });
 COVID_19_Instance.interceptors.response.use((response) => {
-  // Called on response
   NProgress.done();
   return response;
 });
@@ -40,4 +38,6 @@ export const GET_COVID_19_CountryAllStatusFromDayOne = (
   startTime,
   endTime
 ) =>
-  COVID_19_Instance.get(`/country/${country}?from=${startTime}&to=${endTime}`).then((response) => response.data);
+  COVID_19_Instance.get(
+    `/country/${country}?from=${startTime}&to=${endTime}`
+  ).then((response) => response.data);

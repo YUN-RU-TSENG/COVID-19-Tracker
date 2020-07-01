@@ -1,8 +1,10 @@
 <template>
   <div class="home">
-    <BaseNavbar class="home_navbar"
-                @handler="changeSideBarShow" />
-    <BaseSideBar v-if="isSideBarShow"
+    <HomeNavbar class="home_navbar"
+                @handler="changeSideBarShow"
+                @handlerSearch="setSearchText"
+                :countries="COVID_19_CountriesSearch" />
+    <HomeSideBar v-if="isSideBarShow"
                  @handler="changeSideBarShow" />
     <main class="home_wrapper"
           id="top">
@@ -15,17 +17,16 @@
                  :key="data.name">
           <transition name="slide-fade"
                       appear>
-            <BaseItem :name="data.name"
+            <HomeItem :name="data.name"
                       :date="data.date"
                       :chineseName="data.chineseName"
                       :number="data.number" />
           </transition>
         </BaseCol>
-
       </BaseRow>
       <h2 class="home_title">新冠肺炎各國地區資訊</h2>
       <p class="home_text">由約翰霍普金斯所提供的訊息</p>
-      <BaseSortbar class="home_sort" />
+      <HomeSortbar class="home_sort" />
       <BaseRow class="home_baseCard_container">
         <BaseCol v-for="data in $store.getters.COVID_19_SummaryCountries"
                  :key="data.country"
@@ -33,7 +34,7 @@
           <transition name="slide-fade"
                       appear>
             <!-- 方案一 -->
-            <BaseCard :country="data.country"
+            <HomeCard :country="data.country"
                       :countryCode="data.countryCode"
                       :date="data.date"
                       :newConfirmed="data.newConfirmed"
@@ -44,10 +45,9 @@
                       :totalRecovered="data.totalRecovered" />
             <!-- 方案二 -->
             <!-- 哪種方式更容易識別？ -->
-            <!-- <BaseCard v-bind="data" /> -->
+            <!-- <HomeCard v-bind="data" /> -->
           </transition>
         </BaseCol>
-
       </BaseRow>
     </main>
     <a href="#top"
@@ -60,13 +60,13 @@
 
 <script>
   // component
-  import BaseNavbar from '@/components/BaseNavbar.vue';
-  import BaseItem from '@/components/BaseItem.vue';
-  import BaseCard from '@/components/BaseCard.vue';
-  import BaseSideBar from '@/components/BaseSideBar.vue';
+  import HomeNavbar from '@/components/Home/HomeNavbar.vue';
+  import HomeItem from '@/components/Home/HomeItem.vue';
+  import HomeCard from '@/components/Home/HomeCard.vue';
+  import HomeSideBar from '@/components/Home/HomeSideBar.vue';
   import BaseCol from '@/components/BaseCol.vue';
   import BaseRow from '@/components/BaseRow.vue';
-  import BaseSortbar from '@/components/BaseSortbar.vue';
+  import HomeSortbar from '@/components/Home/HomeSortbar.vue';
 
   // svg
   import arrowCircle from '@/assets/img/arrow_circle_up-24px.svg';
@@ -79,22 +79,35 @@
     },
     data() {
       return {
-        isSideBarShow: false
+        isSideBarShow: false,
+        searchText: ''
       };
+    },
+    computed: {
+      COVID_19_CountriesSearch() {
+        if (!this.searchText) return [];
+        return this.$store.getters.COVID_19_Countries.filter(item => {
+          const regexp = new RegExp(this.searchText, 'gi');
+          if (regexp.test(item.Country) || regexp.test(item.ISO2)) return item;
+        }).slice(0, 10);
+      }
     },
     methods: {
       changeSideBarShow(data) {
         this.isSideBarShow = data;
+      },
+      setSearchText(data) {
+        this.searchText = data;
       }
     },
     components: {
-      BaseSortbar,
+      HomeSortbar,
       BaseRow,
       BaseCol,
-      BaseSideBar,
-      BaseCard,
-      BaseItem,
-      BaseNavbar,
+      HomeSideBar,
+      HomeCard,
+      HomeItem,
+      HomeNavbar,
       arrowCircle
     }
   };
@@ -143,6 +156,15 @@
         margin-bottom: 24px;
       }
       @include Mediaquery-pad {
+        div:not(:last-of-type) * {
+          margin-bottom: 0px;
+        }
+        div:not(:nth-last-of-type(3)):not(:nth-last-of-type(2)):not(:last-of-type)
+          * {
+          margin-bottom: 24px;
+        }
+      }
+      @include Mediaquery-pc {
         div:not(:last-of-type) * {
           margin-bottom: 0px;
         }
