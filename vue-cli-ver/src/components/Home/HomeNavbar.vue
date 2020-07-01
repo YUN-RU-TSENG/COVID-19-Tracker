@@ -58,10 +58,10 @@ export default {
           return regexp.test(item.Country) || regexp.test(item.ISO2);
         })
         .map((item) => {
-          const test = `${item.Country}, ${item.ISO2}`;
+          const text = `${item.Country}, ${item.ISO2}`;
           return {
             country: item.Country,
-            test,
+            text,
           };
         });
       return this.hightlightMatchText(tests);
@@ -81,23 +81,23 @@ export default {
     hightlightMatchText(tests) {
       if (!Array.isArray(tests)) return;
       return tests
-        .map((test) => {
+        .map((data) => {
           const searchTextlength = this.searchText.length;
-          const fontStartIndex = test.toLowerCase().indexOf(this.searchText.toLowerCase());
+          const fontStartIndex = data.text.toLowerCase().indexOf(this.searchText.toLowerCase());
           // 吻合的文字
-          const fontMatch = test.slice(fontStartIndex, fontStartIndex + searchTextlength);
+          const fontMatch = data.text.slice(fontStartIndex, fontStartIndex + searchTextlength);
           // 吻合文字後的第一個字串 index
           const fontEndIndex = fontStartIndex + this.searchText.length;
           // 吻合文字之前的文字
-          const fontStart = !fontStartIndex ? null : test.slice(0, fontStartIndex);
+          const fontStart = !fontStartIndex ? null : data.text.slice(0, fontStartIndex);
           // 吻合文字之後的文字
-          const fontEnd = test.slice(fontEndIndex);
+          const fontEnd = data.text.slice(fontEndIndex);
 
           return {
             fontStart,
             fontEnd,
             fontMatch,
-            name: test,
+            name: data.text,
             fontStartIndex,
           };
         })
