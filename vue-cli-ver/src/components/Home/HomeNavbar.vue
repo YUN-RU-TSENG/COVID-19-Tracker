@@ -14,11 +14,11 @@
            v-for="country in filterMatchCountry"
            @click.prevent="$emit('handlerNextPage', country.country)"
            :key="country.country">
-          <template v-if="country.isSearchTextFirst">
-            <span>{{ searchText }}</span>{{ country.font }}
+          <template v-if="!country.fontStart">
+            <span>{{ country.fontMatch }}</span>{{ country.fontEnd }}
           </template>
           <template v-else>
-            {{ country.fontStart}}<span>{{ searchText }}</span>{{country.fontEnd }}
+            {{ country.fontStart }}<span>{{ country.fontMatch }}</span>{{ country.fontEnd }}
           </template>
 
         </a>
@@ -62,35 +62,56 @@ export default {
     },
   },
   methods: {
+    /**
+       * TODO: 將符合的字串分割成符合以及非符合，當渲染的時候便可以依照符合以及未符合的文字配合模板渲染畫面。
+       * 例如 asssw 匹配 a，則會被返回成 a, sssw 配合模板渲染。
+       * 例如 asssw 匹配 ss，則會被返回成 a,ss,sw 配合模板渲染。
+       *
+       * ! 由於有符合開頭（一）、符合中斷、結尾（二）情況，故返回兩種不同的物件，透過是否有 fontStart 判定。
+       *
+       * @param { Array } 字串的陣列集合
+       * return 返回包含符合字串(country)、符合前後字串、是否符合字串位於開頭的物件
+       *  */
     hightlightMatchText(tests) {
-      if (typeof tests !== 'object') return;
+      if (!Array.isArray(tests)) return;
       return tests
-        .slice()
-        .map((data) => {
-          const fontStartIndex = data
-            .toLowerCase()
-            .indexOf(this.searchText.toLowerCase());
+        .map((test) => {
+          const fontStartIndex = test.toLowerCase().indexOf(this.searchText.toLowerCase());
           if (!fontStartIndex) {
+            // 吻合的文字
+            const fontMatch = test.slice(0, this.searchText.length);
+            // 吻合文字之後的文字
+            const fontEnd = test.slice(this.searchText.length);
+
             return {
-              font: data.slice(this.searchText.length),
-              isSearchTextFirst: true,
-              country: data,
-              index: 0,
+              fontMatch,
+              fontEnd,
+              fontStart: null,
+              country: test,
+              fontStartIndex,
             };
           }
+          // 吻合的文字
+          const fontMatch = test.slice(
+            fontStartIndex,
+            fontStartIndex + this.searchText.length,
+          );
+            // 吻合文字後的第一個字串 index
           const fontEndIndex = fontStartIndex + this.searchText.length;
-          const fontArray = data.split('');
-          const fontStart = fontArray.slice(0, fontStartIndex).join('');
-          const fontEnd = fontArray.slice(fontEndIndex).join('');
+          // 吻合文字之前的文字
+          const fontStart = test.slice(0, fontStartIndex);
+          // 吻合文字之後的文字
+          const fontEnd = test.slice(fontEndIndex);
+
           return {
             fontStart,
             fontEnd,
-            isSearchTextFirst: false,
-            country: data,
-            index: fontStartIndex,
+            fontMatch,
+            country: test,
+            fontStartIndex,
           };
         })
-        .sort((aft, bef) => aft.index - bef.index)
+        .sort((aft, bef) => aft.fontStartIndex - bef.fontStartIndex)
         .slice(0, 10);
     },
   },
@@ -131,7 +152,7 @@ export default {
       display: inline-block;
       padding: 12px;
       vertical-align: middle;
-      transition: all 0.6s ease-in-out;
+      transition: all 0.3s ease-in-out;
       transform-origin: center;
       svg {
         fill: $dark;
