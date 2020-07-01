@@ -94,9 +94,7 @@ export default {
       this.searchText = data;
       this.COVID_19_CountriesSearch = !this.searchText
         ? []
-        : this.$store.getters.COVID_19_Countries.sort(
-          (aft, bef) => aft.Country.charCodeAt() - bef.Country.charCodeAt(),
-        )
+        : this.$store.getters.COVID_19_Countries
           .filter((item) => {
             const regexp = new RegExp(this.searchText, 'gi');
             if (regexp.test(item.Country) || regexp.test(item.ISO2)) return item;
