@@ -9,9 +9,9 @@
          href>
         <settings /></a>
       <div class="navbar_search_item"
-           :class="{'active': countries.length }">
+           :class="{'active': filterMatchCountry.length }">
         <a href
-           v-for="country in countriesDisplay"
+           v-for="country in filterMatchCountry"
            @click.prevent="$emit('handlerNextPage', country.country)"
            :key="country.country">
           <template v-if="country.isSearchTextFirst">
@@ -20,6 +20,7 @@
           <template v-else>
             {{ country.fontStart}}<span>{{ searchText }}</span>{{country.fontEnd }}
           </template>
+
         </a>
       </div>
     </div>
@@ -48,16 +49,22 @@ export default {
       componentCountries: [],
     };
   },
-  watch: {
-    searchText: {
-      handler(value) {
-        this.$emit('handlerSearch', value);
-      },
+  computed: {
+    filterMatchCountry() {
+      if(!this.searchText) return [];
+      const tests = this.countries
+          .filter((item) => {
+            const regexp = new RegExp(this.searchText, 'gi');
+            if (regexp.test(item.Country) || regexp.test(item.ISO2)) return item;
+          })
+          .map((item) => `${item.Country}, ${item.ISO2}`);
+      return this.hightlightMatchText(tests)
     },
   },
-  computed: {
-    countriesDisplay() {
-      return this.countries
+  methods: {
+    hightlightMatchText(tests) {
+      if(typeof tests !== 'object') return;
+      return tests
         .slice()
         .map((data) => {
           const fontStartIndex = data

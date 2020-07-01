@@ -35,32 +35,59 @@
 </template>
 
 <script>
-import alarmIcon from '@/assets/img/alarm.svg';
-import infoIcon from '@/assets/img/info-24px.svg';
-import pinIcon from '@/assets/img/push_pin-24px.svg';
+  import alarmIcon from '@/assets/img/alarm.svg';
+  import infoIcon from '@/assets/img/info-24px.svg';
+  import pinIcon from '@/assets/img/push_pin-24px.svg';
 
-export default {
-  name: 'HomeCard',
-  props: {
-    country: { type: String, required: true },
-    countryCode: { type: String, required: true },
-    date: { type: Date, required: true },
-    newConfirmed: { type: Number, required: true },
-    newDeaths: { type: Number, required: true },
-    newRecovered: { type: Number, required: true },
-    totalConfirmed: { type: Number, required: true },
-    totalDeaths: { type: Number, required: true },
-    totalRecovered: { type: Number, required: true },
-  },
-  data() {
-    return {};
-  },
-  components: {
-    alarmIcon,
-    pinIcon,
-    infoIcon,
-  },
-};
+  export default {
+    name: 'HomeCard',
+    props: {
+      country: {
+        type: String,
+        required: true
+      },
+      countryCode: {
+        type: String,
+        required: true
+      },
+      date: {
+        type: Date,
+        required: true
+      },
+      newConfirmed: {
+        type: Number,
+        required: true
+      },
+      newDeaths: {
+        type: Number,
+        required: true
+      },
+      newRecovered: {
+        type: Number,
+        required: true
+      },
+      totalConfirmed: {
+        type: Number,
+        required: true
+      },
+      totalDeaths: {
+        type: Number,
+        required: true
+      },
+      totalRecovered: {
+        type: Number,
+        required: true
+      }
+    },
+    data() {
+      return {};
+    },
+    components: {
+      alarmIcon,
+      pinIcon,
+      infoIcon
+    }
+  };
 </script>
 
 <style lang="scss" scoped>

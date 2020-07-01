@@ -2,9 +2,8 @@
   <div class="home">
     <HomeNavbar class="home_navbar"
                 @handler="changeSideBarShow"
-                @handlerSearch="setSearchText"
                 @handlerNextPage="nextPage"
-                :countries="COVID_19_CountriesSearch" />
+                :countries="$store.getters.COVID_19_Countries" />
     <HomeSideBar v-if="isSideBarShow"
                  @handler="changeSideBarShow" />
     <main class="home_wrapper"
@@ -89,17 +88,6 @@ export default {
   methods: {
     changeSideBarShow(data) {
       this.isSideBarShow = data;
-    },
-    setSearchText(data) {
-      this.searchText = data;
-      this.COVID_19_CountriesSearch = !this.searchText
-        ? []
-        : this.$store.getters.COVID_19_Countries
-          .filter((item) => {
-            const regexp = new RegExp(this.searchText, 'gi');
-            if (regexp.test(item.Country) || regexp.test(item.ISO2)) return item;
-          })
-          .map((item) => `${item.Country}, ${item.ISO2}`);
     },
     nextPage(data) {
       this.$router.push({ name: 'country', params: { country: data } });
