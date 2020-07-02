@@ -2,46 +2,34 @@
   <section class="sort">
     <ul class="sort_header">
       <li>
-        <a href
-           title="sort by this type">
-          <sortIcon /><span>Today Cases</span>
-        </a></li>
-      <li>
-        <a href
-           title="sort by this type">
-
-          <sortIcon /><span>Today Cases</span>
-        </a>
+        <sortIcon /><span>新增確診</span>
       </li>
       <li>
-        <a href
-           title="sort by this type">
-          <sortIcon /><span>Today Cases</span>
-        </a></li>
+        <sortIcon /><span>累計確診</span>
+      </li>
       <li>
-        <a href
-           title="sort by this type">
-
-          <sortIcon /><span>Today Cases</span>
-        </a>
+        <sortIcon /><span>新增死亡</span>
+      </li>
+      <li>
+        <sortIcon /><span>累計死亡</span>
       </li>
     </ul>
   </section>
 </template>
 
 <script>
-import sortIcon from '@/assets/img/arrow_circle_down-24px.svg';
+  import sortIcon from '@/assets/img/arrow_circle_down-24px.svg';
 
-export default {
-  name: 'HomeSort',
-  props: {},
-  data() {
-    return {};
-  },
-  components: {
-    sortIcon,
-  },
-};
+  export default {
+    name: 'HomeSort',
+    props: {},
+    data() {
+      return {};
+    },
+    components: {
+      sortIcon
+    }
+  };
 </script>
 
 <style lang="scss" scoped>
@@ -53,17 +41,17 @@ export default {
     &_header {
       border-radius: 4px;
       border-radius: 4px;
-      a {
+      li {
+        @include font(lighter, 12px, $font-primary);
+        display: inline-block;
+        text-align: center;
+        width: 25%;
+        background-color: $theme-secondary;
         transition: all 0.6s ease-in-out;
         color: $font-dark;
-        display: block;
         padding: 6px;
-        &:hover,
-        &:active {
-          background-color: $brand-secondary;
-        }
         &:not(:last-of-type) {
-          border-right: 1px solid $theme-primary;
+          border-right: 2px solid $theme-primary;
         }
         span {
           vertical-align: middle;
@@ -74,13 +62,6 @@ export default {
           margin-right: 6px;
           fill: $font-primary;
         }
-      }
-      li {
-        @include font(lighter, 12px, $font-primary);
-        display: inline-block;
-        text-align: center;
-        width: 25%;
-        background-color: $theme-secondary;
       }
     }
   }

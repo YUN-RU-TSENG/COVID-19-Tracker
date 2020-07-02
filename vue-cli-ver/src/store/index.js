@@ -1,11 +1,11 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import {
-  GET_COVID_19_Summary,
-  GET_COVID_19_Countries,
-  GET_COVID_19_CountryStatusFromDayOne,
-  GET_COVID_19_CountryAllStatusFromDayOne,
-} from '@/service/api.js';
+          GET_COVID_19_Summary,
+          GET_COVID_19_Countries,
+          GET_COVID_19_CountryStatusFromDayOne,
+          GET_COVID_19_CountryAllStatusFromDayOne,
+        } from '@/service/api.js';
 
 Vue.use(Vuex);
 
@@ -42,27 +42,16 @@ export default new Vuex.Store({
     },
     COVID_19_SummaryCountries(state) {
       return state.COVID_19_Summary.Countries.map((item) => {
-        const {
-          Country: country,
-          CountryCode: countryCode,
-          Date: date,
-          NewConfirmed: newConfirmed,
-          NewDeaths: newDeaths,
-          NewRecovered: newRecovered,
-          TotalConfirmed: totalConfirmed,
-          TotalDeaths: totalDeaths,
-          TotalRecovered: totalRecovered,
-        } = item;
         return {
-          country,
-          countryCode,
-          date: new Date(date),
-          newConfirmed,
-          newDeaths,
-          newRecovered,
-          totalConfirmed,
-          totalDeaths,
-          totalRecovered,
+          country: item.Country,
+          countryCode: item.CountryCode,
+          date: new Date(item.Date),
+          newConfirmed: item.NewConfirmed,
+          newDeaths: item.NewDeaths,
+          newRecovered: item.NewRecovered,
+          totalConfirmed: item.TotalConfirmed,
+          totalDeaths: item.TotalDeaths,
+          totalRecovered: item.TotalRecovered,
         };
       });
     },
@@ -85,27 +74,22 @@ export default new Vuex.Store({
     },
   },
   actions: {
-    async API_COVID_19_Summary({ commit }) {
+    async GET_COVID_19_Summary({ commit }) {
       const result = await GET_COVID_19_Summary();
       commit('COVID_19_Summary', result);
     },
-    async API_COVID_19_Countries({ commit }) {
+    async GET_COVID_19_Countries({ commit }) {
       const result = await GET_COVID_19_Countries();
       commit('COVID_19_Countries', result);
     },
-    async API_COVID_19_CountryStatusFromDayOne({ commit }, country, status) {
+    async GET_COVID_19_CountryStatusFromDayOne({ commit }, country, status) {
       const result = await GET_COVID_19_CountryStatusFromDayOne(
         country,
         status,
       );
       commit('COVID_19_CountryStatusFromDayOne', result);
     },
-    async API_COVID_19_CountryAllStatusFromDayOne(
-      { commit },
-      country,
-      startTime,
-      endTime,
-    ) {
+    async GET_COVID_19_CountryAllStatusFromDayOne({ commit }, country, startTime, endTime,) {
       const result = await GET_COVID_19_CountryAllStatusFromDayOne(
         country,
         startTime,

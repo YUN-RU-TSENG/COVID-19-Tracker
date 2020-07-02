@@ -5,4 +5,4 @@
 `pc` 傳入電腦以上的 flex-basis
 `pad` 傳入平板以上的 flex-basis
 `phone` 傳入電腦以上的 flex-basis
-`default` 傳入沒有設置斷點 576px 以下的樣式
+`default` 傳入沒有設置斷點 576px 以下的 flex-basis

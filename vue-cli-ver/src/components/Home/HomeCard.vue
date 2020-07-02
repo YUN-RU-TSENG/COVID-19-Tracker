@@ -5,7 +5,7 @@
       <a href
          class="card_pin">
         <pinIcon /></a>
-      <h2 class="card_title">{{ country }}</h2>
+      <h2 class="card_title">{{ displayIndex(index) + '. ' + country }}</h2>
       <section class="card_header">
         <div>
           <h2>新增確診</h2>
@@ -42,6 +42,10 @@
   export default {
     name: 'HomeCard',
     props: {
+      index: {
+        type: Number,
+        required: true
+      },
       country: {
         type: String,
         required: true
@@ -81,6 +85,11 @@
     },
     data() {
       return {};
+    },
+    methods: {
+      displayIndex(index){
+        return index + 1
+      }
     },
     components: {
       alarmIcon,

@@ -1,7 +1,7 @@
 <template>
   <section class="item clearfix">
     <div class="item_people_icon">
-      <facemaskIcon />
+      <coronavirus />
     </div>
     <h3 class="item_title">{{ name }} :</h3>
     <p class="item_patient">{{chineseName}}<span>{{ ' ' + number+ ' ' }}</span>人</p>
@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import facemaskIcon from '@/assets/img/facemask.svg';
+import coronavirus from '@/assets/img/coronavirus.svg';
 import arrowUpIcon from '@/assets/img/arrow_circle_up-24px.svg';
 // import arrowDownIcon from '@/assets/img/arrow_circle_down-24px.svg';
 
@@ -45,7 +45,7 @@ export default {
     return {};
   },
   components: {
-    facemaskIcon,
+    coronavirus,
     arrowUpIcon,
     // arrowDownIcon
   },
@@ -94,7 +94,7 @@ export default {
       float: right;
       padding: 4px;
       border-radius: 4px;
-      background-color: $brand-primary;
+      background-color: $theme-secondary;
       > svg {
         fill: $theme-primary;
       }
