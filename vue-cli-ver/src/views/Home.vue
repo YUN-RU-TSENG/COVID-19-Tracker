@@ -40,7 +40,7 @@
                      :pad="6"
                      :phone="12"
                      :key="data.name">
-              <HomeItemBone />
+              <BaseLoadCard height="129px" />
             </BaseCol>
           </template>
         </BaseRow>
@@ -65,55 +65,36 @@
         <HomeSortbar class="home_sort" />
         <!-- pin資料 -->
         <template v-if="pinCountriesDatas.length">
-          <h2 class="home_title">收藏項目</h2>
+          <h2 class="home_text">收藏項目</h2>
           <template v-for="(data, index) in pinCountriesDatas">
             <transition name="slide-fade"
                         appear
                         :key="data.country">
               <HomeCard class="home_card"
-                        :country="data.country"
-                        :countryCode="data.countryCode"
-                        :date="data.date"
-                        :newConfirmed="data.newConfirmed"
-                        :newDeaths="data.newDeaths"
-                        :newRecovered="data.newRecovered"
-                        :totalConfirmed="data.totalConfirmed"
-                        :totalDeaths="data.totalDeaths"
-                        :totalRecovered="data.totalRecovered"
+                        v-bind="data"
                         :index="index"
                         :pin="true"
-                        @handler="pinCountriesData"  />
+                        @handler="pinCountriesData" />
             </transition>
           </template>
         </template>
         <template v-if="covidNighteenSummaryCountriesSort.length">
-          <h2 class="home_title">各國家資訊（不包含收藏項目）</h2>
+          <h2 class="home_text">各國家資訊（不包含收藏項目）</h2>
           <template v-for="(data, index) in covidNighteenSummaryCountriesSort">
             <transition name="slide-fade"
                         appear
                         :key="data.country">
-              <!-- 方案一 -->
               <HomeCard class="home_card"
-                        :country="data.country"
-                        :countryCode="data.countryCode"
-                        :date="data.date"
-                        :newConfirmed="data.newConfirmed"
-                        :newDeaths="data.newDeaths"
-                        :newRecovered="data.newRecovered"
-                        :totalConfirmed="data.totalConfirmed"
-                        :totalDeaths="data.totalDeaths"
-                        :totalRecovered="data.totalRecovered"
+                        v-bind="data"
                         :index="index"
                         @handler="pinCountriesData" />
-              <!-- 方案二 -->
-              <!-- 哪種方式更容易識別？ -->
-              <!-- <HomeCard v-bind="data" /> -->
             </transition>
           </template>
         </template>
         <!-- 加載等待元件 -->
         <template v-else>
-          <HomeCardBone v-for="data in 4"
+          <BaseLoadCard height="196px"
+                        v-for="data in 4"
                         class="home_card"
                         :key="data" />
         </template>
@@ -136,11 +117,15 @@
   import BaseCol from '@/components/BaseCol.vue';
   import BaseRow from '@/components/BaseRow.vue';
   import HomeSortbar from '@/components/Home/HomeSortbar.vue';
-  import HomeItemBone from '../components/Home/HomeItemBone.vue';
+  import BaseLoadCard from '../components/BaseLoadCard.vue';
 
   // svg
   import arrowCircle from '@/assets/img/arrow_circle_up-24px.svg';
-  import HomeCardBone from '../components/Home/HomeCardBone.vue';
+
+
+  function pinValue() {
+    return JSON.parse(localStorage.getItem('pinValue')) || [];
+  }
 
   export default {
     name: 'Home',
@@ -152,7 +137,7 @@
       return {
         isSideBarShow: false,
         sortItem: 'word',
-        pinCountries: [],
+        pinCountries: pinValue(),
         sortOption: [
           {
             value: 'word',
@@ -180,12 +165,9 @@
     computed: {
       // 依照選擇排序國家順序
       covidNighteenSummaryCountriesSort() {
-        let noPinCountries = this.$store.getters.covidNighteenSummaryCountries.filter(
-          item => !this.pinCountries.includes(item.country)
-        );
         switch (this.sortItem) {
           case 'word':
-            return noPinCountries.sort((aft, bef) => {
+            return this.noPinCountriesDatas.sort((aft, bef) => {
               const aftWord = aft.country
                 .slice(0, 1)
                 .toLowerCase()
@@ -201,12 +183,17 @@
           case 'totalDeaths':
           case 'totalConfirmed':
           case 'newDeaths':
-            return noPinCountries.sort(
+            return this.noPinCountriesDatas.sort(
               (aft, bef) => bef[this.sortItem] - aft[this.sortItem]
             );
           default:
-            return noPinCountries;
+            return this.noPinCountriesDatas;
         }
+      },
+      noPinCountriesDatas() {
+        return this.$store.getters.covidNighteenSummaryCountries.filter(
+          item => !this.pinCountries.includes(item.country)
+        );
       },
       pinCountriesDatas() {
         return this.$store.getters.covidNighteenSummaryCountries.filter(item =>
@@ -222,16 +209,18 @@
         this.$router.push({ name: 'country', params: { country: data } });
       },
       pinCountriesData(data) {
-        if(this.pinCountries.includes(data)) {
-          this.pinCountries.splice(this.pinCountries.indexOf(data), 1)
-          return
+        if (this.pinCountries.includes(data)) {
+          this.pinCountries.splice(this.pinCountries.indexOf(data), 1);
+          localStorage.setItem('pinValue', JSON.stringify(this.pinCountries));
+          return;
+        } else {
+          this.pinCountries.push(data);
+          localStorage.setItem('pinValue', JSON.stringify(this.pinCountries));
         }
-        this.pinCountries.push(data);
       }
     },
     components: {
-      HomeCardBone,
-      HomeItemBone,
+      BaseLoadCard,
       HomeSortbar,
       BaseRow,
       BaseCol,

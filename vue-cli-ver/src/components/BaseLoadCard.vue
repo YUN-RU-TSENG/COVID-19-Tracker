@@ -1,25 +1,30 @@
 <template>
-  <section class="item clearfix">
+  <div class="card"
+       :style="{height}">
     <div class="lazy-load"></div>
-  </section>
+  </div>
 </template>
 
 <script>
   export default {
-    name: 'HomeItemBone',
+    name: 'BaseLoadCard',
+    props: {
+      height: {
+        type: String,
+        required: true
+      }
+    },
     data() {
       return {};
-    },
-    components: {}
+    }
   };
 </script>
 
 <style lang="scss" scoped>
-  .item {
+  .card {
+    font-size: 0;
     background-color: $theme-secondary;
     border-radius: 4px;
-    font-size: 0;
-    height: 129px;
     position: relative;
     .lazy-load {
       position: absolute;
@@ -35,7 +40,6 @@
       animation: dotted 1s ease-in 0s infinite;
     }
   }
-
   @keyframes dotted {
     0% {
       width: 0;
