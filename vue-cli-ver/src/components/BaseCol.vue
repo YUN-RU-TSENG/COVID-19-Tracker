@@ -105,7 +105,7 @@ export default {
   .col-10,
   .col-11,
   .col-12 {
-    padding: 0 12px;
+    padding: 0 6px;
   }
 
   .col-1 {

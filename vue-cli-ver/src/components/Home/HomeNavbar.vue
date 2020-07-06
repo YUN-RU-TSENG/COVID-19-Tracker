@@ -65,7 +65,7 @@ export default {
           };
         });
 
-      return this.hightlightMatchText(tests);
+      return this.highlightMatchText(tests);
     },
   },
   methods: {
@@ -79,7 +79,7 @@ export default {
       * @param { Array } 字串的陣列集合
       * @return { Object } 返回包含符合字串(fontMatch)、符合前後字串(fontStart, fontEnd)、國家名稱(country)、符合字串 index(fontStartIndex)
       **/
-    hightlightMatchText(tests) {
+    highlightMatchText(tests) {
       if (!Array.isArray(tests)) return;
 
       return tests.map((data) => {
@@ -109,7 +109,7 @@ export default {
   },
   components: {
     menuIcon,
-    settings,
+    settings
   },
 };
 </script>

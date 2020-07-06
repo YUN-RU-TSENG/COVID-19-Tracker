@@ -3,53 +3,75 @@
     <HomeNavbar class="home_navbar"
                 @handler="changeSideBarShow"
                 @handlerNextPage="nextPage"
-                :countries="$store.getters.COVID_19_Countries" />
+                :countries="$store.getters.covidNighteenCountries" />
     <HomeSideBar v-if="isSideBarShow"
                  @handler="changeSideBarShow" />
     <main class="home_wrapper"
           id="top">
-      <section class="home_baseItem">
-        <h2 class="home_title">新冠肺炎世界今日資訊</h2>
-        <p class="home_text">由約翰霍普金斯所提供的訊息</p>
-        <BaseRow class="home_baseItem_container">
-          <BaseCol v-for="data in $store.getters.COVID_19_SummaryGlobal"
-                   :pad="6"
-                   :phone="12"
-                   :key="data.name">
-            <transition name="slide-fade"
-                        appear>
-              <HomeItem :name="data.name"
-                        :date="data.date"
-                        :chineseName="data.chineseName"
-                        :number="data.number" />
-            </transition>
-          </BaseCol>
+      <section class="home_item">
+        <h2 class="home_title">COVID-19 世界即時資訊</h2>
+        <p class="home_text">
+          嚴重特殊傳染性肺炎疫情，是一次由嚴重急性呼吸系統症候群冠狀病毒2型（SARS-CoV-2）所引發的全球大流行疫情。疫情最初在 2019 年 12 月於中華人民共和國湖北省武漢市被發現，隨後在 2020 年初迅速擴散至全球多國，逐漸變成一場全球性大瘟疫，被多個國際組織及傳媒形容為自第二次世界大戰以來全球面臨的最嚴峻危機（出自
+          <a class="home_link"
+             target="_blank"
+             href="https://zh.wikipedia.org/wiki/2019%E5%86%A0%E7%8A%B6%E7%97%85%E6%AF%92%E7%97%85%E7%96%AB%E6%83%85#cite_note-346">維基</a>）。數據資料來源：<a class="home_link"
+             target="_blank"
+             href="https://github.com/CSSEGISandData/COVID-19">Johns Hopkins CSSE</a></p>
+        <BaseRow class="home_item_container">
+          <template v-if="$store.getters.covidNighteenSummaryGlobal.length">
+            <BaseCol v-for="data in $store.getters.covidNighteenSummaryGlobal"
+                     :pc="4"
+                     :pad="6"
+                     :phone="12"
+                     :key="data.name">
+              <transition name="slide-fade"
+                          appear>
+                <HomeItem :name="data.name"
+                          :date="data.date"
+                          :chineseName="data.chineseName"
+                          :number="data.number" />
+              </transition>
+            </BaseCol>
+          </template>
+          <!-- 加載等待元件 -->
+          <template v-else>
+            <BaseCol v-for="data in 6"
+                     :pc="4"
+                     :pad="6"
+                     :phone="12"
+                     :key="data.name">
+              <HomeItemBone />
+            </BaseCol>
+          </template>
         </BaseRow>
       </section>
-      <section class="home_baseCard clearfix">
-        <div class="home_baseCard_selector">
+      <section class="home_card_wrapper clearfix">
+        <div class="home_card_selector">
           <span>排序：</span>
+          <!-- element ui select -->
           <el-select v-model="sortItem"
-                   placeholder="排序國家顯示順序"
-                   >
-          <el-option v-for="item in sortOption"
-                     :key="item.value"
-                     :label="item.label"
-                     :value="item.value">
-          </el-option>
-        </el-select>
+                     placeholder="排序國家顯示順序">
+            <el-option v-for="item in sortOption"
+                       :key="item.value"
+                       :label="item.label"
+                       :value="item.value">
+            </el-option>
+          </el-select>
         </div>
-        <h2 class="home_title">新冠肺炎各國地區資訊</h2>
-        <p class="home_text">由約翰霍普金斯所提供的訊息</p>
+        <h2 class="home_title">COVID-19 地區即時資訊</h2>
+        <p class="home_text">查看各國地區詳細資訊。數據資料來源： <a class="home_link"
+             target="_blank"
+             href="https://github.com/CSSEGISandData/COVID-19">Johns Hopkins CSSE</a></p>
         <HomeSortbar class="home_sort" />
-        <BaseRow class="home_baseCard_container">
-          <BaseCol v-for="(data, index) in COVID_19_SummaryCountriesSort"
-                   :key="data.country"
-                   :default="12">
+        <!-- pin資料 -->
+        <template v-if="pinCountriesDatas.length">
+          <h2 class="home_title">收藏項目</h2>
+          <template v-for="(data, index) in pinCountriesDatas">
             <transition name="slide-fade"
-                        appear>
-              <!-- 方案一 -->
-              <HomeCard :country="data.country"
+                        appear
+                        :key="data.country">
+              <HomeCard class="home_card"
+                        :country="data.country"
                         :countryCode="data.countryCode"
                         :date="data.date"
                         :newConfirmed="data.newConfirmed"
@@ -58,13 +80,43 @@
                         :totalConfirmed="data.totalConfirmed"
                         :totalDeaths="data.totalDeaths"
                         :totalRecovered="data.totalRecovered"
-                        :index="index" />
+                        :index="index"
+                        :pin="true"
+                        @handler="pinCountriesData"  />
+            </transition>
+          </template>
+        </template>
+        <template v-if="covidNighteenSummaryCountriesSort.length">
+          <h2 class="home_title">各國家資訊（不包含收藏項目）</h2>
+          <template v-for="(data, index) in covidNighteenSummaryCountriesSort">
+            <transition name="slide-fade"
+                        appear
+                        :key="data.country">
+              <!-- 方案一 -->
+              <HomeCard class="home_card"
+                        :country="data.country"
+                        :countryCode="data.countryCode"
+                        :date="data.date"
+                        :newConfirmed="data.newConfirmed"
+                        :newDeaths="data.newDeaths"
+                        :newRecovered="data.newRecovered"
+                        :totalConfirmed="data.totalConfirmed"
+                        :totalDeaths="data.totalDeaths"
+                        :totalRecovered="data.totalRecovered"
+                        :index="index"
+                        @handler="pinCountriesData" />
               <!-- 方案二 -->
               <!-- 哪種方式更容易識別？ -->
               <!-- <HomeCard v-bind="data" /> -->
             </transition>
-          </BaseCol>
-        </BaseRow>
+          </template>
+        </template>
+        <!-- 加載等待元件 -->
+        <template v-else>
+          <HomeCardBone v-for="data in 4"
+                        class="home_card"
+                        :key="data" />
+        </template>
       </section>
     </main>
     <a href="#top"
@@ -84,25 +136,23 @@
   import BaseCol from '@/components/BaseCol.vue';
   import BaseRow from '@/components/BaseRow.vue';
   import HomeSortbar from '@/components/Home/HomeSortbar.vue';
+  import HomeItemBone from '../components/Home/HomeItemBone.vue';
 
   // svg
   import arrowCircle from '@/assets/img/arrow_circle_up-24px.svg';
-
-  import NProgress from 'nprogress';
-  import '@/assets/nprogress.css';
+  import HomeCardBone from '../components/Home/HomeCardBone.vue';
 
   export default {
     name: 'Home',
-    async created() {
-      NProgress.start();
-      await this.$store.dispatch('GET_COVID_19_Summary');
-      await this.$store.dispatch('GET_COVID_19_Countries');
-      NProgress.done();
+    created() {
+      this.$store.dispatch('GET_covidNighteenSummary');
+      this.$store.dispatch('GET_covidNighteenCountries');
     },
     data() {
       return {
         isSideBarShow: false,
         sortItem: 'word',
+        pinCountries: [],
         sortOption: [
           {
             value: 'word',
@@ -129,25 +179,39 @@
     },
     computed: {
       // 依照選擇排序國家順序
-      COVID_19_SummaryCountriesSort() {
-          switch (this.sortItem) {
-            case 'word':
-              return this.$store.getters.COVID_19_SummaryCountries.slice().sort((aft, bef) => {
-                const aftWord = aft.country.slice(0, 1).toLowerCase().charCodeAt();
-                const befWord = bef.country.slice(0, 1).toLowerCase().charCodeAt();
+      covidNighteenSummaryCountriesSort() {
+        let noPinCountries = this.$store.getters.covidNighteenSummaryCountries.filter(
+          item => !this.pinCountries.includes(item.country)
+        );
+        switch (this.sortItem) {
+          case 'word':
+            return noPinCountries.sort((aft, bef) => {
+              const aftWord = aft.country
+                .slice(0, 1)
+                .toLowerCase()
+                .charCodeAt();
+              const befWord = bef.country
+                .slice(0, 1)
+                .toLowerCase()
+                .charCodeAt();
 
-                return aftWord - befWord;
-              });
-            case 'newConfirmed':
-            case 'totalDeaths':
-            case 'totalConfirmed':
-            case 'newDeaths':
-              return this.$store.getters.COVID_19_SummaryCountries.slice().sort(
-                (aft, bef) => bef[this.sortItem] - aft[this.sortItem]
-              );
-            default:
-              return this.$store.getters.COVID_19_SummaryCountries
-          }
+              return aftWord - befWord;
+            });
+          case 'newConfirmed':
+          case 'totalDeaths':
+          case 'totalConfirmed':
+          case 'newDeaths':
+            return noPinCountries.sort(
+              (aft, bef) => bef[this.sortItem] - aft[this.sortItem]
+            );
+          default:
+            return noPinCountries;
+        }
+      },
+      pinCountriesDatas() {
+        return this.$store.getters.covidNighteenSummaryCountries.filter(item =>
+          this.pinCountries.includes(item.country)
+        );
       }
     },
     methods: {
@@ -156,9 +220,18 @@
       },
       nextPage(data) {
         this.$router.push({ name: 'country', params: { country: data } });
+      },
+      pinCountriesData(data) {
+        if(this.pinCountries.includes(data)) {
+          this.pinCountries.splice(this.pinCountries.indexOf(data), 1)
+          return
+        }
+        this.pinCountries.push(data);
       }
     },
     components: {
+      HomeCardBone,
+      HomeItemBone,
       HomeSortbar,
       BaseRow,
       BaseCol,
@@ -192,10 +265,14 @@
     &_sort {
       margin-bottom: 12px;
     }
+    &_link {
+      @include font(lighter, 12px, $font-secondary);
+      color: $brand-primary;
+      text-decoration: underline;
+    }
     &_title {
       @include font(bold, 16px, $font-secondary);
       color: $font-dark;
-      padding-left: 12px;
       margin-bottom: 6px;
       svg {
         vertical-align: text-bottom;
@@ -205,45 +282,43 @@
     &_text {
       @include font(lighter, 12px, $font-secondary);
       color: $font-dark;
-      padding-left: 12px;
       margin-bottom: 12px;
+      text-align: justify;
     }
-    &_baseItem_container {
+    &_item_container {
       margin-bottom: 24px;
-      div:not(:last-of-type) * {
-        margin-bottom: 24px;
+      div:not(:last-of-type) > * {
+        margin-bottom: 12px;
       }
       @include Mediaquery-pad {
-        div:not(:last-of-type) * {
+        div:not(:last-of-type) > * {
           margin-bottom: 0px;
         }
         div:not(:nth-last-of-type(3)):not(:nth-last-of-type(2)):not(:last-of-type)
           * {
-          margin-bottom: 24px;
+          margin-bottom: 12px;
         }
       }
       @include Mediaquery-pc {
-        div:not(:last-of-type) * {
+        div:not(:last-of-type) > * {
           margin-bottom: 0px;
         }
         div:not(:nth-last-of-type(3)):not(:nth-last-of-type(2)):not(:last-of-type)
           * {
-          margin-bottom: 24px;
+          margin-bottom: 12px;
         }
       }
     }
-    &_baseCard_selector {
+    &_card_selector {
       float: right;
-      span{
+      span {
         margin-right: 12px;
         @include font(lighter, 16px, $font-secondary);
         color: $font-dark;
       }
     }
-    &_baseCard_container {
-      div * {
-        margin-bottom: 24px;
-      }
+    &_card {
+      margin-bottom: 12px;
     }
     &_top_arrow {
       position: fixed;

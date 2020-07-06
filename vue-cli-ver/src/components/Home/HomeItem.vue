@@ -56,20 +56,20 @@ export default {
   .item {
     background-color: $theme-primary;
     border-radius: 4px;
-    padding: 16px;
+    padding: 16px 12px;
     font-size: 0;
 
     &_title {
       @include font(normal, 12px, $font-primary);
       color: $font-gray;
-      margin-bottom: 10px;
+      margin-bottom: 6px;
       transform-origin: top left;
       transform: scale(0.8);
     }
     &_patient {
       @include font(bold, 16px, $font-primary);
       color: $font-dark;
-      margin-bottom: 14px;
+      margin-bottom: 12px;
       span {
         @include font(bold, 16px, $font-secondary);
         color: $warning;
@@ -80,6 +80,8 @@ export default {
       transform-origin: top left;
       transform: scale(0.8);
       color: $font-gray;
+      margin-bottom: -8px;
+      text-align: justify;
       span {
         @include font(bold, 12px, $font-primary);
         color: $infomation;

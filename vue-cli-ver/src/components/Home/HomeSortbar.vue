@@ -34,7 +34,7 @@
 
 <style lang="scss" scoped>
   .sort {
-    padding: 12px 20px;
+    padding: 12px 12px;
     font-size: 0;
     background-color: $theme-primary;
     border-radius: 4px;

@@ -1,9 +1,12 @@
 <template>
   <a href
-     class="card_link">
+     class="card_link"
+     @click.prevent="">
     <section class="card">
       <a href
-         class="card_pin">
+         class="card_pin"
+         :class="{'active': pin}"
+         @click.prevent="$emit('handler', country)">
         <pinIcon /></a>
       <h2 class="card_title">{{ displayIndex(index) + '. ' + country }}</h2>
       <section class="card_header">
@@ -81,6 +84,10 @@
       totalRecovered: {
         type: Number,
         required: true
+      },
+      pin:{
+        type: Boolean,
+        default: false
       }
     },
     data() {
@@ -101,7 +108,7 @@
 
 <style lang="scss" scoped>
   .card {
-    padding: 10px 20px 20px 20px;
+    padding: 12px;
     font-size: 0;
     background-color: $theme-primary;
     border-radius: 4px;
@@ -109,17 +116,16 @@
       float: right;
       opacity: 0.5;
       transition: all 0.3s cubic-bezier(0.1, 0.5, 1, 0.1);
+      &.active{
+        opacity: 1;
+        svg{
+          transform: rotate(0deg);
+          fill: $brand-primary;
+        }
+      }
       svg {
         transform: rotate(45deg);
         fill: $dark;
-      }
-      &:hover,
-      &:active {
-        opacity: 1;
-        svg {
-          fill: $brand-primary;
-          transform: rotate(0deg);
-        }
       }
     }
     &_link {
@@ -131,7 +137,7 @@
     }
     &_title {
       @include font(bold, 12px, $font-primary);
-      color: $font-gray;
+      color: $font-dark;
       margin-bottom: 16px;
       margin-top: 10px;
     }

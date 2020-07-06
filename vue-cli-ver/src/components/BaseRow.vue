@@ -12,6 +12,6 @@ export default {};
   .row {
     display: flex;
     flex-wrap: wrap;
-    margin: 0px -12px;
+    margin: 0px -6px;
   }
 </style>
