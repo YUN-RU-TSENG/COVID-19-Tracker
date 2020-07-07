@@ -36,7 +36,7 @@ export default new Vuex.Store({
           name,
           chineseName: translateName[name],
           number,
-          date: new Date(state.covidNighteenSummary.Date),
+          date: state.covidNighteenSummary.Date,
         };
       });
     },
@@ -45,7 +45,7 @@ export default new Vuex.Store({
         return {
           country: item.Country,
           countryCode: item.CountryCode,
-          date: new Date(item.Date),
+          date: item.Date,
           newConfirmed: item.NewConfirmed,
           newDeaths: item.NewDeaths,
           newRecovered: item.NewRecovered,

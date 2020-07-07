@@ -123,6 +123,7 @@
   import arrowCircle from '@/assets/img/arrow_circle_up-24px.svg';
 
 
+  // 取 localStorage pin 數值
   function pinValue() {
     return JSON.parse(localStorage.getItem('pinValue')) || [];
   }
@@ -168,14 +169,8 @@
         switch (this.sortItem) {
           case 'word':
             return this.noPinCountriesDatas.sort((aft, bef) => {
-              const aftWord = aft.country
-                .slice(0, 1)
-                .toLowerCase()
-                .charCodeAt();
-              const befWord = bef.country
-                .slice(0, 1)
-                .toLowerCase()
-                .charCodeAt();
+              const aftWord = aft.country.slice(0, 1).toLowerCase().charCodeAt();
+              const befWord = bef.country.slice(0, 1).toLowerCase().charCodeAt();
 
               return aftWord - befWord;
             });
@@ -213,10 +208,9 @@
           this.pinCountries.splice(this.pinCountries.indexOf(data), 1);
           localStorage.setItem('pinValue', JSON.stringify(this.pinCountries));
           return;
-        } else {
-          this.pinCountries.push(data);
-          localStorage.setItem('pinValue', JSON.stringify(this.pinCountries));
         }
+        this.pinCountries.push(data);
+        localStorage.setItem('pinValue', JSON.stringify(this.pinCountries));
       }
     },
     components: {

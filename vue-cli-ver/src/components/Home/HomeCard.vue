@@ -13,25 +13,25 @@
         <div>
           <h2>新增確診</h2>
           <p>
-            <alarmIcon /><span>{{ newConfirmed}} </span></p>
+            <alarmIcon /><span>{{ newConfirmed | displayNumber}} </span></p>
         </div>
         <div>
           <h2>新增死亡</h2>
           <p>
-            <infoIcon /><span>{{ newDeaths }}</span></p>
+            <infoIcon /><span>{{ newDeaths | displayNumber }}</span></p>
         </div>
         <div>
           <h2>累計確診</h2>
           <p>
-            <alarmIcon /><span>{{ totalConfirmed }}</span></p>
+            <alarmIcon /><span>{{ totalConfirmed | displayNumber }}</span></p>
         </div>
         <div>
           <h2>累計死亡</h2>
           <p>
-            <infoIcon /><span>{{ totalDeaths }}</span></p>
+            <infoIcon /><span>{{ totalDeaths | displayNumber }}</span></p>
         </div>
       </section>
-      <p class="card_text">Update at {{date}} . 累計至該時間共 {{ totalRecovered }} 人康復.</p>
+      <p class="card_text">Update at {{ date | displayDay }} . 累計至該時間共 {{ totalRecovered | displayNumber }} 人康復.</p>
 
     </section>
   </a>
@@ -41,6 +41,8 @@
   import alarmIcon from '@/assets/img/alarm.svg';
   import infoIcon from '@/assets/img/info-24px.svg';
   import pinIcon from '@/assets/img/push_pin-24px.svg';
+
+  import dayjs from 'dayjs'
 
   export default {
     name: 'HomeCard',
@@ -58,7 +60,7 @@
         required: true
       },
       date: {
-        type: Date,
+        type: String,
         required: true
       },
       newConfirmed: {
@@ -92,6 +94,18 @@
     },
     data() {
       return {};
+    },
+    filters: {
+      displayNumber(data) {
+        if (!parseInt(data, 10)) return "無";
+        return parseInt(data, 10).toLocaleString("zh-TW", {
+          style: "decimal",
+          useGrouping: true,
+        })
+      },
+      displayDay(date){
+        return dayjs(date).format('MM月DD日 HH:mm');
+      }
     },
     methods: {
       displayIndex(index){

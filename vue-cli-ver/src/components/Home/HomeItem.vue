@@ -4,52 +4,66 @@
       <coronavirus />
     </div>
     <h3 class="item_title">{{ name }} :</h3>
-    <p class="item_patient">{{chineseName}}<span>{{ ' ' + number+ ' ' }}</span>人</p>
+    <p class="item_patient">{{ chineseName }} <span>{{  number | displayNumber  }}</span> 人</p>
     <p class="item_information">
       今日截至目前共有
       <span class="information_trend">
-        {{ number }}
+        {{ number | displayNumber }}
         <arrowUpIcon />
       </span>
-      位 {{ chineseName }}。最後更新時間為 {{ date }}
+      位 {{ chineseName }}。最後更新時間為 {{ date | displayDay }}
     </p>
   </section>
 </template>
 
 <script>
-import coronavirus from '@/assets/img/coronavirus.svg';
-import arrowUpIcon from '@/assets/img/arrow_circle_up-24px.svg';
-// import arrowDownIcon from '@/assets/img/arrow_circle_down-24px.svg';
+  import coronavirus from '@/assets/img/coronavirus.svg';
+  import arrowUpIcon from '@/assets/img/arrow_circle_up-24px.svg';
+  // import arrowDownIcon from '@/assets/img/arrow_circle_down-24px.svg';
 
-export default {
-  name: 'HomeItem',
-  props: {
-    name: {
-      type: String,
-      required: true,
+  import dayjs from 'dayjs'
+
+  export default {
+    name: 'HomeItem',
+    props: {
+      name: {
+        type: String,
+        required: true
+      },
+      chineseName: {
+        type: String,
+        required: true
+      },
+      number: {
+        type: Number,
+        required: true
+      },
+      date: {
+        type: String,
+        required: true
+      }
     },
-    chineseName: {
-      type: String,
-      required: true,
+    data() {
+      return {};
     },
-    number: {
-      type: Number,
-      required: true,
+    filters: {
+      displayNumber(data) {
+        if (!parseInt(data, 10)) return '無';
+        return parseInt(data, 10).toLocaleString('zh-TW', {
+          style: 'decimal',
+          useGrouping: true
+        });
+      },
+      displayDay(date){
+        return dayjs(date).format('MM月DD日 HH:mm');
+      }
     },
-    date: {
-      type: Date,
-      required: true,
-    },
-  },
-  data() {
-    return {};
-  },
-  components: {
-    coronavirus,
-    arrowUpIcon,
-    // arrowDownIcon
-  },
-};
+    components: {
+      coronavirus,
+      arrowUpIcon
+      // arrowDownIcon
+    }
+  };
 </script>
 
 <style lang="scss" scoped>
