@@ -5,43 +5,43 @@
 </template>
 
 <script>
-export default {
-  props: {
-    default: {
-      type: Number,
-      required: false,
-      default: 12,
-    },
-    pc: {
-      type: Number,
-      required: false,
-    },
-    pad: {
-      type: Number,
-      required: false,
-    },
-    phone: {
-      type: Number,
-      required: false,
-    },
-    guttur: {
-      type: Boolean,
-      required: false,
-      default: true,
-    },
-  },
-  computed: {
-    styleObject() {
-      return {
-        ["col-"+this.default]: this.default,
-        ["col-phone-"+this.phone]: this.phone,
-        ["col-pad-"+this.pad]: this.pad,
-        ["col-pc-"+this.pc]: this.pc,
-        "no-gutter": !this.guttur
+  export default {
+    props: {
+      default: {
+        type: Number,
+        required: false,
+        default: 12
+      },
+      pc: {
+        type: Number,
+        required: false
+      },
+      pad: {
+        type: Number,
+        required: false
+      },
+      phone: {
+        type: Number,
+        required: false
+      },
+      guttur: {
+        type: Boolean,
+        required: false,
+        default: true
       }
     },
-  },
-};
+    computed: {
+      styleObject() {
+        return {
+          ['col-' + this.default]: this.default,
+          ['col-phone-' + this.phone]: this.phone,
+          ['col-pad-' + this.pad]: this.pad,
+          ['col-pc-' + this.pc]: this.pc,
+          'no-gutter': !this.guttur
+        };
+      }
+    }
+  };
 </script>
 
 <style lang="scss" scoped>
