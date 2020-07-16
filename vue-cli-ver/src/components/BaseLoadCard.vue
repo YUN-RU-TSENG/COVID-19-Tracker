@@ -1,6 +1,6 @@
 <template>
   <div class="card"
-       :style="{height}">
+       :style="{ height }">
     <div class="lazy-load"></div>
   </div>
 </template>
@@ -38,6 +38,7 @@
       right: 0;
       background-color: $theme-primary;
       animation: dotted 1s ease-in 0s infinite;
+      box-shadow: -20px 0px $theme-primary, 20px 0px $theme-primary;
     }
   }
   @keyframes dotted {
@@ -46,8 +47,8 @@
       height: 0;
     }
     50% {
-      width: 20px;
-      height: 20px;
+      width: 10px;
+      height: 10px;
     }
     100% {
       width: 0;

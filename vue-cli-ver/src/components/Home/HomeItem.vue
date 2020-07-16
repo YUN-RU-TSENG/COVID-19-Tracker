@@ -43,9 +43,6 @@
         required: true
       }
     },
-    data() {
-      return {};
-    },
     filters: {
       displayNumber(data) {
         if (!parseInt(data, 10)) return '無';

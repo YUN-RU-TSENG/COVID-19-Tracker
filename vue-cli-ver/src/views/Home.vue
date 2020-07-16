@@ -24,7 +24,7 @@
                      :pad="6"
                      :phone="12"
                      :key="data.name">
-              <transition name="slide-fade"
+              <transition name="fade"
                           appear>
                 <HomeItem :name="data.name"
                           :date="data.date"
@@ -40,7 +40,7 @@
                      :pad="6"
                      :phone="12"
                      :key="data.name">
-              <BaseLoadCard height="129px" />
+              <BaseLoadCard height="112px" />
             </BaseCol>
           </template>
         </BaseRow>
@@ -67,7 +67,7 @@
         <template v-if="pinCountriesDatas.length">
           <h2 class="home_text">收藏項目</h2>
           <template v-for="(data, index) in pinCountriesDatas">
-            <transition name="slide-fade"
+            <transition name="fade"
                         appear
                         :key="data.country">
               <HomeCard class="home_card"
@@ -81,7 +81,7 @@
         <template v-if="covidNighteenSummaryCountriesSort.length">
           <h2 class="home_text">各國家資訊（不包含收藏項目）</h2>
           <template v-for="(data, index) in covidNighteenSummaryCountriesSort">
-            <transition name="slide-fade"
+            <transition name="fade"
                         appear
                         :key="data.country">
               <HomeCard class="home_card"

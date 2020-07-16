@@ -5,10 +5,10 @@
         <sortIcon /><span>新增確診</span>
       </li>
       <li>
-        <sortIcon /><span>累計確診</span>
+        <sortIcon /><span>新增死亡</span>
       </li>
       <li>
-        <sortIcon /><span>新增死亡</span>
+        <sortIcon /><span>累計確診</span>
       </li>
       <li>
         <sortIcon /><span>累計死亡</span>
