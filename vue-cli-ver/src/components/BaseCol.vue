@@ -32,13 +32,13 @@ export default {
   },
   computed: {
     styleObject() {
-      const result = [];
-      if (this.default) result.push(`col-${this.default}`);
-      if (this.phone) result.push(`col-phone-${this.phone}`);
-      if (this.pad) result.push(`col-pad-${this.pad}`);
-      if (this.pc) result.push(`col-pc-${this.pc}`);
-      if (!this.guttur) result.push('no-gutter');
-      return result;
+      return {
+        ["col-"+this.default]: this.default,
+        ["col-phone-"+this.phone]: this.phone,
+        ["col-pad-"+this.pad]: this.pad,
+        ["col-pc-"+this.pc]: this.pc,
+        "no-gutter": !this.guttur
+      }
     },
   },
 };
