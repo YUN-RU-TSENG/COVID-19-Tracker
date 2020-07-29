@@ -1,46 +1,47 @@
 /**
  * API Doc: https://documenter.getpostman.com/view/10808728/SzS8rjbc?version=latest
  */
+// ! 這一頁太亂，要整理
 import axios from "axios";
 // nprogress
-import NProgress from 'nprogress';
-import '@/assets/nprogress.css';
+import NProgress from "nprogress";
+import "@/assets/plugin/nprogress.css";
 
-const covidNighteenInstance = axios.create({
+const covidNineteenInstance = axios.create({
   baseURL: "https://api.covid19api.com/",
-  timeout: 6000
+  timeout: 6000,
 });
 
-covidNighteenInstance.interceptors.request.use((config) => {
+covidNineteenInstance.interceptors.request.use((config) => {
   NProgress.start();
   return config;
 });
-covidNighteenInstance.interceptors.response.use((response) => {
+covidNineteenInstance.interceptors.response.use((response) => {
   NProgress.done();
   return response;
 });
 
 // 返回所有地區每日最新數據、總數據
-export const GET_covidNighteenSummary = () =>
-  covidNighteenInstance.get("/summary").then((response) => response.data);
+export const GET_covidNineteenSummary = () =>
+  covidNineteenInstance.get("/summary").then((response) => response.data);
 
 // 返回所有地區名稱
-export const GET_covidNighteenCountries = () =>
-  covidNighteenInstance.get("/countries").then((response) => response.data);
+export const GET_covidNineteenCountries = () =>
+  covidNineteenInstance.get("/countries").then((response) => response.data);
 
 // 返回一個地區至今的某類別自第一日到今日
-export const GET_covidNighteenCountryStatusFromDayOne = (country, status) =>
-  covidNighteenInstance
+export const GET_covidNineteenCountryStatusFromDayOne = (country, status) =>
+  covidNineteenInstance
     .get(`/dayone/country/${country}/status/${status}`)
     .then((response) => response.data);
 
 // 返回一個國家特定時間內的資料
-export const GET_covidNighteenCountryAllStatusFromDayOne = (
+export const GET_covidNineteenCountryAllStatusFromDayOne = (
   country,
   startTime,
   endTime
 ) =>
-  covidNighteenInstance
+  covidNineteenInstance
     .get(`/country/${country}?from=${startTime}&to=${endTime}`)
     .then((response) => response.data);
 

@@ -7,7 +7,8 @@
     <p class="item_patient">{{ chineseName }} <span>{{  number | displayNumber  }}</span> 人</p>
     <p class="item_information">
       今日截至目前共有
-      <span class="information_trend">
+      <span class="information_trend"
+            :class="{ styleObject }">
         {{ number | displayNumber }}
         <arrowUpIcon />
       </span>
@@ -21,45 +22,60 @@
   import arrowUpIcon from '@/assets/img/arrow_circle_up-24px.svg';
   // import arrowDownIcon from '@/assets/img/arrow_circle_down-24px.svg';
 
-  import dayjs from 'dayjs'
+  import dayjs from 'dayjs';
 
   export default {
     name: 'HomeItem',
     props: {
       name: {
         type: String,
-        required: true
+        required: true,
       },
       chineseName: {
         type: String,
-        required: true
+        required: true,
       },
       number: {
         type: Number,
-        required: true
+        required: true,
       },
       date: {
         type: String,
-        required: true
-      }
+        required: true,
+      },
+      index: {
+        type: Number,
+        required: true,
+      },
+    },
+    computed: {
+      styleObject() {
+        let result = this.index % 2 ? 'primary' : 'secondary';
+        console.log({
+          ['circle-' + result]: true,
+        });
+        return {
+          ['circle-' + result]: true,
+        };
+      },
     },
     filters: {
       displayNumber(data) {
         if (!parseInt(data, 10)) return '無';
         return parseInt(data, 10).toLocaleString('zh-TW', {
           style: 'decimal',
-          useGrouping: true
+          useGrouping: true,
         });
       },
-      displayDay(date){
+      displayDay(date) {
         return dayjs(date).format('MM月DD日 HH:mm');
-      }
+      },
     },
     components: {
       coronavirus,
-      arrowUpIcon
+      arrowUpIcon,
       // arrowDownIcon
-    }
+    },
   };
 </script>
 
@@ -108,9 +124,37 @@
       padding: 4px;
       border-radius: 4px;
       background-color: $theme-secondary;
-      > svg {
-        fill: $theme-primary;
-      }
+    }
+  }
+  
+  .circle-primary {
+    animation: circle-primary 3s ease-in 0s infinite;
+  }
+  .circle-secondary {
+    animation: circle-secondary 5s ease-in 0s infinite;
+  }
+
+  @keyframes circle-primary {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(0.8) rotate(160deg);
+    }
+    100% {
+      transform: scale(1) rotate(0deg);
+    }
+  }
+
+  @keyframes circle-secondary {
+    0% {
+      transform: scale(1);
+    }
+    20% {
+      transform: scale(1.1) rotate(-40deg);
+    }
+    100% {
+      transform: scale(1) rotate(0deg);
     }
   }
 </style>

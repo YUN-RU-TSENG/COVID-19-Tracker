@@ -1,28 +1,28 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import {
-  GET_covidNighteenSummary,
-  GET_covidNighteenCountries,
-  GET_covidNighteenCountryStatusFromDayOne,
-  GET_covidNighteenCountryAllStatusFromDayOne,
+  GET_covidNineteenSummary,
+  GET_covidNineteenCountries,
+  GET_covidNineteenCountryStatusFromDayOne,
+  GET_covidNineteenCountryAllStatusFromDayOne,
 } from "@/service/api.js";
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    covidNighteenSummary: {
+    covidNineteenSummary: {
       Global: {},
       Countries: [],
       Date: "",
     },
-    covidNighteenCountries: [],
-    covidNighteenCountryStatusFromDayOne: [],
-    covidNighteenCountryAllStatusFromDayOne: [],
+    covidNineteenCountries: [],
+    covidNineteenCountryStatusFromDayOne: [],
+    covidNineteenCountryAllStatusFromDayOne: [],
   },
   getters: {
-    covidNighteenSummaryGlobal(state) {
-      return Object.entries(state.covidNighteenSummary.Global).map((item) => {
+    covidNineteenSummaryGlobal(state) {
+      return Object.entries(state.covidNineteenSummary.Global).map((item) => {
         const [name, number] = item;
         const translateName = {
           NewConfirmed: "新增確診",
@@ -36,12 +36,12 @@ export default new Vuex.Store({
           name,
           chineseName: translateName[name],
           number,
-          date: state.covidNighteenSummary.Date,
+          date: state.covidNineteenSummary.Date,
         };
       });
     },
-    covidNighteenSummaryCountries(state) {
-      return state.covidNighteenSummary.Countries.map((item) => {
+    covidNineteenSummaryCountries(state) {
+      return state.covidNineteenSummary.Countries.map((item) => {
         return {
           country: item.Country,
           countryCode: item.CountryCode,
@@ -55,56 +55,56 @@ export default new Vuex.Store({
         };
       });
     },
-    covidNighteenCountries(state) {
-      return state.covidNighteenCountries;
+    covidNineteenCountries(state) {
+      return state.covidNineteenCountries;
     },
   },
   mutations: {
-    covidNighteenSummary(state, datas) {
-      state.covidNighteenSummary = datas;
+    covidNineteenSummary(state, datas) {
+      state.covidNineteenSummary = datas;
     },
-    covidNighteenCountries(state, datas) {
-      state.covidNighteenCountries = datas;
+    covidNineteenCountries(state, datas) {
+      state.covidNineteenCountries = datas;
     },
-    covidNighteenCountryStatusFromDayOne(state, datas) {
-      state.covidNighteenCountryStatusFromDayOne = datas;
+    covidNineteenCountryStatusFromDayOne(state, datas) {
+      state.covidNineteenCountryStatusFromDayOne = datas;
     },
-    covidNighteenCountryAllStatusFromDayOne(state, datas) {
-      state.covidNighteenCountryAllStatusFromDayOne = datas;
+    covidNineteenCountryAllStatusFromDayOne(state, datas) {
+      state.covidNineteenCountryAllStatusFromDayOne = datas;
     },
   },
   actions: {
-    async GET_covidNighteenSummary({ commit }) {
-      const result = await GET_covidNighteenSummary();
-      commit("covidNighteenSummary", result);
+    async GET_covidNineteenSummary({ commit }) {
+      const result = await GET_covidNineteenSummary();
+      commit("covidNineteenSummary", result);
     },
-    async GET_covidNighteenCountries({ commit }) {
-      const result = await GET_covidNighteenCountries();
-      commit("covidNighteenCountries", result);
+    async GET_covidNineteenCountries({ commit }) {
+      const result = await GET_covidNineteenCountries();
+      commit("covidNineteenCountries", result);
     },
-    async GET_covidNighteenCountryStatusFromDayOne(
+    async GET_covidNineteenCountryStatusFromDayOne(
       { commit },
       country,
       status
     ) {
-      const result = await GET_covidNighteenCountryStatusFromDayOne(
+      const result = await GET_covidNineteenCountryStatusFromDayOne(
         country,
         status
       );
-      commit("covidNighteenCountryStatusFromDayOne", result);
+      commit("covidNineteenCountryStatusFromDayOne", result);
     },
-    async GET_covidNighteenCountryAllStatusFromDayOne(
+    async GET_covidNineteenCountryAllStatusFromDayOne(
       { commit },
       country,
       startTime,
       endTime
     ) {
-      const result = await GET_covidNighteenCountryAllStatusFromDayOne(
+      const result = await GET_covidNineteenCountryAllStatusFromDayOne(
         country,
         startTime,
         endTime
       );
-      commit("covidNighteenCountryAllStatusFromDayOne", result);
+      commit("covidNineteenCountryAllStatusFromDayOne", result);
     },
   },
 });

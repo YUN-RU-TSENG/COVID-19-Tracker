@@ -3,7 +3,7 @@
     <HomeNavbar class="home_navbar"
                 @handler="changeSideBarShow"
                 @handlerNextPage="nextPage"
-                :countries="$store.getters.covidNighteenCountries" />
+                :countries="$store.getters.covidNineteenCountries" />
     <HomeSideBar v-if="isSideBarShow"
                  @handler="changeSideBarShow" />
     <main class="home_wrapper"
@@ -18,19 +18,17 @@
              target="_blank"
              href="https://github.com/CSSEGISandData/COVID-19">Johns Hopkins CSSE</a></p>
         <BaseRow class="home_item_container">
-          <template v-if="$store.getters.covidNighteenSummaryGlobal.length">
-            <BaseCol v-for="data in $store.getters.covidNighteenSummaryGlobal"
+          <template v-if="$store.getters.covidNineteenSummaryGlobal.length">
+            <BaseCol v-for="(data, index) in $store.getters.covidNineteenSummaryGlobal"
                      :pc="4"
                      :pad="6"
                      :phone="12"
                      :key="data.name">
-              <transition name="fade"
-                          appear>
-                <HomeItem :name="data.name"
-                          :date="data.date"
-                          :chineseName="data.chineseName"
-                          :number="data.number" />
-              </transition>
+              <HomeItem :name="data.name"
+                        :date="data.date"
+                        :index="index"
+                        :chineseName="data.chineseName"
+                        :number="data.number" />
             </BaseCol>
           </template>
           <!-- 加載等待元件 -->
@@ -67,28 +65,22 @@
         <template v-if="pinCountriesDatas.length">
           <h2 class="home_text">收藏項目</h2>
           <template v-for="(data, index) in pinCountriesDatas">
-            <transition name="fade"
-                        appear
-                        :key="data.country">
-              <HomeCard class="home_card"
-                        v-bind="data"
-                        :index="index"
-                        :pin="true"
-                        @handler="pinCountriesData" />
-            </transition>
+            <HomeCard class="home_card"
+                      v-bind="data"
+                      :index="index"
+                      :pin="true"
+                      :key="data.country"
+                      @handler="pinCountriesData" />
           </template>
         </template>
-        <template v-if="covidNighteenSummaryCountriesSort.length">
+        <template v-if="covidNineteenSummaryCountriesSort.length">
           <h2 class="home_text">各國家資訊（不包含收藏項目）</h2>
-          <template v-for="(data, index) in covidNighteenSummaryCountriesSort">
-            <transition name="fade"
-                        appear
-                        :key="data.country">
-              <HomeCard class="home_card"
-                        v-bind="data"
-                        :index="index"
-                        @handler="pinCountriesData" />
-            </transition>
+          <template v-for="(data, index) in covidNineteenSummaryCountriesSort">
+            <HomeCard class="home_card"
+                      v-bind="data"
+                      :index="index"
+                      :key="data.country"
+                      @handler="pinCountriesData" />
           </template>
         </template>
         <!-- 加載等待元件 -->
@@ -114,14 +106,13 @@
   import HomeItem from '@/components/Home/HomeItem.vue';
   import HomeCard from '@/components/Home/HomeCard.vue';
   import HomeSideBar from '@/components/Home/HomeSideBar.vue';
-  import BaseCol from '@/components/BaseCol.vue';
-  import BaseRow from '@/components/BaseRow.vue';
+  import BaseCol from '@/components/Base/BaseCol.vue';
+  import BaseRow from '@/components/Base/BaseRow.vue';
   import HomeSortbar from '@/components/Home/HomeSortbar.vue';
-  import BaseLoadCard from '../components/BaseLoadCard.vue';
+  import BaseLoadCard from '../components/Base/BaseLoadCard.vue';
 
   // svg
   import arrowCircle from '@/assets/img/arrow_circle_up-24px.svg';
-
 
   // 取 localStorage pin 數值
   function pinValue() {
@@ -131,8 +122,8 @@
   export default {
     name: 'Home',
     created() {
-      this.$store.dispatch('GET_covidNighteenSummary');
-      this.$store.dispatch('GET_covidNighteenCountries');
+      this.$store.dispatch('GET_covidNineteenSummary');
+      this.$store.dispatch('GET_covidNineteenCountries');
     },
     data() {
       return {
@@ -142,30 +133,30 @@
         sortOption: [
           {
             value: 'word',
-            label: '依字母排序'
+            label: '依字母排序',
           },
           {
             value: 'newConfirmed',
-            label: '新增確診（多至少）'
+            label: '新增確診（多至少）',
           },
           {
             value: 'totalConfirmed',
-            label: '累積確診（多至少）'
+            label: '累積確診（多至少）',
           },
           {
             value: 'newDeaths',
-            label: '新增死亡（多至少）'
+            label: '新增死亡（多至少）',
           },
           {
             value: 'totalDeaths',
-            label: '累計死亡（多至少）'
-          }
-        ]
+            label: '累計死亡（多至少）',
+          },
+        ],
       };
     },
     computed: {
       // 依照選擇排序國家順序
-      covidNighteenSummaryCountriesSort() {
+      covidNineteenSummaryCountriesSort() {
         switch (this.sortItem) {
           case 'word':
             return this.noPinCountriesDatas.sort((aft, bef) => {
@@ -186,15 +177,15 @@
         }
       },
       noPinCountriesDatas() {
-        return this.$store.getters.covidNighteenSummaryCountries.filter(
-          item => !this.pinCountries.includes(item.country)
+        return this.$store.getters.covidNineteenSummaryCountries.filter(
+          (item) => !this.pinCountries.includes(item.country)
         );
       },
       pinCountriesDatas() {
-        return this.$store.getters.covidNighteenSummaryCountries.filter(item =>
+        return this.$store.getters.covidNineteenSummaryCountries.filter((item) =>
           this.pinCountries.includes(item.country)
         );
-      }
+      },
     },
     methods: {
       changeSideBarShow(data) {
@@ -211,7 +202,7 @@
         }
         this.pinCountries.push(data);
         localStorage.setItem('pinValue', JSON.stringify(this.pinCountries));
-      }
+      },
     },
     components: {
       BaseLoadCard,
@@ -222,8 +213,8 @@
       HomeCard,
       HomeItem,
       HomeNavbar,
-      arrowCircle
-    }
+      arrowCircle,
+    },
   };
 </script>
 

@@ -13,7 +13,7 @@
         <div>
           <h2>新增確診</h2>
           <p>
-            <alarmIcon /><span>{{ newConfirmed | displayNumber}} </span></p>
+            <alarmIcon /><span>{{ newConfirmed | displayNumber }} </span></p>
         </div>
         <div>
           <h2>新增死亡</h2>
