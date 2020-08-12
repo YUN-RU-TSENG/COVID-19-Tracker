@@ -1,14 +1,13 @@
 <template>
   <section class="item clearfix">
-    <div class="item_people_icon">
+    <div class="item_bacteria_icon">
       <coronavirus />
     </div>
     <h3 class="item_title">{{ name }} :</h3>
     <p class="item_patient">{{ chineseName }} <span>{{  number | displayNumber  }}</span> 人</p>
     <p class="item_information">
       今日截至目前共有
-      <span class="information_trend"
-            :class="{ styleObject }">
+      <span class="information_trend circle-primary">
         {{ number | displayNumber }}
         <arrowUpIcon />
       </span>
@@ -49,12 +48,6 @@
       },
     },
     computed: {
-      styleObject() {
-        let result = this.index % 2 ? 'primary' : 'secondary';
-        return {
-          ['circle-' + result]: true,
-        };
-      },
     },
     filters: {
       displayNumber(data) {
@@ -116,7 +109,7 @@
       }
     }
 
-    &_people_icon {
+    &_bacteria_icon {
       float: right;
       padding: 4px;
       border-radius: 4px;
@@ -127,9 +120,6 @@
   .circle-primary {
     animation: circle-primary 3s ease-in 0s infinite;
   }
-  .circle-secondary {
-    animation: circle-secondary 5s ease-in 0s infinite;
-  }
 
   @keyframes circle-primary {
     0% {
@@ -137,18 +127,6 @@
     }
     50% {
       transform: scale(0.8) rotate(160deg);
-    }
-    100% {
-      transform: scale(1) rotate(0deg);
-    }
-  }
-
-  @keyframes circle-secondary {
-    0% {
-      transform: scale(1);
-    }
-    20% {
-      transform: scale(1.1) rotate(-40deg);
     }
     100% {
       transform: scale(1) rotate(0deg);
