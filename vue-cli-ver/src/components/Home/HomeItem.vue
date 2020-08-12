@@ -51,9 +51,6 @@
     computed: {
       styleObject() {
         let result = this.index % 2 ? 'primary' : 'secondary';
-        console.log({
-          ['circle-' + result]: true,
-        });
         return {
           ['circle-' + result]: true,
         };
@@ -126,7 +123,7 @@
       background-color: $theme-secondary;
     }
   }
-  
+
   .circle-primary {
     animation: circle-primary 3s ease-in 0s infinite;
   }
