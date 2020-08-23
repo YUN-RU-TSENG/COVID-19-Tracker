@@ -1,6 +1,6 @@
 # covid-19
 
-![](https://i.imgur.com/mYyC5eH.jpg)
+![](https://i.imgur.com/q3UZofOm.jpg)
 
 ## 需求
 希望創建一個可以觀看世界上目前新冠肺炎的罹患人數網站，並且可以透過圖表的方式理解資訊。
