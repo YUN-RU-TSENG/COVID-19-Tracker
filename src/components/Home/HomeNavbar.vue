@@ -11,7 +11,7 @@
       <div class="navbar_search_item"
            :class="{'active': filterMatchCountry.length }">
         <a href
-           v-for="country in filterMatchCountry"
+           v-for="country in filterMatchCountryDisplay"
            @click.prevent="$emit('handlerNextPage', country.name)"
            :key="country.name">
           <template v-if="!country.fontStart">
@@ -65,11 +65,9 @@ export default {
           };
         });
 
-      return this.highlightMatchText(tests);
+      return tests;
     },
-  },
-  methods: {
-    /**
+      /**
       * TODO: 將符合的字串分割成符合以及非符合，當渲染的時候便可以依照符合以及未符合的文字配合模板渲染畫面，並且會依照國家符合字串的 index 先後排列。
       * 例如 asssw 匹配 a，則會被返回成 a, sssw 配合模板渲染。
       * 例如 asssw 匹配 ss，則會被返回成 a,ss,sw 配合模板渲染。
@@ -79,10 +77,8 @@ export default {
       * @param { Array } 字串的陣列集合
       * @return { Object } 返回包含符合字串(fontMatch)、符合前後字串(fontStart, fontEnd)、國家名稱(country)、符合字串 index(fontStartIndex)
       **/
-    highlightMatchText(tests) {
-      if (!Array.isArray(tests)) return;
-
-      return tests.map((data) => {
+    filterMatchCountryDisplay(){
+      return this.filterMatchCountry.map((data) => {
           const searchTextlength = this.searchText.length;
           // 吻合的文字 index
           const fontStartIndex = data.text.toLowerCase().indexOf(this.searchText.toLowerCase());
@@ -105,7 +101,9 @@ export default {
         })
         .sort((aft, bef) => aft.fontStartIndex - bef.fontStartIndex)
         .slice(0, 10);
-    },
+    }
+  },
+  methods: {
   },
   components: {
     menuIcon,
