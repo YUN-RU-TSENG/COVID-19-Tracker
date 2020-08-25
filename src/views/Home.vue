@@ -8,6 +8,9 @@
                  @handler="changeSideBarShow" />
     <main class="home_wrapper"
           id="top">
+      <section>
+        <HomeChart :chartData="dataOptions" />
+      </section>
       <section class="home_item">
         <h2 class="home_title">COVID-19 世界即時資訊</h2>
         <p class="home_text">
@@ -106,30 +109,36 @@
   import HomeItem from '@/components/Home/HomeItem.vue';
   import HomeCard from '@/components/Home/HomeCard.vue';
   import HomeSideBar from '@/components/Home/HomeSideBar.vue';
+  // ? 直接抽成 js 檔案，這種邏輯適用於哪種元素
+  import HomeChart from '../components/Home/HomeChart.js';
+  import HomeSortbar from '@/components/Home/HomeSortbar.vue';
   import BaseCol from '@/components/Base/BaseCol.vue';
   import BaseRow from '@/components/Base/BaseRow.vue';
-  import HomeSortbar from '@/components/Home/HomeSortbar.vue';
   import BaseLoadCard from '../components/Base/BaseLoadCard.vue';
 
   // svg
   import arrowCircle from '@/assets/img/arrow_circle_up-24px.svg';
 
-  // 取 localStorage pin 數值
-  function pinValue() {
-    return JSON.parse(localStorage.getItem('pinValue')) || [];
-  }
-
+  // ! 之前體驗了不使用 mapgetter 之後的結論，使用的話會造成重新引用時程式碼過長，使用 mapgetter 雖然無法讓資料瞬間透過 this.$store 得知為 vuex 但是，按照 vuex 的寫法來嘬覺得更好，要改回 mapgetter 格式。
   export default {
+    // ! 方法排序的固定？
     name: 'Home',
     created() {
       this.$store.dispatch('GET_covidNineteenSummary');
       this.$store.dispatch('GET_covidNineteenCountries');
     },
     data() {
+      // 取 localStorage pin 數值
+      // ! data 需要用的 fun 放在這裡比較多人做，但是在找為什麼建議都說放在這裡好？
+      function pinValue() {
+        return JSON.parse(localStorage.getItem('pinValue')) || [];
+      }
+
       return {
         isSideBarShow: false,
         sortItem: 'word',
         pinCountries: pinValue(),
+        // ? github 範例是寫成 null，但是會報錯。找出原因！
         sortOption: [
           {
             value: 'word',
@@ -158,20 +167,17 @@
       // 依照選擇排序國家順序
       covidNineteenSummaryCountriesSort() {
         switch (this.sortItem) {
+          // ? 預設為文字排序嗎？sort()？
           case 'word':
-            return this.noPinCountriesDatas.sort((aft, bef) => {
-              const aftWord = aft.country.slice(0, 1).toLowerCase().charCodeAt();
-              const befWord = bef.country.slice(0, 1).toLowerCase().charCodeAt();
-
-              return aftWord - befWord;
-            });
+            return this.noPinCountriesDatas.slice().sort();
           case 'newConfirmed':
           case 'totalDeaths':
           case 'totalConfirmed':
           case 'newDeaths':
-            return this.noPinCountriesDatas.sort(
-              (aft, bef) => bef[this.sortItem] - aft[this.sortItem]
-            );
+            // ! slice 的優勢為何？比起其他淺拷貝？
+            return this.noPinCountriesDatas
+              .slice()
+              .sort((aft, bef) => bef[this.sortItem] - aft[this.sortItem]);
           default:
             return this.noPinCountriesDatas;
         }
@@ -185,6 +191,31 @@
         return this.$store.getters.covidNineteenSummaryCountries.filter((item) =>
           this.pinCountries.includes(item.country)
         );
+      },
+      dataOptions() {
+        // ! 這裡的程式碼編排如何更加完善，其他人的做法普遍如何識別多重的 array 排版？
+        // ? 這裡的邏輯上是使用 vuex 資料排序的結果，但是也有其他人做了排序，是否需要將排序抽成 computed 不用做兩次？
+        const COUNTRY_COUNT = 10;
+        const sortData = this.$store.getters.covidNineteenSummaryCountries
+          .slice()
+          .sort((a, b) => b['totalDeaths'] - a['totalDeaths'])
+          .slice(0, COUNTRY_COUNT);
+        const [BLUE, GREEN] = [ '#73aadd20', '#19caad20']
+        const color = Array(COUNTRY_COUNT)
+          .fill()
+          .map((element, index) =>  (index % 2) ? BLUE : GREEN);
+        return {
+          // ! 這裡直接寫 map 是否不好
+          labels: sortData.map((data) => data.countryCode),
+          datasets: [
+            {
+              backgroundColor: color,
+              label: '死亡',
+              // ! 這裡直接寫 map 是否不好
+              data: sortData.map((data) => data.totalDeaths),
+            },
+          ],
+        };
       },
     },
     methods: {
@@ -201,6 +232,7 @@
           return;
         }
         this.pinCountries.push(data);
+        // ! 在這裡做儲存本地端資料這件事，需要額外的抽出嗎？一件事情嗎？
         localStorage.setItem('pinValue', JSON.stringify(this.pinCountries));
       },
     },
@@ -212,6 +244,7 @@
       HomeSideBar,
       HomeCard,
       HomeItem,
+      HomeChart,
       HomeNavbar,
       arrowCircle,
     },
@@ -277,6 +310,7 @@
         div:not(:last-of-type) > * {
           margin-bottom: 0px;
         }
+        // ! 更好的方式？
         div:not(:nth-last-of-type(3)):not(:nth-last-of-type(2)):not(:last-of-type)
           * {
           margin-bottom: 12px;
