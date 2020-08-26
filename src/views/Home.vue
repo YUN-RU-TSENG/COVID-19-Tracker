@@ -9,7 +9,7 @@
     <main class="home_wrapper"
           id="top">
       <section>
-        <HomeChart :chartData="dataOptions" />
+        <HomeChart :chartData="dataOptions" :title="chartTitle"/>
       </section>
       <section class="home_item">
         <h2 class="home_title">COVID-19 世界即時資訊</h2>
@@ -88,7 +88,7 @@
         </template>
         <!-- 加載等待元件 -->
         <template v-else>
-          <BaseLoadCard height="196px"
+          <BaseLoadCard :height="'196px'"
                         v-for="data in 4"
                         class="home_card"
                         :key="data" />
@@ -138,6 +138,7 @@
         isSideBarShow: false,
         sortItem: 'word',
         pinCountries: pinValue(),
+        chartTitle: 'COVID-19 每日死亡國家排行',
         // ? github 範例是寫成 null，但是會報錯。找出原因！
         sortOption: [
           {
@@ -177,7 +178,7 @@
             // ! slice 的優勢為何？比起其他淺拷貝？
             return this.noPinCountriesDatas
               .slice()
-              .sort((aft, bef) => bef[this.sortItem] - aft[this.sortItem]);
+              .sort((a, b) => b[this.sortItem] - a[this.sortItem]);
           default:
             return this.noPinCountriesDatas;
         }
@@ -196,11 +197,12 @@
         // ! 這裡的程式碼編排如何更加完善，其他人的做法普遍如何識別多重的 array 排版？
         // ? 這裡的邏輯上是使用 vuex 資料排序的結果，但是也有其他人做了排序，是否需要將排序抽成 computed 不用做兩次？
         const COUNTRY_COUNT = 10;
+        const [BLUE, GREEN] = [ '#ffffff90', '#19caad20'];
+        const RANK_VALUE = 'totalDeaths';
         const sortData = this.$store.getters.covidNineteenSummaryCountries
           .slice()
-          .sort((a, b) => b['totalDeaths'] - a['totalDeaths'])
+          .sort((a, b) => b[RANK_VALUE] - a[RANK_VALUE])
           .slice(0, COUNTRY_COUNT);
-        const [BLUE, GREEN] = [ '#73aadd20', '#19caad20']
         const color = Array(COUNTRY_COUNT)
           .fill()
           .map((element, index) =>  (index % 2) ? BLUE : GREEN);
@@ -212,7 +214,7 @@
               backgroundColor: color,
               label: '死亡',
               // ! 這裡直接寫 map 是否不好
-              data: sortData.map((data) => data.totalDeaths),
+              data: sortData.map((data) => data[RANK_VALUE]),
             },
           ],
         };
