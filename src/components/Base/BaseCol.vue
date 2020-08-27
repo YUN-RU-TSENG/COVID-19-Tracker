@@ -32,13 +32,13 @@
     },
     computed: {
       styleObject() {
-        return {
-          ['col-' + this.default]: this.default,
-          ['col-phone-' + this.phone]: this.phone,
-          ['col-pad-' + this.pad]: this.pad,
-          ['col-pc-' + this.pc]: this.pc,
-          'no-gutter': !this.guttur
-        };
+        let result = {};
+        if (this.default) result['col-' + this.default] = this.default
+        if (this.phone) result['col-phone-' + this.phone] = this.phone
+        if (this.pad) result['col-pad-' + this.pad] = this.pad
+        if (this.pc) result['col-pc-' + this.pc] = this.pc
+        result['no-gutter'] = !this.guttur
+        return result
       }
     }
   };
