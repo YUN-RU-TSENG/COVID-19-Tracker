@@ -7,18 +7,39 @@
     <section class="information_wrapper">
       <h2 class="information_title">新冠肺炎資訊</h2>
       <p class="information_text">由約翰霍普金斯所提供的訊息</p>
-      <InformationCard />
+      <InformationCard
+          v-for="(data, index) in covidNineteenSummaryCountries"
+          class="information_card"
+          v-bind="data"
+          :index="index"
+          :pin="true"
+          :key="data.country"
+          @handler="pinCountriesData" />
     </section>
   </main>
 </template>
 
 <script>
-  import InformationCard from '@/components/Information/InformationCard.vue';
+  // component
+  import InformationCard from '@/components/Base/BaseCard.vue';
+
+  // mapGetter
+  import { mapGetters } from 'vuex'
+
   export default {
+    name: 'Information',
     components: {
       InformationCard
     },
-    name: 'Information'
+    created(){
+
+    },
+    computed: {
+      ...mapGetters([
+      'covidNineteenSummaryGlobal',
+      'covidNineteenSummaryCountries',
+      ]),
+    }
   };
 </script>
 

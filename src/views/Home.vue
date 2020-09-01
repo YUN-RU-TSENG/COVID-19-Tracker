@@ -3,13 +3,14 @@
     <HomeNavbar class="home_navbar"
                 @handler="changeSideBarShow"
                 @handlerNextPage="nextPage"
-                :countries="$store.getters.covidNineteenCountries" />
+                :countries="covidNineteenCountries" />
     <HomeSideBar v-if="isSideBarShow"
                  @handler="changeSideBarShow" />
     <main class="home_wrapper"
           id="top">
       <section>
-        <HomeChart :chartData="dataOptions" :title="chartTitle"/>
+        <HomeChart :chartData="dataOptions"
+                   :title="chartTitle" />
       </section>
       <section class="home_item">
         <h2 class="home_title">COVID-19 世界即時資訊</h2>
@@ -21,8 +22,8 @@
              target="_blank"
              href="https://github.com/CSSEGISandData/COVID-19">Johns Hopkins CSSE</a></p>
         <BaseRow class="home_item_container">
-          <template v-if="$store.getters.covidNineteenSummaryGlobal.length">
-            <BaseCol v-for="(data, index) in $store.getters.covidNineteenSummaryGlobal"
+          <template v-if="covidNineteenSummaryGlobal.length">
+            <BaseCol v-for="(data, index) in covidNineteenSummaryGlobal"
                      :pc="4"
                      :pad="6"
                      :phone="12"
@@ -68,7 +69,7 @@
         <template v-if="pinCountriesDatas.length">
           <h2 class="home_text">收藏項目</h2>
           <template v-for="(data, index) in pinCountriesDatas">
-            <HomeCard class="home_card"
+            <BaseCard class="home_card"
                       v-bind="data"
                       :index="index"
                       :pin="true"
@@ -79,7 +80,7 @@
         <template v-if="covidNineteenSummaryCountriesSort.length">
           <h2 class="home_text">各國家資訊（不包含收藏項目）</h2>
           <template v-for="(data, index) in covidNineteenSummaryCountriesSort">
-            <HomeCard class="home_card"
+            <BaseCard class="home_card"
                       v-bind="data"
                       :index="index"
                       :key="data.country"
@@ -107,7 +108,7 @@
   // component
   import HomeNavbar from '@/components/Home/HomeNavbar.vue';
   import HomeItem from '@/components/Home/HomeItem.vue';
-  import HomeCard from '@/components/Home/HomeCard.vue';
+  import BaseCard from '@/components/Base/BaseCard.vue';
   import HomeSideBar from '@/components/Home/HomeSideBar.vue';
   // ? 直接抽成 js 檔案，這種邏輯適用於哪種元素
   import HomeChart from '../components/Home/HomeChart.js';
@@ -115,11 +116,11 @@
   import BaseCol from '@/components/Base/BaseCol.vue';
   import BaseRow from '@/components/Base/BaseRow.vue';
   import BaseLoadCard from '../components/Base/BaseLoadCard.vue';
-
   // svg
   import arrowCircle from '@/assets/img/arrow_circle_up-24px.svg';
+  // mapGetter
+  import { mapGetters } from 'vuex'
 
-  // ! 之前體驗了不使用 mapgetter 之後的結論，使用的話會造成重新引用時程式碼過長，使用 mapgetter 雖然無法讓資料瞬間透過 this.$store 得知為 vuex 但是，按照 vuex 的寫法來嘬覺得更好，要改回 mapgetter 格式。
   export default {
     // ! 方法排序的固定？
     name: 'Home',
@@ -165,17 +166,20 @@
       };
     },
     computed: {
+      ...mapGetters([
+      'covidNineteenSummaryGlobal',
+      'covidNineteenSummaryCountries',
+      'covidNineteenCountries',
+    ]),
       // 依照選擇排序國家順序
       covidNineteenSummaryCountriesSort() {
         switch (this.sortItem) {
-          // ? 預設為文字排序嗎？sort()？
           case 'word':
             return this.noPinCountriesDatas.slice().sort();
           case 'newConfirmed':
           case 'totalDeaths':
           case 'totalConfirmed':
           case 'newDeaths':
-            // ! slice 的優勢為何？比起其他淺拷貝？
             return this.noPinCountriesDatas
               .slice()
               .sort((a, b) => b[this.sortItem] - a[this.sortItem]);
@@ -184,30 +188,28 @@
         }
       },
       noPinCountriesDatas() {
-        return this.$store.getters.covidNineteenSummaryCountries.filter(
+        return this.covidNineteenSummaryCountries.filter(
           (item) => !this.pinCountries.includes(item.country)
         );
       },
       pinCountriesDatas() {
-        return this.$store.getters.covidNineteenSummaryCountries.filter((item) =>
+        return this.covidNineteenSummaryCountries.filter((item) =>
           this.pinCountries.includes(item.country)
         );
       },
       dataOptions() {
-        // ! 這裡的程式碼編排如何更加完善，其他人的做法普遍如何識別多重的 array 排版？
         // ? 這裡的邏輯上是使用 vuex 資料排序的結果，但是也有其他人做了排序，是否需要將排序抽成 computed 不用做兩次？
         const COUNTRY_COUNT = 10;
-        const [BLUE, GREEN] = [ '#ffffff90', '#19caad20'];
+        const [BLUE, GREEN] = ['#ffffff90', '#19caad20'];
         const RANK_VALUE = 'totalDeaths';
-        const sortData = this.$store.getters.covidNineteenSummaryCountries
+        const sortData = this.covidNineteenSummaryCountries
           .slice()
           .sort((a, b) => b[RANK_VALUE] - a[RANK_VALUE])
           .slice(0, COUNTRY_COUNT);
         const color = Array(COUNTRY_COUNT)
           .fill()
-          .map((element, index) =>  (index % 2) ? BLUE : GREEN);
+          .map((element, index) => (index % 2 ? BLUE : GREEN));
         return {
-          // ! 這裡直接寫 map 是否不好
           labels: sortData.map((data) => data.countryCode),
           datasets: [
             {
@@ -234,7 +236,6 @@
           return;
         }
         this.pinCountries.push(data);
-        // ! 在這裡做儲存本地端資料這件事，需要額外的抽出嗎？一件事情嗎？
         localStorage.setItem('pinValue', JSON.stringify(this.pinCountries));
       },
     },
@@ -244,7 +245,7 @@
       BaseRow,
       BaseCol,
       HomeSideBar,
-      HomeCard,
+      BaseCard,
       HomeItem,
       HomeChart,
       HomeNavbar,
