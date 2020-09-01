@@ -42,81 +42,81 @@
   import infoIcon from '@/assets/img/info-24px.svg';
   import pinIcon from '@/assets/img/push_pin-24px.svg';
 
-  import dayjs from 'dayjs'
+  import dayjs from 'dayjs';
 
   export default {
-    name: 'HomeCard',
+    name: 'BaseCard',
     props: {
       index: {
         type: Number,
-        required: true
+        required: true,
       },
       country: {
         type: String,
-        required: true
+        required: true,
       },
       countryCode: {
         type: String,
-        required: true
+        required: true,
       },
       date: {
         type: String,
-        required: true
+        required: true,
       },
       newConfirmed: {
         type: Number,
-        required: true
+        required: true,
       },
       newDeaths: {
         type: Number,
-        required: true
+        required: true,
       },
       newRecovered: {
         type: Number,
-        required: true
+        required: true,
       },
       totalConfirmed: {
         type: Number,
-        required: true
+        required: true,
       },
       totalDeaths: {
         type: Number,
-        required: true
+        required: true,
       },
       totalRecovered: {
         type: Number,
-        required: true
+        required: true,
       },
-      pin:{
+      pin: {
         type: Boolean,
-        default: false
-      }
+        default: false,
+      },
     },
     data() {
       return {};
     },
     filters: {
       displayNumber(data) {
-        if (!parseInt(data, 10)) return "無";
-        return parseInt(data, 10).toLocaleString("zh-TW", {
-          style: "decimal",
+        if (!parseInt(data, 10)) return '無';
+        return parseInt(data, 10).toLocaleString('zh-TW', {
+          style: 'decimal',
           useGrouping: true,
-        })
+        });
       },
-      displayDay(date){
+      displayDay(date) {
         return dayjs(date).format('MM月DD日 HH:mm');
-      }
+      },
     },
     methods: {
-      displayIndex(index){
-        return index + 1
-      }
+      displayIndex(index) {
+        return index + 1;
+      },
     },
     components: {
       alarmIcon,
       pinIcon,
-      infoIcon
-    }
+      infoIcon,
+    },
   };
 </script>
 
@@ -130,9 +130,9 @@
       float: right;
       opacity: 0.5;
       transition: all 0.3s cubic-bezier(0.1, 0.5, 1, 0.1);
-      &.active{
+      &.active {
         opacity: 1;
-        svg{
+        svg {
           transform: rotate(0deg);
           fill: $brand-primary;
         }
