@@ -1,10 +1,10 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import {
-  GET_covidNineteenSummary,
-  GET_covidNineteenCountries,
-  GET_covidNineteenCountryStatusFromDayOne,
-  GET_covidNineteenCountryAllStatusFromDayOne,
+  apiCovidNineteenSummary,
+  apiCovidNineteenCountries,
+  apiCovidNineteenCountryStatusFromDayOne,
+  apiCovidNineteenCountryAllStatusFromDayOne,
 } from "@/service/api.js";
 
 Vue.use(Vuex);
@@ -60,38 +60,42 @@ export default new Vuex.Store({
     },
   },
   mutations: {
-    covidNineteenSummary(state, datas) {
+    GET_COVID_NINETEEN_SUMMARY(state, datas) {
       state.covidNineteenSummary = datas;
     },
-    covidNineteenCountries(state, datas) {
+    GET_COVID_NINETEEN_COUNTRIES(state, datas) {
       state.covidNineteenCountries = datas;
     },
-    covidNineteenCountryStatusFromDayOne(state, datas) {
+    GET_COVID_NINETEEN_COUNTRY_STATUS_FROME_DAY_ONE(state, datas) {
       state.covidNineteenCountryStatusFromDayOne = datas;
     },
-    covidNineteenCountryAllStatusFromDayOne(state, datas) {
+    GET_COVID_NINETEEN_COUNTRY_ALL_STATUS_FROM_DAY_ONE(state, datas) {
       state.covidNineteenCountryAllStatusFromDayOne = datas;
     },
   },
   actions: {
     async GET_covidNineteenSummary({ commit }) {
-      const result = await GET_covidNineteenSummary();
-      commit("covidNineteenSummary", result);
+      const result = await apiCovidNineteenSummary();
+      commit("GET_COVID_NINETEEN_SUMMARY", result.data);
     },
     async GET_covidNineteenCountries({ commit }) {
-      const result = await GET_covidNineteenCountries();
-      commit("covidNineteenCountries", result);
+      const result = await apiCovidNineteenCountries();
+      commit("GET_COVID_NINETEEN_COUNTRIES", result.data);
     },
     async GET_covidNineteenCountryStatusFromDayOne(
       { commit },
       country,
       status
     ) {
-      const result = await GET_covidNineteenCountryStatusFromDayOne(
-        country,
-        status
-      );
-      commit("covidNineteenCountryStatusFromDayOne", result);
+      try {
+        const result = await apiCovidNineteenCountryStatusFromDayOne({
+          country,
+          status,
+        });
+        commit("GET_COVID_NINETEEN_COUNTRY_STATUS_FROME_DAY_ONE", result.data);
+      } catch (error) {
+        console.error(error);
+      }
     },
     async GET_covidNineteenCountryAllStatusFromDayOne(
       { commit },
@@ -99,12 +103,19 @@ export default new Vuex.Store({
       startTime,
       endTime
     ) {
-      const result = await GET_covidNineteenCountryAllStatusFromDayOne(
-        country,
-        startTime,
-        endTime
-      );
-      commit("covidNineteenCountryAllStatusFromDayOne", result);
+      try {
+        const result = await apiCovidNineteenCountryAllStatusFromDayOne({
+          country,
+          startTime,
+          endTime,
+        });
+        commit(
+          "GET_COVID_NINETEEN_COUNTRY_ALL_STATUS_FROM_DAY_ONE",
+          result.data
+        );
+      } catch (error) {
+        console.error(error);
+      }
     },
   },
 });

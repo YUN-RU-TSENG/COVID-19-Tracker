@@ -6,6 +6,9 @@ import { Select, DatePicker, Option } from "element-ui";
 import "element-ui/lib/theme-chalk/index.css";
 import '@/assets/plugin/element-variables.scss'
 import '@/assets/plugin/vue-transition.scss'
+import NProgress from "nprogress";
+import "@/assets/plugin/nprogress.css";
+
 
 Vue.component(Select.name, Select);
 Vue.component(DatePicker.name, DatePicker);
