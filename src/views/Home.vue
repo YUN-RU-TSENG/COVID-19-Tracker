@@ -2,9 +2,8 @@
   <div class="home">
     <HomeNavbar class="home_navbar"
                 @handler="changeSideBarShow"
-                @handlerNextPage="nextPage"
-                :countries="covidNineteenCountries" />
-    <HomeSideBar v-if="isSideBarShow"
+                :countries="covid19Countries" />
+    <HomeSideBar v-show="isSideBarShow"
                  @handler="changeSideBarShow" />
     <main class="home_wrapper"
           id="top">
@@ -22,15 +21,15 @@
              target="_blank"
              href="https://github.com/CSSEGISandData/COVID-19">Johns Hopkins CSSE</a></p>
         <BaseRow class="home_item_container">
-          <template v-if="covidNineteenSummaryGlobal.length">
-            <BaseCol v-for="(data, index) in covidNineteenSummaryGlobal"
+          <template v-if="covid19SummaryGlobal.length">
+            <BaseCol v-for="(data, index) in covid19SummaryGlobal"
                      :pc="4"
                      :pad="6"
                      :phone="12"
                      :key="data.name">
-              <HomeItem :name="data.name"
+              <HomeItem :index="index"
+                        :name="data.name"
                         :date="data.date"
-                        :index="index"
                         :chineseName="data.chineseName"
                         :number="data.number" />
             </BaseCol>
@@ -52,7 +51,8 @@
           <span>排序：</span>
           <!-- element ui select -->
           <el-select v-model="sortItem"
-                     placeholder="排序國家顯示順序">
+                     placeholder="排序國家顯示順序"
+                     :disabled="!!sortOption.length">
             <el-option v-for="item in sortOption"
                        :key="item.value"
                        :label="item.label"
@@ -66,20 +66,20 @@
              href="https://github.com/CSSEGISandData/COVID-19">Johns Hopkins CSSE</a></p>
         <HomeSortbar class="home_sort" />
         <!-- pin資料 -->
-        <template v-if="pinCountriesDatas.length">
+        <template v-if="pinCountriesData.length">
           <h2 class="home_text">收藏項目</h2>
-          <template v-for="(data, index) in pinCountriesDatas">
+          <template v-for="(data, index) in pinCountriesData">
             <BaseCard class="home_card"
                       v-bind="data"
                       :index="index"
                       :pin="true"
                       :key="data.country"
-                      @handler="pinCountriesData" />
+                      @handler="setPinCountriesData" />
           </template>
         </template>
-        <template v-if="covidNineteenSummaryCountriesSort.length">
+        <template v-if="covid19CountriesSort.length">
           <h2 class="home_text">各國家資訊（不包含收藏項目）</h2>
-          <template v-for="(data, index) in covidNineteenSummaryCountriesSort">
+          <template v-for="(data, index) in covid19CountriesSort">
             <BaseCard class="home_card"
                       v-bind="data"
                       :index="index"
@@ -110,37 +110,45 @@
   import HomeItem from '@/components/Home/HomeItem.vue';
   import BaseCard from '@/components/Base/BaseCard.vue';
   import HomeSideBar from '@/components/Home/HomeSideBar.vue';
-  // ? 直接抽成 js 檔案，這種邏輯適用於哪種元素
   import HomeChart from '../components/Home/HomeChart.js';
   import HomeSortbar from '@/components/Home/HomeSortbar.vue';
   import BaseCol from '@/components/Base/BaseCol.vue';
   import BaseRow from '@/components/Base/BaseRow.vue';
   import BaseLoadCard from '../components/Base/BaseLoadCard.vue';
+
   // svg
   import arrowCircle from '@/assets/img/arrow_circle_up-24px.svg';
+
   // mapGetter
-  import { mapGetters } from 'vuex'
+  import { mapGetters } from 'vuex';
 
   export default {
-    // ! 方法排序的固定？
     name: 'Home',
-    created() {
-      this.$store.dispatch('GET_covidNineteenSummary');
-      this.$store.dispatch('GET_covidNineteenCountries');
+    components: {
+      BaseRow,
+      BaseCol,
+      BaseLoadCard,
+      BaseCard,
+      HomeSortbar,
+      HomeSideBar,
+      HomeItem,
+      HomeChart,
+      HomeNavbar,
+      arrowCircle,
     },
     data() {
-      // 取 localStorage pin 數值
-      // ! data 需要用的 fun 放在這裡比較多人做，但是在找為什麼建議都說放在這裡好？
+
+      // todo: 取得用戶之前 pin 的城市資訊
       function pinValue() {
         return JSON.parse(localStorage.getItem('pinValue')) || [];
       }
 
       return {
         isSideBarShow: false,
+        isLoading: true,
         sortItem: 'word',
         pinCountries: pinValue(),
         chartTitle: 'COVID-19 每日死亡國家排行',
-        // ? github 範例是寫成 null，但是會報錯。找出原因！
         sortOption: [
           {
             value: 'word',
@@ -167,89 +175,72 @@
     },
     computed: {
       ...mapGetters([
-      'covidNineteenSummaryGlobal',
-      'covidNineteenSummaryCountries',
-      'covidNineteenCountries',
-    ]),
-      // 依照選擇排序國家順序
-      covidNineteenSummaryCountriesSort() {
+        'covid19SummaryGlobal',
+        'covid19SummaryCountries',
+        'covid19Countries',
+      ]),
+      // todo: 依照選擇排序國家順序
+      covid19CountriesSort() {
         switch (this.sortItem) {
           case 'word':
-            return this.noPinCountriesDatas.slice().sort();
+            return this.noPinCountriesData.slice().sort();
           case 'newConfirmed':
           case 'totalDeaths':
           case 'totalConfirmed':
           case 'newDeaths':
-            return this.noPinCountriesDatas
-              .slice()
-              .sort((a, b) => b[this.sortItem] - a[this.sortItem]);
+            return this.noPinCountriesData.slice()
+              .sort((firstElement, secondElement) =>
+                  secondElement[this.sortItem] - firstElement[this.sortItem]);
           default:
-            return this.noPinCountriesDatas;
+            return this.noPinCountriesData;
         }
       },
-      noPinCountriesDatas() {
-        return this.covidNineteenSummaryCountries.filter(
-          (item) => !this.pinCountries.includes(item.country)
-        );
+      pinCountriesData() {
+        return this.covid19SummaryCountries.filter(item => this.pinCountries.includes(item.country));
       },
-      pinCountriesDatas() {
-        return this.covidNineteenSummaryCountries.filter((item) =>
-          this.pinCountries.includes(item.country)
-        );
+      noPinCountriesData() {
+        return this.covid19SummaryCountries.filter(item => !this.pinCountries.includes(item.country));
       },
       dataOptions() {
-        // ? 這裡的邏輯上是使用 vuex 資料排序的結果，但是也有其他人做了排序，是否需要將排序抽成 computed 不用做兩次？
         const COUNTRY_COUNT = 10;
         const [BLUE, GREEN] = ['#ffffff90', '#19caad20'];
         const RANK_VALUE = 'totalDeaths';
-        const sortData = this.covidNineteenSummaryCountries
-          .slice()
-          .sort((a, b) => b[RANK_VALUE] - a[RANK_VALUE])
+        const sortData = this.covid19SummaryCountries.slice()
+          .sort((firstElement, secondElement) =>
+              secondElement[RANK_VALUE] - firstElement[RANK_VALUE])
           .slice(0, COUNTRY_COUNT);
-        const color = Array(COUNTRY_COUNT)
-          .fill()
-          .map((element, index) => (index % 2 ? BLUE : GREEN));
+
+        const color = Array(COUNTRY_COUNT).fill()
+          .map((element, index) => index % 2 ? BLUE : GREEN);
+
         return {
           labels: sortData.map((data) => data.countryCode),
           datasets: [
             {
               backgroundColor: color,
               label: '死亡',
-              // ! 這裡直接寫 map 是否不好
               data: sortData.map((data) => data[RANK_VALUE]),
             },
           ],
         };
       },
     },
+    created() {
+      // ! waiting for refactor
+      this.$store.dispatch('getCovid19Summary');
+      this.$store.dispatch('getCovid19Countries');
+    },
     methods: {
       changeSideBarShow(data) {
         this.isSideBarShow = data;
       },
-      nextPage(data) {
-        this.$router.push({ name: 'country', params: { country: data } });
-      },
-      pinCountriesData(data) {
-        if (this.pinCountries.includes(data)) {
-          this.pinCountries.splice(this.pinCountries.indexOf(data), 1);
-          localStorage.setItem('pinValue', JSON.stringify(this.pinCountries));
-          return;
-        }
-        this.pinCountries.push(data);
+      setPinCountriesData(data) {
+        this.pinCountries = this.pinCountries.includes(data)
+          ? this.pinCountries.splice(this.pinCountries.indexOf(data), 1)
+          : this.pinCountries.push(data);
+
         localStorage.setItem('pinValue', JSON.stringify(this.pinCountries));
       },
-    },
-    components: {
-      BaseLoadCard,
-      HomeSortbar,
-      BaseRow,
-      BaseCol,
-      HomeSideBar,
-      BaseCard,
-      HomeItem,
-      HomeChart,
-      HomeNavbar,
-      arrowCircle,
     },
   };
 </script>
@@ -259,6 +250,7 @@
     background-color: $theme-secondary;
     min-height: 100vh;
     font-size: 0;
+
     &_navbar {
       position: fixed;
       left: 0;
@@ -266,20 +258,24 @@
       box-shadow: 0 0 10px $gray;
       z-index: 999;
     }
+
     &_wrapper {
       max-width: 960px;
       padding: 0px 12px;
       margin: 0 auto;
       padding-top: 80px;
     }
+
     &_sort {
       margin-bottom: 12px;
     }
+
     &_link {
       @include font(lighter, 12px, $font-secondary);
       color: $brand-primary;
       text-decoration: underline;
     }
+
     &_title {
       @include font(bold, 16px, $font-secondary);
       color: $font-dark;
@@ -289,17 +285,20 @@
         margin-left: 12px;
       }
     }
+
     &_text {
       @include font(lighter, 12px, $font-secondary);
       color: $font-dark;
       margin-bottom: 12px;
       text-align: justify;
     }
+
     &_item_container {
       margin-bottom: 24px;
       div:not(:last-of-type) > * {
         margin-bottom: 12px;
       }
+
       @include Mediaquery-pad {
         div:not(:last-of-type) > * {
           margin-bottom: 0px;
@@ -309,6 +308,7 @@
           margin-bottom: 12px;
         }
       }
+      
       @include Mediaquery-pc {
         div:not(:last-of-type) > * {
           margin-bottom: 0px;
@@ -320,6 +320,11 @@
         }
       }
     }
+
+    &_card {
+      margin-bottom: 12px;
+    }
+
     &_card_selector {
       float: right;
       span {
@@ -328,9 +333,7 @@
         color: $font-dark;
       }
     }
-    &_card {
-      margin-bottom: 12px;
-    }
+
     &_top_arrow {
       position: fixed;
       padding: 12px;

@@ -21,9 +21,6 @@ import infoIcon from '@/assets/img/info-24px.svg';
 
 export default {
   name: 'HomeSideBar',
-  data() {
-    return {};
-  },
   components: {
     appIcon,
     infoIcon,
@@ -41,6 +38,7 @@ export default {
     right: 0px;
     z-index: 999;
     cursor: pointer;
+
     &_wrapper {
       background-color: $theme-primary;
       width: 80px;
@@ -56,12 +54,14 @@ export default {
         width: 240px;
       }
     }
+
     &_link {
       padding: 16px 24px;
       @include font(normal, 14px, $font-primary);
       display: block;
       color: $dark;
       transition: all 0.3s ease-in-out;
+      
       &:active,
       &:hover {
         background-color: $brand-secondary;

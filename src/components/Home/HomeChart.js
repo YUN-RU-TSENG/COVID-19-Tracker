@@ -9,17 +9,17 @@ export default {
     title: {
       type: String,
       require: true,
-    }
+    },
   },
   data() {
     return {
       options: {
         title: {
-          text: this.title,
+          padding: 4,
+          fontSize: 16,
           display: true,
           position: 'top',
-          fontSize: 16,
-          padding: 4
+          text: this.title,
         },
         responsive: true,
         maintainAspectRatio: false,

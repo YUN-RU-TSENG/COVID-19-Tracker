@@ -1,34 +1,21 @@
 import axios from "axios";
 
+
 // API 新冠肺炎
-const requestCovidNineteen = axios.create({
+// API Doc: https://documenter.getpostman.com/view/10808728/SzS8rjbc?version=latest
+const requestCovid19 = axios.create({
   baseURL: "https://api.covid19api.com/",
 });
 
+export const GET_COVID19 = (url, parameter = {}) => requestCovid19.get(url, parameter);
+export const POST_COVID19 = (url, data = {}, config = {}) => requestCovid19.post(url, data, config);
+
+
 // API 城市資料
+// API Doc: https://restcountries.eu/
 const requestCountries = axios.create({
-  baseURL: "https://restcountries.eu/rest/v2/all",
+  baseURL: "https://restcountries.eu/rest/v2/",
 });
 
-// API 新冠肺炎 API Doc: https://documenter.getpostman.com/view/10808728/SzS8rjbc?version=latest
-export const apiCovidNineteenSummary /* 返回所有地區每日最新數據、總數據*/ = () => requestCovidNineteen.get("/summary");
-export const apiCovidNineteenCountries /* 返回所有地區名稱*/ = () => requestCovidNineteen.get("/countries");
-export const apiCovidNineteenCountryStatusFromDayOne /* 返回一個地區至今的某類別自第一日到今日*/ = ({
-  country,
-  status
-}) => {
-  return requestCovidNineteen.get(`/dayone/country/${country}/status/${status}`);
-};
-export const apiCovidNineteenCountryAllStatusFromDayOne /* 返回一個國家特定時間內的資料*/ = ({
-  country,
-  startTime,
-  endTime,
-}) => {
-  return requestCovidNineteen.get(
-    `/country/${country}?from=${startTime}&to=${endTime}`
-  );
-};
-
-
-// API 城市資料
-export const apiCountries = () => requestCountries.get(); // 返回所有國家詳細訊息
+export const GET_COUNTRIES = (url, parameter = {}) =>  requestCountries.get(url, parameter);
+export const POST_COUNTRIES = (url, data = {}, config = {}) => requestCountries.post(url, data, config);

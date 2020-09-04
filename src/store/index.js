@@ -1,121 +1,102 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import {
-  apiCovidNineteenSummary,
-  apiCovidNineteenCountries,
-  apiCovidNineteenCountryStatusFromDayOne,
-  apiCovidNineteenCountryAllStatusFromDayOne,
-} from "@/service/api.js";
+import { GET_COVID19, POST_COVID19, GET_COUNTRIES, POST_COUNTRIES } from "@/service/api.js";
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    covidNineteenSummary: {
+    covid19Summary: {
       Global: {},
       Countries: [],
       Date: "",
     },
-    covidNineteenCountries: [],
-    covidNineteenCountryStatusFromDayOne: [],
-    covidNineteenCountryAllStatusFromDayOne: [],
+    covid19Countries: [],
+    covid19CountryStatusFromDayOne: [],
+    covid19CountryAllStatusFromDayOne: [],
   },
   getters: {
-    covidNineteenSummaryGlobal(state) {
-      return Object.entries(state.covidNineteenSummary.Global).map((item) => {
+    covid19SummaryGlobal(state) {
+      return Object.entries(state.covid19Summary.Global).map((item) => {
         const [name, number] = item;
         const translateName = {
-          NewConfirmed: "新增確診",
-          TotalConfirmed: "累計確診",
           NewDeaths: "新增死亡",
-          TotalDeaths: "累計死亡",
+          NewConfirmed: "新增確診",
           NewRecovered: "新增痊癒",
+          TotalDeaths: "累計死亡",
+          TotalConfirmed: "累計確診",
           TotalRecovered: "累計痊癒",
         };
         return {
           name,
-          chineseName: translateName[name],
           number,
-          date: state.covidNineteenSummary.Date,
+          date: state.covid19Summary.Date,
+          chineseName: translateName[name],
         };
       });
     },
-    covidNineteenSummaryCountries(state) {
-      return state.covidNineteenSummary.Countries.map((item) => {
+    covid19SummaryCountries(state) {
+      return state.covid19Summary.Countries.map((item) => {
         return {
-          country: item.Country,
-          countryCode: item.CountryCode,
           date: item.Date,
-          newConfirmed: item.NewConfirmed,
+          country: item.Country,
           newDeaths: item.NewDeaths,
+          totalDeaths: item.TotalDeaths,
+          countryCode: item.CountryCode,
+          newConfirmed: item.NewConfirmed,
           newRecovered: item.NewRecovered,
           totalConfirmed: item.TotalConfirmed,
-          totalDeaths: item.TotalDeaths,
           totalRecovered: item.TotalRecovered,
         };
       });
     },
-    covidNineteenCountries(state) {
-      return state.covidNineteenCountries;
+    covid19Countries(state) {
+      return state.covid19Countries;
     },
   },
   mutations: {
-    GET_COVID_NINETEEN_SUMMARY(state, datas) {
-      state.covidNineteenSummary = datas;
+    GET_COVID19_SUMMARY(state, datas) {
+      state.covid19Summary = datas;
     },
-    GET_COVID_NINETEEN_COUNTRIES(state, datas) {
-      state.covidNineteenCountries = datas;
+    GET_COVID19_COUNTRIES(state, datas) {
+      state.covid19Countries = datas;
     },
-    GET_COVID_NINETEEN_COUNTRY_STATUS_FROME_DAY_ONE(state, datas) {
-      state.covidNineteenCountryStatusFromDayOne = datas;
+    GET_COVID19_COUNTRY_STATUS_FROM_DAY_ONE(state, datas) {
+      state.covid19CountryStatusFromDayOne = datas;
     },
-    GET_COVID_NINETEEN_COUNTRY_ALL_STATUS_FROM_DAY_ONE(state, datas) {
-      state.covidNineteenCountryAllStatusFromDayOne = datas;
+    GET_COVID19_COUNTRY_ALL_STATUS_FROM_DAY_ONE(state, datas) {
+      state.covid19CountryAllStatusFromDayOne = datas;
     },
   },
   actions: {
-    async GET_covidNineteenSummary({ commit }) {
-      const result = await apiCovidNineteenSummary();
-      commit("GET_COVID_NINETEEN_SUMMARY", result.data);
+    // 返回所有地區每日最新數據、總數據
+    async getCovid19Summary({ commit }) {
+      const result = await GET_COVID19("/summary");
+      commit("GET_COVID19_SUMMARY", result.data);
     },
-    async GET_covidNineteenCountries({ commit }) {
-      const result = await apiCovidNineteenCountries();
-      commit("GET_COVID_NINETEEN_COUNTRIES", result.data);
+    // 返回所有地區名稱
+    async getCovid19Countries({ commit }) {
+      const result = await GET_COVID19("/countries");
+      commit("GET_COVID19_COUNTRIES", result.data);
     },
-    async GET_covidNineteenCountryStatusFromDayOne(
-      { commit },
-      country,
-      status
-    ) {
-      try {
-        const result = await apiCovidNineteenCountryStatusFromDayOne({
-          country,
-          status,
-        });
-        commit("GET_COVID_NINETEEN_COUNTRY_STATUS_FROME_DAY_ONE", result.data);
-      } catch (error) {
-        console.error(error);
-      }
+    // 返回一個地區至今的某類別自第一日到今日
+    async getCovid19CountryStatusFromDayOne({ commit }, country, status) {
+      const result = await GET_COVID19(
+        `/dayone/country/${country}/status/${status}`
+      );
+      commit("GET_COVID19_COUNTRY_STATUS_FROM_DAY_ONE", result.data);
     },
-    async GET_covidNineteenCountryAllStatusFromDayOne(
+    // 返回一個國家特定時間內的資料
+    async getCovid19CountryAllStatusFromDayOne(
       { commit },
       country,
       startTime,
       endTime
     ) {
-      try {
-        const result = await apiCovidNineteenCountryAllStatusFromDayOne({
-          country,
-          startTime,
-          endTime,
-        });
-        commit(
-          "GET_COVID_NINETEEN_COUNTRY_ALL_STATUS_FROM_DAY_ONE",
-          result.data
-        );
-      } catch (error) {
-        console.error(error);
-      }
+      const result = await GET_COVID19(
+        `/country/${country}?from=${startTime}&to=${endTime}`
+      );
+      commit("GET_COVID19_COUNTRY_ALL_STATUS_FROM_DAY_ONE", result.data);
     },
   },
 });

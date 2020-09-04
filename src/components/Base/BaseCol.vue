@@ -38,6 +38,7 @@
         if (this.pad) result['col-pad-' + this.pad] = this.pad
         if (this.pc) result['col-pc-' + this.pc] = this.pc
         result['no-gutter'] = !this.guttur
+
         return result
       }
     }

@@ -46,6 +46,24 @@
 
   export default {
     name: 'BaseCard',
+    components: {
+      alarmIcon,
+      pinIcon,
+      infoIcon,
+    },
+    filters: {
+      displayNumber(data) {
+        return !parseInt(data, 10)
+          ? '-'
+          : parseInt(data, 10).toLocaleString('zh-TW', {
+              style: 'decimal',
+              useGrouping: true,
+            });
+      },
+      displayDay(date) {
+        return dayjs(date).format('MM月DD日 HH:mm');
+      },
+    },
     props: {
       index: {
         type: Number,
@@ -92,30 +110,10 @@
         default: false,
       },
     },
-    data() {
-      return {};
-    },
-    filters: {
-      displayNumber(data) {
-        if (!parseInt(data, 10)) return '無';
-        return parseInt(data, 10).toLocaleString('zh-TW', {
-          style: 'decimal',
-          useGrouping: true,
-        });
-      },
-      displayDay(date) {
-        return dayjs(date).format('MM月DD日 HH:mm');
-      },
-    },
     methods: {
       displayIndex(index) {
         return index + 1;
       },
-    },
-    components: {
-      alarmIcon,
-      pinIcon,
-      infoIcon,
     },
   };
 </script>
@@ -126,6 +124,7 @@
     font-size: 0;
     background-color: $theme-primary;
     border-radius: 4px;
+
     &_pin {
       float: right;
       opacity: 0.5;
@@ -142,6 +141,7 @@
         fill: $dark;
       }
     }
+
     &_link {
       display: block;
       transition: all 0.3s ease-in-out;
@@ -149,12 +149,14 @@
         opacity: 0.8;
       }
     }
+
     &_title {
       @include font(bold, 12px, $font-primary);
       color: $font-dark;
       margin-bottom: 16px;
       margin-top: 10px;
     }
+
     &_header {
       border-radius: 4px;
       border-radius: 4px;
@@ -209,6 +211,7 @@
         fill: $warning;
       }
     }
+    
     &_text {
       @include font(lighter, 12px, $font-primary);
       color: $font-dark;

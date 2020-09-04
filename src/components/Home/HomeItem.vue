@@ -19,12 +19,28 @@
 <script>
   import coronavirus from '@/assets/img/coronavirus.svg';
   import arrowUpIcon from '@/assets/img/arrow_circle_up-24px.svg';
-  // import arrowDownIcon from '@/assets/img/arrow_circle_down-24px.svg';
 
   import dayjs from 'dayjs';
 
   export default {
     name: 'HomeItem',
+    components: {
+      coronavirus,
+      arrowUpIcon,
+    },
+    filters: {
+      displayNumber(data) {
+        return !parseInt(data, 10)
+          ? '-'
+          : parseInt(data, 10).toLocaleString('zh-TW', {
+              style: 'decimal',
+              useGrouping: true,
+            });
+      },
+      displayDay(date) {
+        return dayjs(date).format('MM月DD日 HH:mm');
+      },
+    },
     props: {
       name: {
         type: String,
@@ -47,25 +63,6 @@
         required: true,
       },
     },
-    computed: {
-    },
-    filters: {
-      displayNumber(data) {
-        if (!parseInt(data, 10)) return '無';
-        return parseInt(data, 10).toLocaleString('zh-TW', {
-          style: 'decimal',
-          useGrouping: true,
-        });
-      },
-      displayDay(date) {
-        return dayjs(date).format('MM月DD日 HH:mm');
-      },
-    },
-    components: {
-      coronavirus,
-      arrowUpIcon,
-      // arrowDownIcon
-    },
   };
 </script>
 
@@ -83,6 +80,7 @@
       transform-origin: top left;
       transform: scale(0.8);
     }
+
     &_patient {
       @include font(bold, 16px, $font-primary);
       color: $font-dark;
@@ -92,6 +90,7 @@
         color: $warning;
       }
     }
+
     &_information {
       @include font(normal, 12px, $font-primary);
       transform-origin: top left;

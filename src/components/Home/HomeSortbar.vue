@@ -22,10 +22,6 @@
 
   export default {
     name: 'HomeSort',
-    props: {},
-    data() {
-      return {};
-    },
     components: {
       sortIcon
     }
@@ -38,6 +34,7 @@
     font-size: 0;
     background-color: $theme-primary;
     border-radius: 4px;
+    
     &_header {
       border-radius: 4px;
       border-radius: 4px;
