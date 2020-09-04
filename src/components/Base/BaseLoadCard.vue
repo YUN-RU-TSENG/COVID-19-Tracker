@@ -13,8 +13,8 @@
         type: String,
         required: true
       }
-    },
-  };
+    }
+  }
 </script>
 
 <style lang="scss" scoped>
@@ -38,7 +38,7 @@
       box-shadow: -20px 0px $theme-primary, 20px 0px $theme-primary;
     }
   }
-  
+
   @keyframes dotted {
     0% {
       width: 0;

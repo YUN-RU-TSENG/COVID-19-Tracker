@@ -38,84 +38,84 @@
 </template>
 
 <script>
-  import alarmIcon from '@/assets/img/alarm.svg';
-  import infoIcon from '@/assets/img/info-24px.svg';
-  import pinIcon from '@/assets/img/push_pin-24px.svg';
+  import alarmIcon from '@/assets/img/alarm.svg'
+  import infoIcon from '@/assets/img/info-24px.svg'
+  import pinIcon from '@/assets/img/push_pin-24px.svg'
 
-  import dayjs from 'dayjs';
+  import dayjs from 'dayjs'
 
   export default {
     name: 'BaseCard',
     components: {
       alarmIcon,
       pinIcon,
-      infoIcon,
+      infoIcon
     },
     filters: {
-      displayNumber(data) {
+      displayNumber (data) {
         return !parseInt(data, 10)
           ? '-'
           : parseInt(data, 10).toLocaleString('zh-TW', {
               style: 'decimal',
-              useGrouping: true,
-            });
+              useGrouping: true
+            })
       },
-      displayDay(date) {
-        return dayjs(date).format('MM月DD日 HH:mm');
-      },
+      displayDay (date) {
+        return dayjs(date).format('MM月DD日 HH:mm')
+      }
     },
     props: {
       index: {
         type: Number,
-        required: true,
+        required: true
       },
       country: {
         type: String,
-        required: true,
+        required: true
       },
       countryCode: {
         type: String,
-        required: true,
+        required: true
       },
       date: {
         type: String,
-        required: true,
+        required: true
       },
       newConfirmed: {
         type: Number,
-        required: true,
+        required: true
       },
       newDeaths: {
         type: Number,
-        required: true,
+        required: true
       },
       newRecovered: {
         type: Number,
-        required: true,
+        required: true
       },
       totalConfirmed: {
         type: Number,
-        required: true,
+        required: true
       },
       totalDeaths: {
         type: Number,
-        required: true,
+        required: true
       },
       totalRecovered: {
         type: Number,
-        required: true,
+        required: true
       },
       pin: {
         type: Boolean,
-        default: false,
-      },
+        default: false
+      }
     },
     methods: {
-      displayIndex(index) {
-        return index + 1;
-      },
-    },
-  };
+      displayIndex (index) {
+        return index + 1
+      }
+    }
+  }
 </script>
 
 <style lang="scss" scoped>
@@ -211,7 +211,7 @@
         fill: $warning;
       }
     }
-    
+
     &_text {
       @include font(lighter, 12px, $font-primary);
       color: $font-dark;

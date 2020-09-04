@@ -20,21 +20,21 @@
 
 <script>
   // component
-  import InformationCard from '@/components/Base/BaseCard.vue';
+  import InformationCard from '@/components/Base/BaseCard.vue'
 
   // mapGetter
-  import { mapGetters } from 'vuex';
+  import { mapGetters } from 'vuex'
 
   export default {
     name: 'Information',
     components: {
-      InformationCard,
+      InformationCard
     },
-    created() {},
+    created () {},
     computed: {
-      ...mapGetters(['covid19SummaryGlobal', 'covid19SummaryCountries']),
-    },
-  };
+      ...mapGetters(['covid19SummaryGlobal', 'covid19SummaryCountries'])
+    }
+  }
 </script>
 
 <style lang="scss" scoped>

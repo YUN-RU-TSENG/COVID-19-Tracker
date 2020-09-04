@@ -1,17 +1,17 @@
-import { Bar, mixins } from "vue-chartjs";
+import { Bar, mixins } from 'vue-chartjs'
 
 // reference: https://github.com/apertureless/vue-chartjs/blob/develop/src/examples/ReactivePropExample.js
 export default {
-  names: "HomeChart",
+  names: 'HomeChart',
   extends: Bar,
   mixins: [mixins.reactiveProp],
   props: {
     title: {
       type: String,
-      require: true,
-    },
+      require: true
+    }
   },
-  data() {
+  data () {
     return {
       options: {
         title: {
@@ -19,17 +19,17 @@ export default {
           fontSize: 16,
           display: true,
           position: 'top',
-          text: this.title,
+          text: this.title
         },
         responsive: true,
         maintainAspectRatio: false,
         animation: {
-          onProgress: function(animation) {},
-        },
-      },
-    };
+          onProgress: function (animation) {}
+        }
+      }
+    }
   },
-  mounted() {
-    this.renderChart(this.chartData, this.options);
-  },
-};
+  mounted () {
+    this.renderChart(this.chartData, this.options)
+  }
+}

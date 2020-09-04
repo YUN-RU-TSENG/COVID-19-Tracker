@@ -106,21 +106,21 @@
 
 <script>
   // component
-  import HomeNavbar from '@/components/Home/HomeNavbar.vue';
-  import HomeItem from '@/components/Home/HomeItem.vue';
-  import BaseCard from '@/components/Base/BaseCard.vue';
-  import HomeSideBar from '@/components/Home/HomeSideBar.vue';
-  import HomeChart from '../components/Home/HomeChart.js';
-  import HomeSortbar from '@/components/Home/HomeSortbar.vue';
-  import BaseCol from '@/components/Base/BaseCol.vue';
-  import BaseRow from '@/components/Base/BaseRow.vue';
-  import BaseLoadCard from '../components/Base/BaseLoadCard.vue';
+  import HomeNavbar from '@/components/Home/HomeNavbar.vue'
+  import HomeItem from '@/components/Home/HomeItem.vue'
+  import BaseCard from '@/components/Base/BaseCard.vue'
+  import HomeSideBar from '@/components/Home/HomeSideBar.vue'
+  import HomeChart from '../components/Home/HomeChart.js'
+  import HomeSortbar from '@/components/Home/HomeSortbar.vue'
+  import BaseCol from '@/components/Base/BaseCol.vue'
+  import BaseRow from '@/components/Base/BaseRow.vue'
+  import BaseLoadCard from '../components/Base/BaseLoadCard.vue'
 
   // svg
-  import arrowCircle from '@/assets/img/arrow_circle_up-24px.svg';
+  import arrowCircle from '@/assets/img/arrow_circle_up-24px.svg'
 
   // mapGetter
-  import { mapGetters } from 'vuex';
+  import { mapGetters } from 'vuex'
 
   export default {
     name: 'Home',
@@ -134,13 +134,12 @@
       HomeItem,
       HomeChart,
       HomeNavbar,
-      arrowCircle,
+      arrowCircle
     },
-    data() {
-
+    data () {
       // todo: 取得用戶之前 pin 的城市資訊
-      function pinValue() {
-        return JSON.parse(localStorage.getItem('pinValue')) || [];
+      function pinValue () {
+        return JSON.parse(localStorage.getItem('pinValue')) || []
       }
 
       return {
@@ -152,66 +151,66 @@
         sortOption: [
           {
             value: 'word',
-            label: '依字母排序',
+            label: '依字母排序'
           },
           {
             value: 'newConfirmed',
-            label: '新增確診（多至少）',
+            label: '新增確診（多至少）'
           },
           {
             value: 'totalConfirmed',
-            label: '累積確診（多至少）',
+            label: '累積確診（多至少）'
           },
           {
             value: 'newDeaths',
-            label: '新增死亡（多至少）',
+            label: '新增死亡（多至少）'
           },
           {
             value: 'totalDeaths',
-            label: '累計死亡（多至少）',
-          },
-        ],
-      };
+            label: '累計死亡（多至少）'
+          }
+        ]
+      }
     },
     computed: {
       ...mapGetters([
         'covid19SummaryGlobal',
         'covid19SummaryCountries',
-        'covid19Countries',
+        'covid19Countries'
       ]),
       // todo: 依照選擇排序國家順序
-      covid19CountriesSort() {
+      covid19CountriesSort () {
         switch (this.sortItem) {
           case 'word':
-            return this.noPinCountriesData.slice().sort();
+            return this.noPinCountriesData.slice().sort()
           case 'newConfirmed':
           case 'totalDeaths':
           case 'totalConfirmed':
           case 'newDeaths':
             return this.noPinCountriesData.slice()
               .sort((firstElement, secondElement) =>
-                  secondElement[this.sortItem] - firstElement[this.sortItem]);
+                  secondElement[this.sortItem] - firstElement[this.sortItem])
           default:
-            return this.noPinCountriesData;
+            return this.noPinCountriesData
         }
       },
-      pinCountriesData() {
-        return this.covid19SummaryCountries.filter(item => this.pinCountries.includes(item.country));
+      pinCountriesData () {
+        return this.covid19SummaryCountries.filter(item => this.pinCountries.includes(item.country))
       },
-      noPinCountriesData() {
-        return this.covid19SummaryCountries.filter(item => !this.pinCountries.includes(item.country));
+      noPinCountriesData () {
+        return this.covid19SummaryCountries.filter(item => !this.pinCountries.includes(item.country))
       },
-      dataOptions() {
-        const COUNTRY_COUNT = 10;
-        const [BLUE, GREEN] = ['#ffffff90', '#19caad20'];
-        const RANK_VALUE = 'totalDeaths';
+      dataOptions () {
+        const COUNTRY_COUNT = 10
+        const [BLUE, GREEN] = ['#ffffff90', '#19caad20']
+        const RANK_VALUE = 'totalDeaths'
         const sortData = this.covid19SummaryCountries.slice()
           .sort((firstElement, secondElement) =>
               secondElement[RANK_VALUE] - firstElement[RANK_VALUE])
-          .slice(0, COUNTRY_COUNT);
+          .slice(0, COUNTRY_COUNT)
 
         const color = Array(COUNTRY_COUNT).fill()
-          .map((element, index) => index % 2 ? BLUE : GREEN);
+          .map((element, index) => index % 2 ? BLUE : GREEN)
 
         return {
           labels: sortData.map((data) => data.countryCode),
@@ -219,30 +218,30 @@
             {
               backgroundColor: color,
               label: '死亡',
-              data: sortData.map((data) => data[RANK_VALUE]),
-            },
-          ],
-        };
-      },
+              data: sortData.map((data) => data[RANK_VALUE])
+            }
+          ]
+        }
+      }
     },
-    created() {
+    created () {
       // ! waiting for refactor
-      this.$store.dispatch('getCovid19Summary');
-      this.$store.dispatch('getCovid19Countries');
+      this.$store.dispatch('getCovid19Summary')
+      this.$store.dispatch('getCovid19Countries')
     },
     methods: {
-      changeSideBarShow(data) {
-        this.isSideBarShow = data;
+      changeSideBarShow (data) {
+        this.isSideBarShow = data
       },
-      setPinCountriesData(data) {
+      setPinCountriesData (data) {
         this.pinCountries = this.pinCountries.includes(data)
           ? this.pinCountries.splice(this.pinCountries.indexOf(data), 1)
-          : this.pinCountries.push(data);
+          : this.pinCountries.push(data)
 
-        localStorage.setItem('pinValue', JSON.stringify(this.pinCountries));
-      },
-    },
-  };
+        localStorage.setItem('pinValue', JSON.stringify(this.pinCountries))
+      }
+    }
+  }
 </script>
 
 <style lang="scss" scoped>
@@ -308,7 +307,7 @@
           margin-bottom: 12px;
         }
       }
-      
+
       @include Mediaquery-pc {
         div:not(:last-of-type) > * {
           margin-bottom: 0px;

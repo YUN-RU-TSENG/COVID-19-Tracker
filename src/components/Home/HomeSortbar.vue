@@ -18,14 +18,14 @@
 </template>
 
 <script>
-  import sortIcon from '@/assets/img/arrow_circle_down-24px.svg';
+  import sortIcon from '@/assets/img/arrow_circle_down-24px.svg'
 
   export default {
     name: 'HomeSort',
     components: {
       sortIcon
     }
-  };
+  }
 </script>
 
 <style lang="scss" scoped>
@@ -34,7 +34,7 @@
     font-size: 0;
     background-color: $theme-primary;
     border-radius: 4px;
-    
+
     &_header {
       border-radius: 4px;
       border-radius: 4px;

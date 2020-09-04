@@ -17,53 +17,53 @@
 </template>
 
 <script>
-  import coronavirus from '@/assets/img/coronavirus.svg';
-  import arrowUpIcon from '@/assets/img/arrow_circle_up-24px.svg';
+  import coronavirus from '@/assets/img/coronavirus.svg'
+  import arrowUpIcon from '@/assets/img/arrow_circle_up-24px.svg'
 
-  import dayjs from 'dayjs';
+  import dayjs from 'dayjs'
 
   export default {
     name: 'HomeItem',
     components: {
       coronavirus,
-      arrowUpIcon,
+      arrowUpIcon
     },
     filters: {
-      displayNumber(data) {
+      displayNumber (data) {
         return !parseInt(data, 10)
           ? '-'
           : parseInt(data, 10).toLocaleString('zh-TW', {
               style: 'decimal',
-              useGrouping: true,
-            });
+              useGrouping: true
+            })
       },
-      displayDay(date) {
-        return dayjs(date).format('MM月DD日 HH:mm');
-      },
+      displayDay (date) {
+        return dayjs(date).format('MM月DD日 HH:mm')
+      }
     },
     props: {
       name: {
         type: String,
-        required: true,
+        required: true
       },
       chineseName: {
         type: String,
-        required: true,
+        required: true
       },
       number: {
         type: Number,
-        required: true,
+        required: true
       },
       date: {
         type: String,
-        required: true,
+        required: true
       },
       index: {
         type: Number,
-        required: true,
-      },
-    },
-  };
+        required: true
+      }
+    }
+  }
 </script>
 
 <style lang="scss" scoped>

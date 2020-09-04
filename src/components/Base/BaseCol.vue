@@ -31,8 +31,8 @@
       }
     },
     computed: {
-      styleObject() {
-        let result = {};
+      styleObject () {
+        const result = {}
         if (this.default) result['col-' + this.default] = this.default
         if (this.phone) result['col-phone-' + this.phone] = this.phone
         if (this.pad) result['col-pad-' + this.pad] = this.pad
@@ -42,7 +42,7 @@
         return result
       }
     }
-  };
+  }
 </script>
 
 <style lang="scss" scoped>

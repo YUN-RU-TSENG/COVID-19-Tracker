@@ -32,44 +32,44 @@
 
 <script>
   // svg
-  import menuIcon from '@/assets/img/menu-24px.svg';
-  import settings from '@/assets/img/settings-24px.svg';
+  import menuIcon from '@/assets/img/menu-24px.svg'
+  import settings from '@/assets/img/settings-24px.svg'
 
   export default {
     name: 'HomeNavbar',
     components: {
       menuIcon,
-      settings,
+      settings
     },
     props: {
       countries: {
         type: Array,
-        require: true,
-      },
+        require: true
+      }
     },
-    data() {
+    data () {
       return {
-        searchText: '',
-      };
+        searchText: ''
+      }
     },
     computed: {
-      filterMatchCountry() {
+      filterMatchCountry () {
         return !this.searchText
           ? []
           : this.countries
               .filter((item) => {
-                const regexp = new RegExp(this.searchText, 'gi');
+                const regexp = new RegExp(this.searchText, 'gi')
 
-                return regexp.test(item.Country) || regexp.test(item.ISO2);
+                return regexp.test(item.Country) || regexp.test(item.ISO2)
               })
               .map((item) => {
-                const text = `${item.Country}, ${item.ISO2}`;
+                const text = `${item.Country}, ${item.ISO2}`
 
                 return {
                   country: item.Country,
-                  text,
-                };
-              });
+                  text
+                }
+              })
       },
 
       /**
@@ -84,41 +84,41 @@
        * @return { Object } 返回包含符合字串(fontMatch)、符合前後字串(fontStart, fontEnd)、國家名稱(country)、符合字串 index(fontStartIndex)
        *
        **/
-      filterMatchCountryDisplay() {
+      filterMatchCountryDisplay () {
         return this.filterMatchCountry
           .map((data) => {
-            const searchTextlength = this.searchText.length;
+            const searchTextlength = this.searchText.length
             // 吻合的文字 index
             const fontStartIndex = data.text.toLowerCase()
-              .indexOf(this.searchText.toLowerCase());
+              .indexOf(this.searchText.toLowerCase())
             // 吻合的文字
             const fontMatch = data.text.slice(
               fontStartIndex,
               fontStartIndex + searchTextlength
-            );
+            )
             // 吻合文字後的第一個字串 index
-            const fontEndIndex = fontStartIndex + fontMatch.length;
+            const fontEndIndex = fontStartIndex + fontMatch.length
             // 吻合文字之前的文字
             const fontStart = !fontStartIndex
               ? null
-              : data.text.slice(0, fontStartIndex);
+              : data.text.slice(0, fontStartIndex)
             // 吻合文字之後的文字
-            const fontEnd = data.text.slice(fontEndIndex);
+            const fontEnd = data.text.slice(fontEndIndex)
 
             return {
               fontStart,
               fontEnd,
               fontMatch,
               name: data.text,
-              fontStartIndex,
-            };
+              fontStartIndex
+            }
           })
           .sort((firstElement, secondElement) =>
               firstElement.fontStartIndex - secondElement.fontStartIndex)
-          .slice(0, 10);
-      },
-    },
-  };
+          .slice(0, 10)
+      }
+    }
+  }
 </script>
 
 <style lang="scss" scoped>
@@ -186,7 +186,7 @@
         border-color: $brand-primary;
       }
     }
-    
+
     &_search_item {
       position: absolute;
       width: 200px;
