@@ -84,7 +84,7 @@
                       v-bind="data"
                       :index="index"
                       :key="data.country"
-                      @handler="pinCountriesData" />
+                      @handler="setPinCountriesData" />
           </template>
         </template>
         <!-- 加載等待元件 -->
@@ -139,6 +139,14 @@
     data () {
       // todo: 取得用戶之前 pin 的城市資訊
       function pinValue () {
+        const judgmentValue = localStorage.getItem('pinValue')
+        const judgmentValueIsArray = Array.isArray(judgmentValue)
+        const judgmentValueIsNull = Object.prototype.toString.call(judgmentValue) === '[object Null]'
+        // 錯誤預防 pinValue 是非 null、陣列，當不是兩者，刪除該項目
+        // 當符合，直接返回
+        if (!judgmentValueIsArray || !judgmentValueIsNull) {
+          localStorage.removeItem('pinValue')
+        }
         return JSON.parse(localStorage.getItem('pinValue')) || []
       }
 
@@ -234,9 +242,15 @@
         this.isSideBarShow = data
       },
       setPinCountriesData (data) {
-        this.pinCountries = this.pinCountries.includes(data)
-          ? this.pinCountries.splice(this.pinCountries.indexOf(data), 1)
-          : this.pinCountries.push(data)
+        // this.pinCountries = this.pinCountries.includes(data)
+        //   ? this.pinCountries.splice(this.pinCountries.indexOf(data), 1)
+        //   : this.pinCountries.push(data)
+
+          if (this.pinCountries.includes(data)) {
+            this.pinCountries.splice(this.pinCountries.indexOf(data), 1)
+          } else {
+            this.pinCountries.push(data)
+          }
 
         localStorage.setItem('pinValue', JSON.stringify(this.pinCountries))
       }
@@ -303,7 +317,7 @@
           margin-bottom: 0px;
         }
         div:not(:nth-last-of-type(3)):not(:nth-last-of-type(2)):not(:last-of-type)
-          * {
+          > * {
           margin-bottom: 12px;
         }
       }
@@ -314,7 +328,7 @@
         }
         // ! 更好的方式？
         div:not(:nth-last-of-type(3)):not(:nth-last-of-type(2)):not(:last-of-type)
-          * {
+          > * {
           margin-bottom: 12px;
         }
       }
