@@ -64,7 +64,7 @@ export default {
 
       &:active,
       &:hover {
-        background-color: $brand-secondary;
+        background-color: $theme-secondary;
       }
       svg {
         vertical-align: middle;

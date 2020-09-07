@@ -52,7 +52,7 @@
           <!-- element ui select -->
           <el-select v-model="sortItem"
                      placeholder="排序國家顯示順序"
-                     :disabled="!!sortOption.length">
+                     :disabled="!sortOption.length">
             <el-option v-for="item in sortOption"
                        :key="item.value"
                        :label="item.label"
@@ -155,7 +155,7 @@
         isLoading: true,
         sortItem: 'word',
         pinCountries: pinValue(),
-        chartTitle: 'COVID-19 每日死亡國家排行',
+        chartTitle: 'COVID-19 Global Information',
         sortOption: [
           {
             value: 'word',

@@ -2,12 +2,8 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
-import { Select, DatePicker, Option } from 'element-ui'
-import 'element-ui/lib/theme-chalk/index.css'
-import '@/assets/plugin/element-variables.scss'
-import '@/assets/plugin/vue-transition.scss'
 // import NProgress from 'nprogress'
-// import '@/assets/plugin/nprogress.css'
+import { Select, DatePicker, Option } from 'element-ui'
 
 Vue.component(Select.name, Select)
 Vue.component(DatePicker.name, DatePicker)

@@ -1,17 +1,16 @@
-/*
-*main sass file
-*/
 @charset 'utf-8';
 
-/*
-* abstract
-*/
+// abstract 抽象層，設定顏色、字體、 media query
 @import "abstracts/color";
 @import "abstracts/typography";
 @import "abstracts/mediaquery";
 
-/*
-* base
-*/
+// base 設定基礎樣式、重置樣式
 @import "base/reset";
 @import "base/base";
+
+// 引入 plugin 插件的樣式（插件樣式集中在此）
+@import 'plugin/nprogress.scss'; // nprogress
+@import 'plugin/vue-transition.scss'; // vue-trainsition
+@use 'node_modules/element-ui/lib/theme-chalk/index.css'; // element-ui
+@import 'plugin/element-variables.scss'; // element-ui 改主題顏色

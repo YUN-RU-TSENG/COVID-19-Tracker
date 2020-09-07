@@ -18,10 +18,10 @@ const routes = [
   {
     path: '*',
     redirect: { name: 'home' }
-  },
-  {
-    path: '/404'
   }
+  // {
+  //   path: '/404'
+  // }
 ]
 
 const router = new VueRouter({
