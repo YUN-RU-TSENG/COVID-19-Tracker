@@ -141,7 +141,7 @@
       function pinValue () {
         const judgmentValue = localStorage.getItem('pinValue')
         const judgmentValueIsArray = Array.isArray(judgmentValue)
-        const judgmentValueIsNull = Object.prototype.toString.call(judgmentValue) === '[object Null]'
+        const judgmentValueIsNull = Object.is(judgmentValue, null)
         // 錯誤預防 pinValue 是非 null、陣列，當不是兩者，刪除該項目
         // 當符合，直接返回
         if (!judgmentValueIsArray || !judgmentValueIsNull) {
