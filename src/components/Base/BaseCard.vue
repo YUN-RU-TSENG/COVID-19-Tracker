@@ -7,8 +7,12 @@
          class="card_pin"
          :class="{'active': pin}"
          @click.prevent="$emit('handler', country)">
-        <pinIcon /></a>
-      <h2 class="card_title">{{ displayIndex(index) + '. ' + country }}</h2>
+        <pinIcon v-if="isPin"/></a>
+      <h2 class="card_title">
+        <template v-if="index">
+          {{ displayIndex(index) + '. ' }}
+        </template>
+        {{ country }}</h2>
       <section class="card_header">
         <div>
           <h2>新增確診</h2>
@@ -28,7 +32,7 @@
         <div>
           <h2>累計死亡</h2>
           <p>
-            <infoIcon /><span>{{ totalDeaths | displayNumber }}</span></p>
+            <infoIcon /><span>{{ totalDeaths }}</span></p>
         </div>
       </section>
       <p class="card_text">Update at {{ date | displayDay }} . 累計至該時間共 {{ totalRecovered | displayNumber }} 人康復.</p>
@@ -65,9 +69,13 @@
       }
     },
     props: {
+      isPin: {
+        type: Boolean,
+        default: true
+      },
       index: {
         type: Number,
-        required: true
+        required: false
       },
       country: {
         type: String,

@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import { GET_COVID19 } from '@/service/api.js'
-// import { GET_COVID19, POST_COVID19, GET_COUNTRIES, POST_COUNTRIES } from '@/service/api.js'
 
 Vue.use(Vuex)
 
@@ -37,6 +36,7 @@ export default new Vuex.Store({
       })
     },
     covid19SummaryCountries (state) {
+      // ! waiting for refactor 大小寫維持 api 原樣
       return state.covid19Summary.Countries.map((item) => {
         return {
           date: item.Date,
@@ -72,32 +72,32 @@ export default new Vuex.Store({
   actions: {
     // 返回所有地區每日最新數據、總數據
     async getCovid19Summary ({ commit }) {
-      const result = await GET_COVID19('/summary')
-      commit('GET_COVID19_SUMMARY', result.data)
+      const { data: result } = await GET_COVID19('/summary')
+      commit('GET_COVID19_SUMMARY', result)
     },
     // 返回所有地區名稱
     async getCovid19Countries ({ commit }) {
-      const result = await GET_COVID19('/countries')
-      commit('GET_COVID19_COUNTRIES', result.data)
+      const { data: result } = await GET_COVID19('/countries')
+      commit('GET_COVID19_COUNTRIES', result)
     },
     // 返回一個地區至今的某類別自第一日到今日
     async getCovid19CountryStatusFromDayOne ({ commit }, country, status) {
-      const result = await GET_COVID19(
+      const { data: result } = await GET_COVID19(
         `/dayone/country/${country}/status/${status}`
       )
-      commit('GET_COVID19_COUNTRY_STATUS_FROM_DAY_ONE', result.data)
+      commit('GET_COVID19_COUNTRY_STATUS_FROM_DAY_ONE', result)
     },
-    // 返回一個國家特定時間內的資料
+    // 返回一個國家至今日的資料
     async getCovid19CountryAllStatusFromDayOne (
       { commit },
       country,
       startTime,
       endTime
     ) {
-      const result = await GET_COVID19(
+      const { data: result } = await GET_COVID19(
         `/country/${country}?from=${startTime}&to=${endTime}`
       )
-      commit('GET_COVID19_COUNTRY_ALL_STATUS_FROM_DAY_ONE', result.data)
+      commit('GET_COVID19_COUNTRY_ALL_STATUS_FROM_DAY_ONE', result)
     }
   }
 })

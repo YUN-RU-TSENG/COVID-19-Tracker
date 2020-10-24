@@ -108,12 +108,12 @@
   // component
   import HomeNavbar from '@/components/Home/HomeNavbar.vue'
   import HomeItem from '@/components/Home/HomeItem.vue'
-  import BaseCard from '@/components/Base/BaseCard.vue'
   import HomeSideBar from '@/components/Home/HomeSideBar.vue'
   import HomeChart from '../components/Home/HomeChart.js'
   import HomeSortbar from '@/components/Home/HomeSortbar.vue'
   import BaseCol from '@/components/Base/BaseCol.vue'
   import BaseRow from '@/components/Base/BaseRow.vue'
+  import BaseCard from '@/components/Base/BaseCard.vue'
   import BaseLoadCard from '../components/Base/BaseLoadCard.vue'
 
   // svg
@@ -121,6 +121,9 @@
 
   // mapGetter
   import { mapGetters } from 'vuex'
+
+  // plugin
+  import NProgress from 'nprogress'
 
   export default {
     name: 'Home',
@@ -232,10 +235,12 @@
         }
       }
     },
-    created () {
+    async created () {
       // ! waiting for refactor
-      this.$store.dispatch('getCovid19Summary')
-      this.$store.dispatch('getCovid19Countries')
+      NProgress.start()
+      await this.$store.dispatch('getCovid19Summary')
+      await this.$store.dispatch('getCovid19Countries')
+      NProgress.done()
     },
     methods: {
       changeSideBarShow (data) {

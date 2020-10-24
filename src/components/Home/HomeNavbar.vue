@@ -12,7 +12,7 @@
            :class="{'active': filterMatchCountry.length }">
         <a href
            v-for="country in filterMatchCountryDisplay"
-           @click.prevent="$router.push({ name: 'country', params: { country: country.name } });"
+           @click.prevent="nextPage(country)"
            :key="country.name">
           <template v-if="!country.fontStart">
             <span>{{ country.fontMatch }}</span>{{ country.fontEnd }}
@@ -34,6 +34,8 @@
   // svg
   import menuIcon from '@/assets/img/menu-24px.svg'
   import settings from '@/assets/img/settings-24px.svg'
+
+  import { GET_COVID19 } from '@/service/api.js'
 
   export default {
     name: 'HomeNavbar',
@@ -67,11 +69,11 @@
 
                 return {
                   country: item.Country,
-                  text
+                  text,
+                  slug: item.Slug
                 }
               })
       },
-
       /**
        *
        * TODO: 將符合的字串分割成符合以及非符合，當渲染的時候便可以依照符合以及未符合的文字配合模板渲染畫面，並且會依照國家符合字串的 index 先後排列。
@@ -109,13 +111,29 @@
               fontStart,
               fontEnd,
               fontMatch,
+              country: data.country,
               name: data.text,
+              slug: data.slug,
               fontStartIndex
             }
           })
           .sort((firstElement, secondElement) =>
               firstElement.fontStartIndex - secondElement.fontStartIndex)
           .slice(0, 10)
+      }
+    },
+    methods: {
+      async nextPage (country) {
+        try {
+          // 換頁
+          this.$router.push({ name: 'country', params: { country: country.country, countrySlug: country.slug } })
+          // 請求資料並且存入 vuex
+          await GET_COVID19(`total/country/${country.slug}`)
+          // 錯誤處理
+          // 顯示錯誤處理
+          } catch (error) {
+          console.error(error)
+        }
       }
     }
   }

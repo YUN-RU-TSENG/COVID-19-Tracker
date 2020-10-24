@@ -7,8 +7,9 @@
            class="sidebar_link"
            title="home">
           <appIcon /><span>主頁</span></a></li>
-      <li><a href
+      <li><a href="https://www.cdc.gov.tw/Category/QAPage/LnqBFJsulw6fW3nswc04Yw"
            class="sidebar_link"
+           target="_blank"
            title="reference">
           <infoIcon /><span>相關連結</span></a></li>
     </ul>
