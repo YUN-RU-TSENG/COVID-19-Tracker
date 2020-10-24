@@ -1,5 +1,5 @@
 module.exports = {
-  publicPath: process.env.NODE_ENV === 'production' ? '/cv-19/' : '/',
+  publicPath: process.env.NODE_ENV === 'production' ? '/COVID-19/' : '/',
   css: {
     loaderOptions: {
       sass: {
