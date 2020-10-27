@@ -194,7 +194,7 @@
       padding: 0px 12px;
       margin: 0 auto;
 
-      section {
+      section:not(:last-child) {
         margin-bottom: 24px;
       }
     }
