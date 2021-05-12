@@ -10,7 +10,7 @@
     "storybook": "start-storybook -p 6006"
   },
   "dependencies": {
-    "chart.js": "^2.9.3",
+    "chart.js": "^2.9.4",
     "core-js": "^3.6.5",
     "dayjs": "^1.8.29",
     "element-ui": "^2.13.2",
